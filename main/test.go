@@ -1,7 +1,10 @@
 package main
 
-import "Allin/modules/subfind"
+import (
+	"Allin/modules/subfind"
+	"fmt"
+)
 
 func main() {
-	subfind.Iscdn("123.123.22.12")
+	fmt.Print(subfind.Iscdn("123.123.22.12"))
 }
