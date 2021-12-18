@@ -21,7 +21,7 @@ func GetAsnData() []byte {
 	defer r.Close()
 	asnData, err := ioutil.ReadAll(r)
 	if err != nil {
-		gologger.Fatalf("打开资源文件失败:%s", err.Error())
+		gologger.Fatalf("读取资源文件失败:%s", err.Error())
 	}
 	return asnData
 }
