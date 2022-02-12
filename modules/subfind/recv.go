@@ -9,7 +9,6 @@ import (
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"os"
-	"strconv"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -21,10 +20,7 @@ func Recv(device string, options *core.Options, flagID uint16, retryChan chan Re
 		promiscuous bool          = false
 		timeout     time.Duration = -1 * time.Second
 	)
-	windowWith := GetWindowWith()
-	if options.Silent {
-		windowWith = 0
-	}
+	windowWith := util.GetWindowWith()
 	handle, _ := pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
 	err := handle.SetBPFFilter("udp and src port 53")
 	if err != nil {
@@ -42,10 +38,10 @@ func Recv(device string, options *core.Options, flagID uint16, retryChan chan Re
 	if options.SubNameFileName == "" {
 		subNextData = GetDefaultSubNextData()
 	} else {
-		if !FileExists(options.SubNameFileName) {
+		if !util.FileExists(options.SubNameFileName) {
 			gologger.Fatalf("三级域名文件:%s 不存在\n", options.SubNameFileName)
 		}
-		rs, err := LinesInFile(options.SubNameFileName)
+		rs, err := util.LinesInFile(options.SubNameFileName)
 		if err != nil {
 			gologger.Fatalf("读取三级域名文件失败:%s\n", err.Error())
 		}
@@ -58,8 +54,6 @@ func Recv(device string, options *core.Options, flagID uint16, retryChan chan Re
 	parser := gopacket.NewDecodingLayerParser(
 		layers.LayerTypeEthernet, &eth, &ipv4, &ipv6, &udp, &dns)
 	var isWrite bool = false
-	var isttl bool = options.TTL
-	var isSummary bool = options.Summary
 	if options.Output != "" {
 		isWrite = true
 	}
@@ -85,7 +79,7 @@ func Recv(device string, options *core.Options, flagID uint16, retryChan chan Re
 		}
 		if dns.ID/100 == flagID {
 			if options.CheckOrigin {
-				if !IsContain(options.Resolvers, ipv4.SrcIP.String()) {
+				if !util.IsContain(options.Resolvers, ipv4.SrcIP.String()) {
 					continue
 				}
 			}
@@ -122,28 +116,18 @@ func Recv(device string, options *core.Options, flagID uint16, retryChan chan Re
 				data.Answers = dns.Answers
 
 				msg := data.Subdomain + " => "
-				if !options.Silent {
-					for _, v := range data.Answers {
-						msg += v.String()
-						if isttl {
-							msg += " ttl:" + strconv.Itoa(int(v.TTL))
-						}
-						msg += " => "
-					}
+
+				for _, v := range data.Answers {
+					msg += v.String()
+					msg += " => "
 				}
+
 				msg = strings.Trim(msg, " => ")
 				ff := windowWith - len(msg) - 1
-				if !options.Silent {
-					if windowWith > 0 && ff > 0 {
-						gologger.Silentf("\r%s% *s\n", msg, ff, "")
-					} else {
-						gologger.Silentf("\r%s\n", msg)
-					}
+				if windowWith > 0 && ff > 0 {
+					gologger.Silentf("\r%s% *s\n", msg, ff, "")
 				} else {
-					gologger.Silentf("%s\n", msg)
-				}
-				if isSummary {
-					AsnResults = append(AsnResults, data)
+					gologger.Silentf("\r%s\n", msg)
 				}
 				if isWrite {
 					w := bufio.NewWriter(foutput)
