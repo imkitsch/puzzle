@@ -165,7 +165,7 @@ func GetDevices(options *core.Options) EthTable {
 
 func GetGateMacAddress(dvice string) [2]net.HardwareAddr {
 	// 获取网关mac地址
-	domain := RandomStr(4) + "paper.seebug.org"
+	domain := util.RandomStr(4) + "paper.seebug.org"
 	_signal := make(chan [2]net.HardwareAddr)
 	go func(device string, domain string, signal chan [2]net.HardwareAddr) {
 		var (
