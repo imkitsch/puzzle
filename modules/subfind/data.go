@@ -2,27 +2,31 @@ package subfind
 
 import (
 	"Allin/gologger"
-	_ "Allin/statik"
+	_ "embed"
 	"github.com/rakyll/statik/fs"
-	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
+//go:embed data/subnext.txt
+var subnext string
+
+//go:embed data/subdomain.txt
+var subdomain string
+
+//go:embed data/GeoLite2-ASN.mmdb
+var asnData []byte
+
+func GetSubdomainData() []string {
+	return strings.Split(subdomain, "\n")
+}
+
+func GetDefaultSubNextData() []string {
+	return strings.Split(subnext, "\n")
+}
+
 func GetAsnData() []byte {
-	statikFS, err := fs.New()
-	if err != nil {
-		gologger.Fatalf(err.Error())
-	}
-	r, err := statikFS.Open("/GeoLite2-ASN.mmdb")
-	if err != nil {
-		gologger.Fatalf("打开资源文件失败:%s", err.Error())
-	}
-	defer r.Close()
-	asnData, err := ioutil.ReadAll(r)
-	if err != nil {
-		gologger.Fatalf("读取资源文件失败:%s", err.Error())
-	}
 	return asnData
 }
 
