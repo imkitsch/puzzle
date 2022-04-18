@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="374e5131-35d1-4089-af64-4d717b109841" name="Changes" comment="up">
+      <change afterPath="$PROJECT_DIR$/core/result.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/device/device.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/device/struce.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/runner/recv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/runner/retry.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/runner/runner.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/runner/send.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/modules/subfind/runner/statusdb/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/options.go" beforeDir="false" afterPath="$PROJECT_DIR$/core/options.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/device.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/localStruct.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/network.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/recv.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/send.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/souce_test.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/sources.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/stack.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/start.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/subfind/struct.go" beforeDir="false" afterPath="$PROJECT_DIR$/modules/subfind/struct.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statik/statik.go" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="255AD5lP9MvuLRtqcxH1CSmoI8c" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.format.on.save.advertiser.fired" value="true" />
+    <property name="go.formatter.settings.were.checked" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.watchers.conflict.with.on.save.actions.check.performed" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/modules/subfind/data" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Documents\code\go\Allin\modules\subfind\data" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\Documents\code\go\Allin\modules\subfind\runner" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Allin" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestSource_Feed in Allin/modules/subfind" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="Allin" />
+      <working_directory value="$PROJECT_DIR$/modules/subfind" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="Allin/modules/subfind" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestSource_Feed\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Allin" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.TestSource_Feed in Allin/modules/subfind" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="up" />
+    <option name="LAST_COMMIT_MESSAGE" value="up" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+</project>
