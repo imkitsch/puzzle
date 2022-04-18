@@ -11,9 +11,10 @@ import (
 type Options struct {
 	Rate            int64
 	Test            bool
-	NetworkId       int
-	ListNetwork     bool
 	Resolvers       []string
+	TimeOut         int
+	Retry           int
+	Level           int
 	Stdin           bool
 	Domain          []string // 地址
 	FileName        string   // 域名字典
@@ -23,8 +24,6 @@ type Options struct {
 	SubNameFileName string   // 三级域名字典文件
 	FilterWildCard  bool     // 过滤泛解析结果
 	CheckOrigin     bool     // 会从返回包检查DNS是否为设定的，防止其他包的干扰
-	Model           string   // 调用模式
-	Poc             string   // 指定poc
 
 }
 
@@ -34,19 +33,14 @@ func ParseOptions() *Options {
 	domain := flag.String("d", "", "扫描地址")
 	domain_list := flag.String("dl", "", "从文件中读取扫描")
 	resolvers := flag.String("s", "", "resolvers文件路径,默认使用内置DNS")
-	flag.StringVar(&options.Model, "m", "full", "使用模式,目前支持:full模式\\subfind模式\\pocscan模式")
 
 	flag.StringVar(&options.FileName, "f", "", "域名字典路径")
 	flag.StringVar(&options.SubNameFileName, "sf", "", "三级域名爆破字典文件(默认内置)")
 	flag.StringVar(&options.Output, "o", "", "输出文件路径")
 	flag.BoolVar(&options.Test, "test", false, "测试本地最大发包数")
-	flag.IntVar(&options.NetworkId, "e", -1, "默认网络设备ID,默认-1，如果有多个网络设备会在命令行中选择")
-	flag.BoolVar(&options.ListNetwork, "list-network", false, "列出所有网络设备")
 	flag.IntVar(&options.DomainLevel, "l", 1, "爆破域名层级,默认爆破一级域名")
 	flag.BoolVar(&options.SkipWildCard, "skip-wild", false, "跳过泛解析的域名")
 	flag.BoolVar(&options.CheckOrigin, "check-origin", false, "会从返回包检查DNS是否为设定的，防止其他包的干扰")
-
-	flag.StringVar(&options.Poc, "poc", "", "指定poc扫描,默认为扫描全部")
 
 	flag.Parse()
 	options.Stdin = hasStdin()
@@ -105,7 +99,7 @@ func ParseOptions() *Options {
 	options.Rate = rate
 
 	//显示参数信息
-	if len(options.Domain) == 0 && !hasStdin() && options.FileName == "" && !options.Test && !options.ListNetwork {
+	if len(options.Domain) == 0 && !hasStdin() && options.FileName == "" && !options.Test {
 		flag.Usage()
 		os.Exit(0)
 	}
