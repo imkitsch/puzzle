@@ -68,3 +68,41 @@ func IsContain(items []string, item string) bool {
 	}
 	return false
 }
+
+//切片内元素去重
+func removeDuplication_map(arr []string) []string {
+	set := make(map[string]struct{}, len(arr))
+	j := 0
+	for _, v := range arr {
+		_, ok := set[v]
+		if ok {
+			continue
+		}
+		set[v] = struct{}{}
+		arr[j] = v
+		j++
+	}
+
+	return arr[:j]
+}
+
+//调用os.MkdirAll递归创建文件夹
+func CreateDir(filePath string) error {
+	err := os.MkdirAll(filePath, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// 判断所给路径文件/文件夹是否存在(返回true是存在)
+func isExist(path string) bool {
+	_, err := os.Stat(path) //os.Stat获取文件信息
+	if err != nil {
+		if os.IsExist(err) {
+			return true
+		}
+		return false
+	}
+	return true
+}
