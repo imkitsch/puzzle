@@ -69,8 +69,8 @@ func IsContain(items []string, item string) bool {
 	return false
 }
 
-//切片内元素去重
-func removeDuplication_map(arr []string) []string {
+// RemoveDuplication_map 切片内元素去重
+func RemoveDuplication_map(arr []string) []string {
 	set := make(map[string]struct{}, len(arr))
 	j := 0
 	for _, v := range arr {
@@ -86,7 +86,7 @@ func removeDuplication_map(arr []string) []string {
 	return arr[:j]
 }
 
-//调用os.MkdirAll递归创建文件夹
+// CreateDir 调用递归创建文件夹
 func CreateDir(filePath string) error {
 	err := os.MkdirAll(filePath, os.ModePerm)
 	if err != nil {
@@ -95,8 +95,8 @@ func CreateDir(filePath string) error {
 	return nil
 }
 
-// 判断所给路径文件/文件夹是否存在(返回true是存在)
-func isExist(path string) bool {
+// IsExist 判断所给路径文件/文件夹是否存在(返回true是存在)
+func IsExist(path string) bool {
 	_, err := os.Stat(path) //os.Stat获取文件信息
 	if err != nil {
 		if os.IsExist(err) {
