@@ -4,7 +4,7 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
-func XlsxInit(output string) error {
+func XlsxInit1(output string) error {
 	file := excelize.NewFile()
 
 	//创建表
