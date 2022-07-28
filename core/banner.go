@@ -5,8 +5,6 @@ import (
 	"Allin/util"
 )
 
-const OutDir = "./out"
-const Version = "0.1"
 const banner = `                    	
 	 █████╗ ██╗     ██╗     ██╗███╗   ██╗
 	██╔══██╗██║     ██║     ██║████╗  ██║

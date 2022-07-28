@@ -10,6 +10,7 @@ import (
 type Options struct {
 	Domain     []string //域名
 	DomainFile string   //域名输入文件
+	Port       []int    //端口号
 	PortThread int      //端口爆破线程数
 	WebThread  int      //指纹爆破线程数
 	NoPing     bool     //存活探测
@@ -23,9 +24,11 @@ func ParseOptions() *Options {
 	domainList := flag.String("dl", "", "从文件中读取扫描")
 	output := flag.String("o", "", "输出文件名,如result")
 
+	port := flag.String("p", "", "端口号，如1-65535,21,22,3306")
+
 	flag.IntVar(&options.PortThread, "pt", 800, "端口爆破线程,默认800")
 	flag.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
-	flag.BoolVar(&options.NoPing, "np", false, "是否开启存活探测,默认为false")
+	flag.BoolVar(&options.NoPing, "np", true, "是否开启存活探测,默认为false")
 	flag.Parse()
 	ShowBanner()
 
@@ -41,6 +44,17 @@ func ParseOptions() *Options {
 		options.Domain = append(dl, options.Domain...)
 	}
 
+	//域名去重
+	options.Domain = util.RemoveRepeatedStringElement(options.Domain)
+
+	//port
+	if *port != "" {
+		options.Port = util.RemoveRepeatedIntElement(util.ParsePorts(*port))
+	} else {
+		options.Port = util.RemoveRepeatedIntElement(util.ParsePorts(PortTop1000))
+	}
+
+	//
 	// 输出文件
 	if *output != "" {
 		options.Output = OutDir + "/" + *output + ".xlsx"
