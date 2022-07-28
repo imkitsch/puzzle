@@ -5,6 +5,8 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 	"math/rand"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -69,8 +71,8 @@ func IsContain(items []string, item string) bool {
 	return false
 }
 
-// RemoveDuplication_map 切片内元素去重
-func RemoveDuplication_map(arr []string) []string {
+// RemoveRepeatedStringElement string切片内元素去重
+func RemoveRepeatedStringElement(arr []string) []string {
 	set := make(map[string]struct{}, len(arr))
 	j := 0
 	for _, v := range arr {
@@ -82,8 +84,20 @@ func RemoveDuplication_map(arr []string) []string {
 		arr[j] = v
 		j++
 	}
-
 	return arr[:j]
+}
+
+// RemoveRepeatedIntElement int切片元素去重
+func RemoveRepeatedIntElement(s []int) []int {
+	result := make([]int, 0)
+	m := make(map[int]bool)
+	for _, v := range s {
+		if _, ok := m[v]; !ok {
+			result = append(result, v)
+			m[v] = true
+		}
+	}
+	return result
 }
 
 // CreateDir 调用递归创建文件夹
@@ -105,4 +119,23 @@ func IsExist(path string) bool {
 		return false
 	}
 	return true
+}
+
+func ParsePorts(portInput string) []int {
+	var portOutput []int
+	portTemp := strings.Split(portInput, ",")
+	for _, value := range portTemp {
+		temp := strings.Split(value, "-")
+		if len(temp) == 2 {
+			min, _ := strconv.Atoi(temp[0])
+			max, _ := strconv.Atoi(temp[1])
+			for i := min; i <= max; i++ {
+				portOutput = append(portOutput, i)
+			}
+		} else {
+			p, _ := strconv.Atoi(value)
+			portOutput = append(portOutput, p)
+		}
+	}
+	return portOutput
 }
