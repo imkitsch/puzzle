@@ -1,6 +1,7 @@
 package util
 
 import (
+	"Allin/gologger"
 	"bufio"
 	"golang.org/x/crypto/ssh/terminal"
 	"math/rand"
@@ -43,6 +44,7 @@ func LinesInFile(fileName string) ([]string, error) {
 	return result, nil
 }
 
+// FileExists 判断文件是否存在
 func FileExists(path string) bool {
 	_, err := os.Stat(path) //os.Stat获取文件信息
 	if err != nil {
@@ -109,16 +111,12 @@ func CreateDir(filePath string) error {
 	return nil
 }
 
-// IsExist 判断所给路径文件/文件夹是否存在(返回true是存在)
-func IsExist(path string) bool {
-	_, err := os.Stat(path) //os.Stat获取文件信息
+func GetRunDir() string {
+	dir, err := os.Getwd()
 	if err != nil {
-		if os.IsExist(err) {
-			return true
-		}
-		return false
+		gologger.Fatalf("Could not get Run directory: %s\n", err)
 	}
-	return true
+	return dir
 }
 
 func ParsePorts(portInput string) []int {

@@ -137,17 +137,17 @@ func log(level Level, label string, format string, args ...interface{}) {
 
 // Infof writes a info message on the screen with the default label
 func Infof(format string, args ...interface{}) {
-	log(Info, "", format, args...)
+	log(Info, "", format+"\n", args...)
 }
 
 // Warningf writes a warning message on the screen with the default label
 func Warningf(format string, args ...interface{}) {
-	log(Warning, "", format, args...)
+	log(Warning, "", format+"\n", args...)
 }
 
 // Errorf writes an error message on the screen with the default label
 func Errorf(format string, args ...interface{}) {
-	log(Error, "", format, args...)
+	log(Error, "", format+"\n", args...)
 }
 
 // Debugf writes an error message on the screen with the default label
@@ -167,13 +167,13 @@ func Silentf(format string, args ...interface{}) {
 
 // Fatalf exits the program if we encounter a fatal error
 func Fatalf(format string, args ...interface{}) {
-	log(Fatal, "", format, args...)
+	log(Fatal, "", format+"\n", args...)
 	os.Exit(1)
 }
 
 // Printf prints a string on screen without any extra stuff
 func Printf(format string, args ...interface{}) {
-	log(Misc, "", format, args...)
+	log(Misc, "", format+"\n", args...)
 }
 
 // Labelf prints a string on screen with a label interface
