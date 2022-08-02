@@ -18,7 +18,7 @@ func GetSubdomainData() []string {
 	return strings.Split(subdomain, "\n")
 }
 
-func GetDefaultSubNextData() []string {
+func GetSubNextData() []string {
 	return strings.Split(subnext, "\n")
 }
 

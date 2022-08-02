@@ -61,6 +61,9 @@ func ParseOptions() *Options {
 		if util.FileExists(options.Output) {
 			gologger.Fatalf("该文件已存在")
 		}
+		if XlsxInit(options.Output) != nil {
+			gologger.Fatalf("初始化xlsx文件失败")
+		}
 	} else {
 		gologger.Fatalf("请定义一个输出位置,参数为-o")
 	}
