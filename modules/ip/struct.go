@@ -1,11 +1,5 @@
 package ip
 
-type domainResult struct {
-	domain string
-	A      []string
-	cdn    bool
-}
-
 type ipResult struct {
 	ip      string
 	City    string
