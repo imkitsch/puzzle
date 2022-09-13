@@ -1,6 +1,9 @@
 package subfind
 
-import "Allin/util"
+import (
+	"Allin/gologger"
+	"Allin/util"
+)
 
 func Run(domains []string) []domainResult {
 	var dr []domainResult = []domainResult{}
@@ -13,12 +16,17 @@ func Run(domains []string) []domainResult {
 		subDomains = append(subDomains, domain)
 		//api获取
 		subDomains = append(subDomains, DoSubFinder(domain)...)
-		//加载字典
-		for _, sub := range subdomainDict {
-			subDomains = append(subDomains, sub+"."+domain)
-			for _, subNext := range subNextDict {
-				subDomains = append(subDomains, subNext+"."+sub+"."+domain)
+		//判断泛解析
+		if IsWildCard(domain) == false {
+			//加载字典
+			for _, sub := range subdomainDict {
+				subDomains = append(subDomains, sub+"."+domain)
+				for _, subNext := range subNextDict {
+					subDomains = append(subDomains, subNext+"."+sub+"."+domain)
+				}
 			}
+		} else {
+			gologger.Infof("域名%s存在泛解析,自动给跳过爆破", domain)
 		}
 
 		//去重
