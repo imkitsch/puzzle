@@ -5,6 +5,13 @@ import "github.com/xuri/excelize/v2"
 func XlsxInit(output string) error {
 	file := excelize.NewFile()
 
+	//初始化域名表
+	DomainIndex := file.NewSheet("子域名")
+	DomainCategories := map[string]string{"A1": "子域名", "B1": "IsCDN", "C1": "A解析", "D1": "CNAME"}
+	for k, v := range DomainCategories {
+		file.SetCellValue("子域名", k, v)
+	}
+
 	//初始化ip表
 	//创建表
 	IpIndex := file.NewSheet("IP地址")
@@ -13,6 +20,7 @@ func XlsxInit(output string) error {
 	for k, v := range IpCategories {
 		file.SetCellValue("IP地址", k, v)
 	}
+	file.SetActiveSheet(IpIndex)
 
 	//初始化cidr表
 	CidrIndex := file.NewSheet("C段信息")
@@ -46,7 +54,7 @@ func XlsxInit(output string) error {
 	}
 	file.SetActiveSheet(IpFingerIndex)
 
-	file.SetActiveSheet(IpIndex)
+	file.SetActiveSheet(DomainIndex)
 
 	file.DeleteSheet("Sheet1")
 	err := file.SaveAs(output)
@@ -54,6 +62,10 @@ func XlsxInit(output string) error {
 		return err
 	}
 	return nil
+}
+
+func ReportDomain(output string) {
+
 }
 
 func ReportIp(output string) {

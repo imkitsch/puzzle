@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/antchfx/htmlquery v1.2.5
-	github.com/boy-hack/ksubdomain v1.9.5
+	github.com/boy-hack/ksubdomain v1.9.4
 	github.com/kayon/iploc v0.0.0-20200312105652-bda3e968a794
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-colorable v0.1.12
