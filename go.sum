@@ -9,7 +9,8 @@ github.com/antchfx/htmlquery v1.2.5 h1:1lXnx46/1wtv1E/kzmH8vrfMuUKYgkdDBA9pIdMJn
 github.com/antchfx/htmlquery v1.2.5/go.mod h1:2MCVBzYVafPBmKbrmwB9F5xdd+IEgRY61ci2oOsOQVw=
 github.com/antchfx/xpath v1.2.1 h1:qhp4EW6aCOVr5XIkT+l6LJ9ck/JsUH/yyauNgTQkBF8=
 github.com/antchfx/xpath v1.2.1/go.mod h1:i54GszH55fYfBmoZXapTHN8T8tkcHfRgLyVwwqzXNcs=
-github.com/boy-hack/ksubdomain v1.9.5 h1:wx9Klabaqh7o6BcDuMNKASBtC1oZiMcefkwTbVc7GX8=
+github.com/boy-hack/ksubdomain v1.9.4 h1:J8KmktmdqCdfC+J+Eci1hbmtx3mHP4n7k/LUa5/uiS0=
+github.com/boy-hack/ksubdomain v1.9.4/go.mod h1:dyctXGqSvDRbQc5mNQk6WrYC0nR7+bMK3wT+h0TngOk=
 github.com/boy-hack/ksubdomain v1.9.5/go.mod h1:dyctXGqSvDRbQc5mNQk6WrYC0nR7+bMK3wT+h0TngOk=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=

@@ -1,6 +1,7 @@
 package subfind
 
 import (
+	"bufio"
 	_ "embed"
 	"strings"
 )
@@ -15,11 +16,23 @@ var subdomain string
 var asnData []byte
 
 func GetSubdomainData() []string {
-	return strings.Split(subdomain, "\n")
+	reader := bufio.NewScanner(strings.NewReader(subdomain))
+	reader.Split(bufio.ScanLines)
+	var ret []string
+	for reader.Scan() {
+		ret = append(ret, reader.Text())
+	}
+	return ret
 }
 
 func GetSubNextData() []string {
-	return strings.Split(subnext, "\n")
+	reader := bufio.NewScanner(strings.NewReader(subnext))
+	reader.Split(bufio.ScanLines)
+	var ret []string
+	for reader.Scan() {
+		ret = append(ret, reader.Text())
+	}
+	return ret
 }
 
 func GetAsnData() []byte {
