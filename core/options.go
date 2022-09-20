@@ -63,7 +63,7 @@ func ParseOptions() *Options {
 	if *ipList != "" {
 		ipl, err := util.LinesInFile(*ipList)
 		if err != nil {
-			gologger.Fatalf("读取地址文件失败:%s\n", err.Error())
+			gologger.Fatalf("读取地址文件失败:%s", err.Error())
 		}
 		options.Ip = append(ipl, options.Ip...)
 	}
@@ -84,12 +84,14 @@ func ParseOptions() *Options {
 		if util.FileExists(options.Output) {
 			gologger.Fatalf("该文件已存在")
 		}
-		if XlsxInit(options.Output) != nil {
-			gologger.Fatalf("初始化xlsx文件失败")
+		err := XlsxInit(options.Output)
+		if err != nil {
+			gologger.Fatalf("初始化xlsx文件失败:%s", err.Error())
 		}
 	} else {
 		gologger.Fatalf("请定义一个输出位置,参数为-o")
 	}
+
 	//显示参数信息
 	if len(options.Domain) == 0 || options.Output == "" {
 		flag.Usage()
