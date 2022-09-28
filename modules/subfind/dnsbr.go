@@ -2,17 +2,15 @@ package subfind
 
 import (
 	"Allin/gologger"
+	"Allin/util"
 	"context"
-	"github.com/boy-hack/ksubdomain/core"
 	"github.com/boy-hack/ksubdomain/core/device"
 	"github.com/boy-hack/ksubdomain/core/options"
 	"github.com/boy-hack/ksubdomain/runner"
 	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
 )
 
 func DomainBlast(domains []string) []domainResult {
-	process := processbar.ScreenProcess{}
 	buffPrinter, _ := NewDomainResult()
 
 	domainChanel := make(chan string)
@@ -23,7 +21,7 @@ func DomainBlast(domains []string) []domainResult {
 		close(domainChanel)
 	}()
 	opt := &options.Options{
-		Rate:        options.Band2Rate("1m"),
+		Rate:        options.Band2Rate("2m"),
 		Domain:      domainChanel,
 		DomainTotal: len(domains),
 		Resolvers:   options.GetResolvers(""),
@@ -35,10 +33,8 @@ func DomainBlast(domains []string) []domainResult {
 		Writer: []outputter.Output{
 			buffPrinter,
 		},
-		ProcessBar: &process,
-		EtherInfo:  getDeviceConfig(),
+		EtherInfo: getDeviceConfig(),
 	}
-	opt.Check()
 	r, err := runner.New(opt)
 	if err != nil {
 		gologger.Fatalf(err.Error())
@@ -54,12 +50,12 @@ func getDeviceConfig() *device.EtherTable {
 	filename := "config/device.yaml"
 	var ether *device.EtherTable
 	var err error
-	if core.FileExists(filename) {
+	if util.FileExists(filename) {
 		ether, err = device.ReadConfig(filename)
 		if err != nil {
 			gologger.Fatalf("读取配置失败:%v", err)
 		}
-		gologger.Infof("读取配置%s成功!\n", filename)
+		gologger.Infof("读取配置%s成功!", filename)
 	} else {
 		ether = device.AutoGetDevices()
 		err = ether.SaveConfig(filename)
