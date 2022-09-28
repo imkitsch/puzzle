@@ -11,7 +11,6 @@ github.com/antchfx/xpath v1.2.1 h1:qhp4EW6aCOVr5XIkT+l6LJ9ck/JsUH/yyauNgTQkBF8=
 github.com/antchfx/xpath v1.2.1/go.mod h1:i54GszH55fYfBmoZXapTHN8T8tkcHfRgLyVwwqzXNcs=
 github.com/boy-hack/ksubdomain v1.9.4 h1:J8KmktmdqCdfC+J+Eci1hbmtx3mHP4n7k/LUa5/uiS0=
 github.com/boy-hack/ksubdomain v1.9.4/go.mod h1:dyctXGqSvDRbQc5mNQk6WrYC0nR7+bMK3wT+h0TngOk=
-github.com/boy-hack/ksubdomain v1.9.5/go.mod h1:dyctXGqSvDRbQc5mNQk6WrYC0nR7+bMK3wT+h0TngOk=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08 h1:ox2F0PSMlrAAiAdknSRMDrAr8mfxPCfSZolH+/qQnyQ=
