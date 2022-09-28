@@ -1,9 +1,9 @@
 package webscan
 
 import (
-	"Allin/gologger"
 	"github.com/antchfx/htmlquery"
 	"io"
+	"puzzle/gologger"
 )
 
 func getHTTPTitle(Body io.ReadCloser) string {

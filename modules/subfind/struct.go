@@ -3,7 +3,7 @@ package subfind
 type domainResult struct {
 	domain string
 	a      []string
-	cname  []string
+	cname  string
 	cdn    bool
 }
 

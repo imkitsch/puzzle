@@ -1,10 +1,10 @@
 package core
 
 import (
-	"Allin/gologger"
-	"Allin/util"
 	"flag"
 	"os"
+	"puzzle/gologger"
+	"puzzle/util"
 )
 
 type Options struct {

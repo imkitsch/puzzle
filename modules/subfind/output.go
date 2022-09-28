@@ -20,7 +20,7 @@ func (r *ResultOutput) WriteDomainResult(domain result.Result) error {
 	domainRes.domain = domain.Subdomain
 	for _, item := range domain.Answers {
 		if item[0:5] == "CNAME" {
-			domainRes.cname = append(domainRes.cname, item[6:])
+			domainRes.cname = item[6:]
 		} else {
 			domainRes.a = append(domainRes.a, item)
 		}
