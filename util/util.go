@@ -1,11 +1,11 @@
 package util
 
 import (
-	"Allin/gologger"
 	"bufio"
 	"golang.org/x/crypto/ssh/terminal"
 	"math/rand"
 	"os"
+	"puzzle/gologger"
 	"strconv"
 	"strings"
 	"time"

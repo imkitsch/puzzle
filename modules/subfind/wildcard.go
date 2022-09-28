@@ -1,7 +1,7 @@
 package subfind
 
 import "net"
-import "Allin/util"
+import "puzzle/util"
 
 func IsWildCard(domain string) bool {
 	ranges := [2]int{}

@@ -1,13 +1,13 @@
 package subfind
 
 import (
-	"Allin/gologger"
-	"Allin/util"
 	"context"
 	"github.com/boy-hack/ksubdomain/core/device"
 	"github.com/boy-hack/ksubdomain/core/options"
 	"github.com/boy-hack/ksubdomain/runner"
 	"github.com/boy-hack/ksubdomain/runner/outputter"
+	"puzzle/gologger"
+	"puzzle/util"
 )
 
 func DomainBlast(domains []string) []domainResult {

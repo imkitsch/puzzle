@@ -1,8 +1,8 @@
 package ip
 
 import (
-	"Allin/gologger"
 	"github.com/kayon/iploc"
+	"puzzle/gologger"
 	"sort"
 	"strconv"
 	"strings"

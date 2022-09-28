@@ -1,8 +1,8 @@
 package subfind
 
 import (
-	"Allin/gologger"
-	"Allin/util"
+	"puzzle/gologger"
+	"puzzle/util"
 )
 
 func Run(domains []string, level3 bool) []domainResult {

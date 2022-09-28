@@ -1,8 +1,8 @@
 package core
 
 import (
-	"Allin/gologger"
-	"Allin/util"
+	"puzzle/gologger"
+	"puzzle/util"
 )
 
 const banner = `

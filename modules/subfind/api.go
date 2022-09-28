@@ -1,8 +1,6 @@
 package subfind
 
 import (
-	"Allin/gologger"
-	"Allin/util"
 	"bytes"
 	"context"
 	"errors"
@@ -12,6 +10,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"puzzle/gologger"
+	"puzzle/util"
 	"strings"
 )
 

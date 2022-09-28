@@ -1,4 +1,4 @@
-module Allin
+module puzzle
 
 go 1.17
 

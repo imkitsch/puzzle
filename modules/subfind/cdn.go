@@ -1,10 +1,11 @@
 package subfind
 
 import (
-	"Allin/gologger"
 	"github.com/oschwald/geoip2-golang"
 	"net"
+	"puzzle/gologger"
 	"strconv"
+	"strings"
 )
 
 var domainItems = []Item{
@@ -413,17 +414,16 @@ func asnCheck(ip string) bool {
 	return false
 }
 
-func IsCdn(CNames []string, ips []string) bool {
+func IsCdn(CName string, ips []string) bool {
 
 	//从cname判断
-	if len(CNames) != 0 {
-		for _, cname := range CNames {
-			for _, item := range domainItems {
-				if item.Domain == cname {
-					return true
-				}
+	if len(CName) != 0 {
+		for _, item := range domainItems {
+			if strings.Contains(CName, item.Domain) {
+				return true
 			}
 		}
+
 	}
 
 	//asn判断
