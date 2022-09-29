@@ -29,7 +29,7 @@ func ParseOptions() *Options {
 
 	ip := flag.String("i", "", "ip输入,仅支持单次输入如192.168.1.1 or 192.168.1.1/24")
 	ipList := flag.String("ipl", "", "从文件中获取ip")
-	port := flag.String("p", "", "端口号,如1-65535,21,22,3306,默认为top1000")
+	port := flag.String("p", "", "端口号,如1-65535,22,3306,默认为top1000")
 
 	flag.IntVar(&options.PortThread, "pt", 800, "端口爆破线程,默认800")
 	flag.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
