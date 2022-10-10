@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"puzzle/gologger"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -136,4 +137,20 @@ func ParsePorts(portInput string) []int {
 		}
 	}
 	return portOutput
+}
+
+func isOSSupported() bool {
+	return IsLinux() || IsOSX()
+}
+
+func IsOSX() bool {
+	return runtime.GOOS == "darwin"
+}
+
+func IsLinux() bool {
+	return runtime.GOOS == "linux"
+}
+
+func IsWindows() bool {
+	return runtime.GOOS == "windows"
 }
