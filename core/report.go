@@ -16,19 +16,11 @@ func XlsxInit(output string) error {
 	//创建表
 	IpIndex := file.NewSheet("IP地址")
 	//初始数据
-	IpCategories := map[string]string{"A1": "IP", "B1": "City", "C1": "Country"}
+	IpCategories := map[string]string{"A1": "IP", "B1": "City", "C1": "Country", "D1": "Source"}
 	for k, v := range IpCategories {
 		file.SetCellValue("IP地址", k, v)
 	}
 	file.SetActiveSheet(IpIndex)
-
-	//初始化cidr表
-	CidrIndex := file.NewSheet("C段信息")
-	CidrCategories := map[string]string{"A1": "Cidr", "B1": "City", "C1": "Country", "D1": "Domain", "E1": "IP"}
-	for k, v := range CidrCategories {
-		file.SetCellValue("C段信息", k, v)
-	}
-	file.SetActiveSheet(CidrIndex)
 
 	//初始化端口服务表
 	PortIndex := file.NewSheet("端口服务")
@@ -40,7 +32,7 @@ func XlsxInit(output string) error {
 
 	//初始化域名指纹表
 	DomainFingerIndex := file.NewSheet("域名指纹")
-	DomainFingerCategories := map[string]string{"A1": "Url", "B1": "IsCDN", "C1": "StatusCode", "D1": "Header", "E1": "Length", "F1": "Title", "G1": "Finger", "H1": "IsHoneypot"}
+	DomainFingerCategories := map[string]string{"A1": "Url", "B1": "IsCDN", "C1": "StatusCode", "D1": "Header", "E1": "Length", "F1": "Title", "G1": "Finger", "H1": "IsHoneypot", "I1": "priority"}
 	for k, v := range DomainFingerCategories {
 		file.SetCellValue("域名指纹", k, v)
 	}
@@ -48,7 +40,7 @@ func XlsxInit(output string) error {
 
 	//初始化IP指纹表
 	IpFingerIndex := file.NewSheet("IP指纹")
-	IpFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Header", "D1": "Length", "E1": "Title", "F1": "Finger", "G1": "IsHoneypot"}
+	IpFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Header", "D1": "Length", "E1": "Title", "F1": "Finger", "G1": "IsHoneypot", "H1": "priority               0"}
 	for k, v := range IpFingerCategories {
 		file.SetCellValue("IP指纹", k, v)
 	}
