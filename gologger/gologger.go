@@ -164,7 +164,7 @@ func Verbosef(format string, label string, args ...interface{}) {
 
 // Silentf writes a message on the stdout with no label
 func Silentf(format string, args ...interface{}) {
-	log(Silent, "", format+"\n", args...)
+	log(Silent, "", format, args...)
 }
 
 // Fatalf exits the program if we encounter a fatal error

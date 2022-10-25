@@ -3,6 +3,7 @@ package util
 import (
 	"bufio"
 	"golang.org/x/crypto/ssh/terminal"
+	"io/ioutil"
 	"math/rand"
 	"os"
 	"puzzle/gologger"
@@ -26,6 +27,14 @@ func RandInt64(min, max int64) int64 {
 		return max
 	}
 	return rand.Int63n(max-min) + min
+}
+
+func ReadFile(filename string) (bytes []byte, err error) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return
+	}
+	return data, nil
 }
 
 func LinesInFile(fileName string) ([]string, error) {
