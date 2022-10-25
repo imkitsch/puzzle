@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/antchfx/htmlquery v1.2.5
 	github.com/boy-hack/ksubdomain v1.9.4
+	github.com/cheggaaa/pb/v3 v3.1.0
 	github.com/go-ping/ping v1.1.0
 	github.com/google/gopacket v1.1.19
 	github.com/kayon/iploc v0.0.0-20200312105652-bda3e968a794
@@ -12,8 +13,11 @@ require (
 	github.com/mattn/go-colorable v0.1.12
 	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
+	github.com/projectdiscovery/blackrock v0.0.0-20210903102120-5a9d2412d21d
 	github.com/projectdiscovery/dnsx v1.1.1-0.20220726121728-699bed01313a
 	github.com/projectdiscovery/ipranger v0.0.3
+	github.com/projectdiscovery/iputil v0.0.0-20220625072148-037479960416
+	github.com/projectdiscovery/mapcidr v1.0.1
 	github.com/projectdiscovery/networkpolicy v0.0.2-0.20220525172507-b844eafc878d
 	github.com/projectdiscovery/subfinder/v2 v2.5.2
 	github.com/remeh/sizedwaitgroup v1.0.0
@@ -28,6 +32,7 @@ require (
 require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190825152654-46b345b51c96 // indirect
 	github.com/DataDog/zstd v1.4.5 // indirect
+	github.com/VividCortex/ewma v1.1.1 // indirect
 	github.com/akrylysov/pogreb v0.10.1 // indirect
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/antchfx/xpath v1.2.1 // indirect
@@ -45,6 +50,7 @@ require (
 	github.com/dgraph-io/badger v1.6.2 // indirect
 	github.com/dgraph-io/ristretto v0.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/fatih/color v1.10.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -59,6 +65,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mattn/go-runewidth v0.0.12 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.19 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -66,21 +73,19 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/oschwald/maxminddb-golang v1.8.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/projectdiscovery/blackrock v0.0.0-20210903102120-5a9d2412d21d // indirect
 	github.com/projectdiscovery/cdncheck v0.0.3 // indirect
 	github.com/projectdiscovery/chaos-client v0.1.8 // indirect
 	github.com/projectdiscovery/fileutil v0.0.0-20220625080234-94e882ca56cb // indirect
 	github.com/projectdiscovery/goflags v0.0.9 // indirect
 	github.com/projectdiscovery/gologger v1.1.4 // indirect
 	github.com/projectdiscovery/hmap v0.0.2 // indirect
-	github.com/projectdiscovery/iputil v0.0.0-20220625072148-037479960416 // indirect
-	github.com/projectdiscovery/mapcidr v1.0.1 // indirect
 	github.com/projectdiscovery/retryabledns v1.0.14 // indirect
 	github.com/projectdiscovery/retryablehttp-go v1.0.2 // indirect
 	github.com/projectdiscovery/sliceutil v0.0.0-20220617151003-15892688e1d6 // indirect
 	github.com/projectdiscovery/stringsutil v0.0.0-20220612082425-0037ce9f89f3 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
+	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rs/xid v1.4.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20120816061221-3af4cd4741ca // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
