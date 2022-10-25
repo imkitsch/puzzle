@@ -122,6 +122,8 @@ func log(level Level, label string, format string, args ...interface{}) {
 		//}
 
 		mutex.Lock()
+		a := os.Stdout
+		_ = a
 		switch level {
 		case Silent:
 			fmt.Fprint(os.Stdout, sb.String())
@@ -162,7 +164,7 @@ func Verbosef(format string, label string, args ...interface{}) {
 
 // Silentf writes a message on the stdout with no label
 func Silentf(format string, args ...interface{}) {
-	log(Silent, "", format, args...)
+	log(Silent, "", format+"\n", args...)
 }
 
 // Fatalf exits the program if we encounter a fatal error
