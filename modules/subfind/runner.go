@@ -5,7 +5,7 @@ import (
 	"puzzle/util"
 )
 
-func Run(domains []string, level3 bool) []domainResult {
+func Run(domains []string, level3 bool) *[]domainResult {
 	var dr []domainResult = []domainResult{}
 	var subDomains = []string{}
 
@@ -48,5 +48,5 @@ func Run(domains []string, level3 bool) []domainResult {
 		}
 	}
 
-	return dr
+	return &dr
 }
