@@ -19,13 +19,13 @@ require (
 	github.com/projectdiscovery/iputil v0.0.0-20220625072148-037479960416
 	github.com/projectdiscovery/mapcidr v1.0.1
 	github.com/projectdiscovery/networkpolicy v0.0.2-0.20220525172507-b844eafc878d
-	github.com/projectdiscovery/subfinder/v2 v2.5.2
+	github.com/projectdiscovery/subfinder/v2 v2.5.3
 	github.com/remeh/sizedwaitgroup v1.0.0
 	github.com/xuri/excelize/v2 v2.6.0
 	go.uber.org/ratelimit v0.2.0
 	golang.org/x/crypto v0.0.0-20220408190544-5352b0902921
-	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a
+	golang.org/x/net v0.0.0-20221002022538-bcab6841153b
+	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10
 	golang.org/x/text v0.3.7
 )
 
@@ -46,7 +46,7 @@ require (
 	github.com/cockroachdb/pebble v0.0.0-20210728210723-48179f1d4dae // indirect
 	github.com/cockroachdb/redact v1.0.8 // indirect
 	github.com/cockroachdb/sentry-go v0.6.1-cockroachdb.2 // indirect
-	github.com/corpix/uarand v0.1.1 // indirect
+	github.com/corpix/uarand v0.2.0 // indirect
 	github.com/dgraph-io/badger v1.6.2 // indirect
 	github.com/dgraph-io/ristretto v0.0.3 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
@@ -63,10 +63,10 @@ require (
 	github.com/klauspost/compress v1.11.7 // indirect
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
-	github.com/lib/pq v1.10.0 // indirect
+	github.com/lib/pq v1.10.6 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.12 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.19 // indirect
+	github.com/microcosm-cc/bluemonday v1.0.21 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -74,11 +74,12 @@ require (
 	github.com/oschwald/maxminddb-golang v1.8.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/projectdiscovery/cdncheck v0.0.3 // indirect
-	github.com/projectdiscovery/chaos-client v0.1.8 // indirect
+	github.com/projectdiscovery/chaos-client v0.2.0 // indirect
 	github.com/projectdiscovery/fileutil v0.0.0-20220625080234-94e882ca56cb // indirect
 	github.com/projectdiscovery/goflags v0.0.9 // indirect
 	github.com/projectdiscovery/gologger v1.1.4 // indirect
 	github.com/projectdiscovery/hmap v0.0.2 // indirect
+	github.com/projectdiscovery/httputil v0.0.0-20210906072657-f3a099cb20bc // indirect
 	github.com/projectdiscovery/retryabledns v1.0.14 // indirect
 	github.com/projectdiscovery/retryablehttp-go v1.0.2 // indirect
 	github.com/projectdiscovery/sliceutil v0.0.0-20220617151003-15892688e1d6 // indirect
