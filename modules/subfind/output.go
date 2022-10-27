@@ -5,12 +5,12 @@ import (
 )
 
 type ResultOutput struct {
-	dr []domainResult
+	dr []*domainResult
 }
 
 func NewDomainResult() (*ResultOutput, error) {
 	r := &ResultOutput{}
-	r.dr = []domainResult{}
+	r.dr = []*domainResult{}
 
 	return r, nil
 }
@@ -26,13 +26,13 @@ func (r *ResultOutput) WriteDomainResult(domain result.Result) error {
 		}
 	}
 	domainRes.cdn = IsCdn(domainRes.cname, domainRes.a)
-	r.dr = append(r.dr, domainRes)
+	r.dr = append(r.dr, &domainRes)
 	return nil
 }
 func (r *ResultOutput) Close() {
 	r.dr = nil
 }
 
-func (r *ResultOutput) OutPut() []domainResult {
+func (r *ResultOutput) OutPut() []*domainResult {
 	return r.dr
 }

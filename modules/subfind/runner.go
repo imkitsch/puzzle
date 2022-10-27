@@ -1,18 +1,33 @@
 package subfind
 
 import (
+	"github.com/boy-hack/ksubdomain/core/device"
 	"puzzle/gologger"
 	"puzzle/util"
 )
 
-func Run(domains []string, level3 bool) *[]domainResult {
-	var dr []domainResult = []domainResult{}
+type Options struct {
+	domains       []string
+	level3        bool
+	subdomainDict []string
+	subNextDict   []string
+	DeviceConfig  *device.EtherTable
+}
+
+type Runner struct {
+	options *Options
+}
+
+func NewRunner(options *Options) (*Runner, error) {
+	return &Runner{
+		options: options,
+	}, nil
+}
+
+func (r *Runner) Run() (dr []*domainResult) {
 	var subDomains = []string{}
 
-	var subdomainDict = GetSubdomainData()
-	var subNextDict = GetSubNextData()
-
-	for _, domain := range domains {
+	for _, domain := range r.options.domains {
 		subDomains = append(subDomains, domain)
 		//api获取
 		subDomains = append(subDomains, DoSubFinder(domain)...)
@@ -20,7 +35,7 @@ func Run(domains []string, level3 bool) *[]domainResult {
 		if IsWildCard(domain) == false {
 			//加载字典
 			gologger.Infof("域名 %s 装载爆破字典", domain)
-			for _, sub := range subdomainDict {
+			for _, sub := range r.options.subdomainDict {
 				subDomains = append(subDomains, sub+"."+domain)
 			}
 		} else {
@@ -32,21 +47,21 @@ func Run(domains []string, level3 bool) *[]domainResult {
 
 		//dns爆破验证
 		gologger.Infof("域名 %s 开始验证DNS", domain)
-		dr = append(dr, DomainBlast(subDomains)...)
+		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 
 		//三级子域名爆破
-		if level3 {
+		if r.options.level3 {
 			gologger.Infof("域名 %s 三级子域名爆破", domain)
 			for _, sub := range dr {
 				//清空
 				subDomains = nil
-				for _, subNext := range subNextDict {
+				for _, subNext := range r.options.subNextDict {
 					subDomains = append(subDomains, subNext+"."+sub.domain)
 				}
-				dr = append(dr, DomainBlast(subDomains)...)
+				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
 		}
 	}
 
-	return &dr
+	return
 }

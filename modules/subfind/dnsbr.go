@@ -10,7 +10,7 @@ import (
 	"puzzle/util"
 )
 
-func DomainBlast(domains []string) []domainResult {
+func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainResult {
 	buffPrinter, _ := NewDomainResult()
 
 	domainChanel := make(chan string)
@@ -33,7 +33,7 @@ func DomainBlast(domains []string) []domainResult {
 		Writer: []outputter.Output{
 			buffPrinter,
 		},
-		EtherInfo: getDeviceConfig(),
+		EtherInfo: DeviceConfig,
 	}
 	r, err := runner.New(opt)
 	if err != nil {
