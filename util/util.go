@@ -8,6 +8,7 @@ import (
 	"os"
 	"puzzle/gologger"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -129,6 +130,51 @@ func GetRunDir() string {
 	return dir
 }
 
+// GetSerialIp 获取连续ip段
+func GetSerialIp(ips *[]string) *[]string {
+	var IpMap map[string][]string
+	IpMap = make(map[string][]string)
+
+	var cRangeElements []string
+	var ipLastPartList []string
+
+	var newIpList []string
+
+	for _, ip := range *ips {
+		ipParts := strings.Split(ip, ".")
+		cRange := ipParts[0] + "." + ipParts[1] + "." + ipParts[2]
+		_, keyIs := IpMap[cRange]
+		if keyIs == false {
+			cRangeElements = []string{}
+			cRangeElements = append(cRangeElements, ip)
+			IpMap[cRange] = append(IpMap[cRange], ip)
+		} else {
+			IpMap[cRange] = append(IpMap[cRange], ip)
+		}
+	}
+
+	for _, valueList := range IpMap {
+		if len(valueList) == 1 {
+			newIpList = append(newIpList, valueList[0])
+		} else {
+			ipParts := strings.Split(valueList[0], ".")
+			cRange := ipParts[0] + "." + ipParts[1] + "." + ipParts[2]
+			ipLastPartList = []string{}
+			for _, ip := range valueList {
+				ipLastPartList = append(ipLastPartList, strings.Split(ip, ".")[3])
+			}
+			sort.Strings(ipLastPartList)
+			start, _ := strconv.Atoi(ipLastPartList[0])
+			end, _ := strconv.Atoi(ipLastPartList[len(ipLastPartList)-1])
+			for i := start; i <= end; i++ {
+				newIp := cRange + "." + strconv.Itoa(i)
+				newIpList = append(newIpList, newIp)
+			}
+		}
+	}
+	return &newIpList
+}
+
 func ParsePorts(portInput string) []int {
 	var portOutput []int
 	portTemp := strings.Split(portInput, ",")
@@ -146,10 +192,6 @@ func ParsePorts(portInput string) []int {
 		}
 	}
 	return portOutput
-}
-
-func isOSSupported() bool {
-	return IsLinux() || IsOSX()
 }
 
 func IsOSX() bool {
