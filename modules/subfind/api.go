@@ -50,7 +50,6 @@ func DoSubFinder(domain string) []string {
 		NoColor:            false,
 		Silent:             true,
 		RemoveWildcard:     true,
-		All:                false,
 		OnlyRecursive:      false,
 		Threads:            50,
 		Timeout:            30,
@@ -58,7 +57,6 @@ func DoSubFinder(domain string) []string {
 		OutputFile:         "",
 		OutputDirectory:    "",
 		ResolverList:       "",
-		Proxy:              "",
 		Version:            false,
 		ExcludeIps:         false,
 		CaptureSources:     false,
@@ -67,9 +65,10 @@ func DoSubFinder(domain string) []string {
 		ProviderConfig:     defaultProviderConfigLocation,
 		JSON:               false,
 		RateLimit:          0,
-		ExcludeSources:     []string{},
-		Resolvers:          []string{},
-		Sources:            []string{},
+		Resolvers:          resolve.DefaultResolvers,
+		AllSources:         passive.DefaultAllSources,
+		Recursive:          passive.DefaultRecursiveSources,
+		Sources:            passive.DefaultSources,
 		DomainsFile:        ""}
 	if util.FileExists(options.ProviderConfig) {
 		gologger.Infof("Loading provider config file %s", options.ProviderConfig)
