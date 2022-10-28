@@ -7,10 +7,10 @@ import (
 )
 
 type Options struct {
-	domains       []string
-	level3        bool
-	subdomainDict []string
-	subNextDict   []string
+	Domains       []string
+	Level3        bool
+	SubdomainDict []string
+	SubNextDict   []string
 	DeviceConfig  *device.EtherTable
 }
 
@@ -27,7 +27,7 @@ func NewRunner(options *Options) (*Runner, error) {
 func (r *Runner) Run() (dr []*domainResult) {
 	var subDomains = []string{}
 
-	for _, domain := range r.options.domains {
+	for _, domain := range r.options.Domains {
 		subDomains = append(subDomains, domain)
 		//api获取
 		subDomains = append(subDomains, DoSubFinder(domain)...)
@@ -35,7 +35,7 @@ func (r *Runner) Run() (dr []*domainResult) {
 		if IsWildCard(domain) == false {
 			//加载字典
 			gologger.Infof("域名 %s 装载爆破字典", domain)
-			for _, sub := range r.options.subdomainDict {
+			for _, sub := range r.options.SubdomainDict {
 				subDomains = append(subDomains, sub+"."+domain)
 			}
 		} else {
@@ -50,12 +50,12 @@ func (r *Runner) Run() (dr []*domainResult) {
 		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 
 		//三级子域名爆破
-		if r.options.level3 {
+		if r.options.Level3 {
 			gologger.Infof("域名 %s 三级子域名爆破", domain)
 			for _, sub := range dr {
 				//清空
 				subDomains = nil
-				for _, subNext := range r.options.subNextDict {
+				for _, subNext := range r.options.SubNextDict {
 					subDomains = append(subDomains, subNext+"."+sub.domain)
 				}
 				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)

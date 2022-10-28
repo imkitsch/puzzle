@@ -5,6 +5,7 @@ import (
 	"os"
 	"puzzle/gologger"
 	"puzzle/util"
+	"strings"
 )
 
 type Options struct {
@@ -12,7 +13,7 @@ type Options struct {
 	Domain     []string //域名
 	Level3     bool     //爆破三级域名
 	Ip         []string //IP
-	Port       []int    //端口号
+	Port       string   //端口
 	WebScan    bool     //web服务指纹扫描
 	PortThread int      //端口爆破线程数
 	WebThread  int      //指纹爆破线程数
@@ -39,9 +40,21 @@ func ParseOptions() *Options {
 	flag.Parse()
 	ShowBanner()
 
+	//显示参数信息
+	if *model == "" || options.Output == "" {
+		flag.Usage()
+		os.Exit(0)
+	}
+
 	//判断模式
 	if *model != "ip" && *model != "domain" && *model != "all" {
 		gologger.Fatalf("模式%s不存在", *model)
+	} else {
+		options.Model = *model
+	}
+
+	if *model == "all" {
+		options.WebScan = true
 	}
 
 	// 读取域名资源文件
@@ -69,13 +82,13 @@ func ParseOptions() *Options {
 	}
 
 	//域名去重
-	options.Domain = util.RemoveRepeatedStringElement(options.Domain)
+	if len(options.Domain) != 0 {
+		options.Domain = util.RemoveRepeatedStringElement(options.Domain)
+	}
 
 	//port
 	if *port != "" {
-		options.Port = util.RemoveRepeatedIntElement(util.ParsePorts(*port))
-	} else {
-		options.Port = util.RemoveRepeatedIntElement(util.ParsePorts(PortTop1000))
+		options.Port = strings.TrimSpace(*port)
 	}
 
 	// 输出文件
@@ -90,12 +103,6 @@ func ParseOptions() *Options {
 		}
 	} else {
 		gologger.Fatalf("请定义一个输出位置,参数为-o")
-	}
-
-	//显示参数信息
-	if len(options.Domain) == 0 || options.Output == "" {
-		flag.Usage()
-		os.Exit(0)
 	}
 
 	return options

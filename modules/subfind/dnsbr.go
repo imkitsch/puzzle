@@ -46,7 +46,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	return buffPrinter.OutPut()
 }
 
-func getDeviceConfig() *device.EtherTable {
+func GetDeviceConfig() *device.EtherTable {
 	filename := "config/device.yaml"
 	var ether *device.EtherTable
 	var err error

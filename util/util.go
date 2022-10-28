@@ -2,7 +2,6 @@ package util
 
 import (
 	"bufio"
-	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"math/rand"
 	"os"
@@ -22,12 +21,6 @@ func RandomStr(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
-}
-func RandInt64(min, max int64) int64 {
-	if min >= max || min == 0 || max == 0 {
-		return max
-	}
-	return rand.Int63n(max-min) + min
 }
 
 func ReadFile(filename string) (bytes []byte, err error) {
@@ -65,23 +58,6 @@ func FileExists(path string) bool {
 		return false
 	}
 	return true
-}
-
-func GetWindowWith() int {
-	w, _, err := terminal.GetSize(int(os.Stdout.Fd()))
-	if err != nil {
-		return 0
-	}
-	return w
-}
-
-func IsContain(items []string, item string) bool {
-	for _, eachItem := range items {
-		if eachItem == item {
-			return true
-		}
-	}
-	return false
 }
 
 // RemoveRepeatedStringElement string切片内元素去重
@@ -173,25 +149,6 @@ func GetSerialIp(ips *[]string) *[]string {
 		}
 	}
 	return &newIpList
-}
-
-func ParsePorts(portInput string) []int {
-	var portOutput []int
-	portTemp := strings.Split(portInput, ",")
-	for _, value := range portTemp {
-		temp := strings.Split(value, "-")
-		if len(temp) == 2 {
-			min, _ := strconv.Atoi(temp[0])
-			max, _ := strconv.Atoi(temp[1])
-			for i := min; i <= max; i++ {
-				portOutput = append(portOutput, i)
-			}
-		} else {
-			p, _ := strconv.Atoi(value)
-			portOutput = append(portOutput, p)
-		}
-	}
-	return portOutput
 }
 
 func IsOSX() bool {

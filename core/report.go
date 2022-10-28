@@ -1,6 +1,10 @@
 package core
 
-import "github.com/xuri/excelize/v2"
+import (
+	"fmt"
+	"github.com/xuri/excelize/v2"
+	"puzzle/modules/subfind"
+)
 
 func XlsxInit(output string) error {
 	file := excelize.NewFile()
@@ -56,15 +60,19 @@ func XlsxInit(output string) error {
 	return nil
 }
 
-func ReportDomain(output string) {
+func getStreamWriter(file *excelize.File) (streamWriter *excelize.StreamWriter) {
+	streamWriter, err := file.NewStreamWriter("Sheet1")
+	if err != nil {
+		fmt.Println(err)
+	}
+	return
+}
+
+func ReportDomain(output []*subfind.ResultOutput) {
 
 }
 
 func ReportIp(output string) {
-
-}
-
-func ReportCidr(output string) {
 
 }
 
