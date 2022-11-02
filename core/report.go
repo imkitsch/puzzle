@@ -1,9 +1,9 @@
 package core
 
 import (
-	"fmt"
 	"github.com/xuri/excelize/v2"
-	"puzzle/modules/subfind"
+	"puzzle/gologger"
+	"reflect"
 )
 
 func XlsxInit(output string) error {
@@ -60,30 +60,33 @@ func XlsxInit(output string) error {
 	return nil
 }
 
-func getStreamWriter(file *excelize.File) (streamWriter *excelize.StreamWriter) {
+func ReportWrite(output string, sheet string, dataInterface interface{}) {
+	file, err := excelize.OpenFile(output)
+	if err != nil {
+		gologger.Fatalf("打开文件失败:%s", err.Error())
+	}
+
 	streamWriter, err := file.NewStreamWriter("Sheet1")
 	if err != nil {
-		fmt.Println(err)
+		gologger.Fatalf("获取写入流失败:%s", err.Error())
 	}
-	return
-}
 
-func ReportDomain(output []*subfind.ResultOutput) {
+	data := reflect.ValueOf(dataInterface)
+	for i := 0; i < data.Len(); i++ {
+		tmp := data.Index(i).Elem()
+		row := make([]interface{}, tmp.NumField())
+		for j := 0; j < tmp.NumField(); j++ {
+			row[j] = excelize.Cell{Value: tmp.Field(j).Interface()}
+		}
+		cell, _ := excelize.CoordinatesToCellName(1, i+2)
+		if err := streamWriter.SetRow(cell, row); err != nil {
+			gologger.Fatalf("写入流失败:%s", err.Error())
+		}
+	}
 
-}
+	if err := streamWriter.Flush(); err != nil {
+		gologger.Fatalf("写入流失败:%s", err.Error())
+	}
 
-func ReportIp(output string) {
-
-}
-
-func ReportPort(output string) {
-
-}
-
-func ReportDomainFinger(output string) {
-
-}
-
-func ReportIpFinger(output string) {
-
+	file.Save()
 }

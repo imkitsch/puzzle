@@ -1,7 +1,6 @@
 package portscan
 
 import (
-	"fmt"
 	"github.com/go-ping/ping"
 	"puzzle/gologger"
 	"sync"
@@ -30,8 +29,8 @@ func icmpLive(host string) bool {
 	return false
 }
 
-func Ping(host []string) {
-	var LiveIp = []string{}
+func Ping(host []string) []string {
+	var LiveIp []string
 	limit := 600
 	out := make(chan string, len(host))
 	taskChan := make(chan bool, limit)
@@ -55,5 +54,5 @@ func Ping(host []string) {
 		LiveIp = append(LiveIp, i)
 	}
 
-	fmt.Println(LiveIp)
+	return LiveIp
 }

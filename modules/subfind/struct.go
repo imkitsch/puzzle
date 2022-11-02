@@ -1,10 +1,10 @@
 package subfind
 
 type domainResult struct {
-	domain string
-	a      []string
-	cname  string
-	cdn    bool
+	Domain  string
+	Cdn     bool
+	Address string
+	Cname   string
 }
 
 type Item struct {

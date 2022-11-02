@@ -2,6 +2,7 @@ package subfind
 
 import (
 	"github.com/boy-hack/ksubdomain/runner/result"
+	"strings"
 )
 
 type ResultOutput struct {
@@ -17,15 +18,17 @@ func NewDomainResult() (*ResultOutput, error) {
 
 func (r *ResultOutput) WriteDomainResult(domain result.Result) error {
 	var domainRes domainResult
-	domainRes.domain = domain.Subdomain
+	var Address []string
+	domainRes.Domain = domain.Subdomain
 	for _, item := range domain.Answers {
 		if item[0:5] == "CNAME" {
-			domainRes.cname = item[6:]
+			domainRes.Cname = item[6:]
 		} else {
-			domainRes.a = append(domainRes.a, item)
+			Address = append(Address, item)
 		}
 	}
-	domainRes.cdn = IsCdn(domainRes.cname, domainRes.a)
+	domainRes.Cdn = IsCdn(domainRes.Cname, Address)
+	domainRes.Address = strings.Join(Address, `,`)
 	r.dr = append(r.dr, &domainRes)
 	return nil
 }

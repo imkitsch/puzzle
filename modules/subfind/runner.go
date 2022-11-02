@@ -56,7 +56,7 @@ func (r *Runner) Run() (dr []*domainResult) {
 				//清空
 				subDomains = nil
 				for _, subNext := range r.options.SubNextDict {
-					subDomains = append(subDomains, subNext+"."+sub.domain)
+					subDomains = append(subDomains, subNext+"."+sub.Domain)
 				}
 				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
