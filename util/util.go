@@ -107,7 +107,7 @@ func GetRunDir() string {
 }
 
 // GetSerialIp 获取连续ip段
-func GetSerialIp(ips *[]string) *[]string {
+func GetSerialIp(ips []string) []string {
 	var IpMap map[string][]string
 	IpMap = make(map[string][]string)
 
@@ -116,7 +116,7 @@ func GetSerialIp(ips *[]string) *[]string {
 
 	var newIpList []string
 
-	for _, ip := range *ips {
+	for _, ip := range ips {
 		ipParts := strings.Split(ip, ".")
 		cRange := ipParts[0] + "." + ipParts[1] + "." + ipParts[2]
 		_, keyIs := IpMap[cRange]
@@ -148,7 +148,7 @@ func GetSerialIp(ips *[]string) *[]string {
 			}
 		}
 	}
-	return &newIpList
+	return newIpList
 }
 
 func IsOSX() bool {
