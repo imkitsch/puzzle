@@ -17,7 +17,7 @@ const banner = `
 func ShowBanner() {
 	gologger.Printf(banner)
 	gologger.Infof("Current Version: %s", Version)
-	if InitOutDile() {
+	if !InitOutDile() {
 		gologger.Fatalf("初始化输出文件夹失败,请检查是否有权限")
 	}
 }
