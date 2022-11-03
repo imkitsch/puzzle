@@ -119,7 +119,6 @@ func (r *Runner) Run() error {
 			if useSYN {
 				// syn扫描
 				r.Scanner.EnqueueToTCP(ip, port, scan.SYN)
-
 			} else {
 				// 正常扫描
 				r.wgScan.Add()

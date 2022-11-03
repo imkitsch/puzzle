@@ -1,7 +1,6 @@
 package core
 
 import (
-	"net"
 	"path/filepath"
 	"puzzle/gologger"
 	"puzzle/modules/ip"
@@ -9,6 +8,7 @@ import (
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/subfind"
 	"puzzle/util"
+	"regexp"
 	"strings"
 )
 
@@ -18,11 +18,13 @@ func AllStart(options *Options) {
 	var ips []string
 
 	//拆分ip和域名
+	ipReg := `^((0|[1-9]\d?|1\d\d|2[0-4]\d|25[0-5])\.){3}(0|[1-9]\d?|1\d\d|2[0-4]\d|25[0-5])`
+	reg, _ := regexp.Compile(ipReg)
 	for _, value := range options.Domain {
-		if net.ParseIP(value) == nil {
-			domains = append(domains, value)
-		} else {
+		if reg.MatchString(value) {
 			ipsTmp = append(ipsTmp, value)
+		} else {
+			domains = append(domains, value)
 		}
 	}
 
@@ -118,8 +120,10 @@ func getQqwry() *ip.QQwry {
 
 func getScanType() string {
 	if util.IsOSX() || util.IsLinux() {
+		gologger.Infof("本机为unix系统,开启syn扫描")
 		return "s"
 	} else {
+		gologger.Infof("本机为windows系统,开启connect扫描")
 		return "c"
 	}
 }
