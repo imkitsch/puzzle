@@ -2,13 +2,6 @@ package ip
 
 import "os"
 
-type ipResult struct {
-	ip      string
-	City    string
-	Country string
-	source  string
-}
-
 type ResultQQwry struct {
 	IP      string `json:"ip"`
 	Country string `json:"country"`

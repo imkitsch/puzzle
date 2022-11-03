@@ -20,7 +20,7 @@ func XlsxInit(output string) error {
 	//创建表
 	IpIndex := file.NewSheet("IP地址")
 	//初始数据
-	IpCategories := map[string]string{"A1": "IP", "B1": "City", "C1": "Country", "D1": "Source"}
+	IpCategories := map[string]string{"A1": "IP", "B1": "Country", "C1": "Area"}
 	for k, v := range IpCategories {
 		file.SetCellValue("IP地址", k, v)
 	}
@@ -28,7 +28,7 @@ func XlsxInit(output string) error {
 
 	//初始化端口服务表
 	PortIndex := file.NewSheet("端口服务")
-	PortCategories := map[string]string{"A1": "IP", "B1": "Port", "C1": "Server", "D1": "Banner"}
+	PortCategories := map[string]string{"A1": "Address", "B1": "ServiceName", "C1": "ProbeName", "D1": "VendorProduct", "E1": "Version"}
 	for k, v := range PortCategories {
 		file.SetCellValue("端口服务", k, v)
 	}
@@ -66,9 +66,30 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 		gologger.Fatalf("打开文件失败:%s", err.Error())
 	}
 
-	streamWriter, err := file.NewStreamWriter("Sheet1")
+	streamWriter, err := file.NewStreamWriter(sheet)
 	if err != nil {
 		gologger.Fatalf("获取写入流失败:%s", err.Error())
+	}
+
+	rows, _ := file.GetRows(sheet) //获取行内容
+	cols, _ := file.GetCols(sheet) //获取列内容
+
+	//将源文件内容先写入excel
+	for rowid, row_pre := range rows {
+		row_p := make([]interface{}, len(cols))
+		for colID_p := 0; colID_p < len(cols); colID_p++ {
+			//fmt.Println(row_pre)
+			//fmt.Println(colID_p)
+			if row_pre == nil {
+				row_p[colID_p] = nil
+			} else {
+				row_p[colID_p] = row_pre[colID_p]
+			}
+		}
+		cell_pre, _ := excelize.CoordinatesToCellName(1, rowid+1)
+		if err := streamWriter.SetRow(cell_pre, row_p); err != nil {
+			gologger.Fatalf("写入原内容失败:%s", err.Error())
+		}
 	}
 
 	data := reflect.ValueOf(dataInterface)

@@ -1,5 +1,5 @@
 package core
 
-func ipStart(options *Options) {
+func IpStart(options *Options) {
 
 }

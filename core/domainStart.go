@@ -1,5 +1,5 @@
 package core
 
-func domainStart(options *Options) {
+func DomainStart(options *Options) {
 
 }

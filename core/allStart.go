@@ -5,13 +5,14 @@ import (
 	"path/filepath"
 	"puzzle/gologger"
 	"puzzle/modules/ip"
+	"puzzle/modules/ip/portfinger"
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/subfind"
 	"puzzle/util"
 	"strings"
 )
 
-func allStart(options *Options) {
+func AllStart(options *Options) {
 	var domains []string
 	var ipsTmp []string
 	var ips []string
@@ -68,7 +69,7 @@ func allStart(options *Options) {
 
 	//ping检测
 	if options.Ping == true {
-		ips := portscan.Ping(ips)
+		ips = portscan.Ping(ips)
 	}
 
 	//ip扫描
@@ -80,11 +81,33 @@ func allStart(options *Options) {
 		MaxPort:   200,
 		ScanType:  getScanType(),
 		QQwry:     getQqwry(),
+		NmapProbe: getNmapProbe(),
+	}
+	ipRunner, err := ip.NewRunner(ipOptions)
+	if err != nil {
+		gologger.Fatalf(err.Error())
 	}
 
+	//位置信息获取
+	var ipInfoRes []*ip.ResultQQwry
+	for _, ip := range ips {
+		info := ipOptions.QQwry.Find(ip)
+		ipInfoRes = append(ipInfoRes, &info)
+	}
+
+	ReportWrite(options.Output, "IP地址", ipInfoRes)
+
+	//端口扫描
+	portscanResults := ipRunner.Run()
+	if len(portscanResults) == 0 {
+		gologger.Infof("端口扫描结果为空")
+	} else {
+		ReportWrite(options.Output, "端口服务", portscanResults)
+	}
 }
+
 func getQqwry() *ip.QQwry {
-	ip.IPData.FilePath = filepath.Join(util.GetRunDir() + "/config/qqwry.dat")
+	ip.IPData.FilePath = filepath.Join(util.GetRunDir() + QqwryPath)
 	res := ip.IPData.InitIPData()
 	if v, ok := res.(error); ok {
 		gologger.Fatalf(v.Error())
@@ -92,10 +115,24 @@ func getQqwry() *ip.QQwry {
 	qqWry := ip.NewQQwry()
 	return &qqWry
 }
+
 func getScanType() string {
 	if util.IsOSX() || util.IsLinux() {
 		return "s"
 	} else {
 		return "c"
 	}
+}
+
+func getNmapProbe() *portfinger.NmapProbe {
+	NmapProbe := portfinger.NmapProbe{}
+	nmapData, err := util.ReadFile(util.GetRunDir() + NmapPath)
+	if err != nil {
+		gologger.Fatalf("读取nmap指纹文件失败:%s", err.Error())
+	}
+	if err = NmapProbe.Init(nmapData); err != nil {
+		gologger.Fatalf("nmap指纹初始化失败:%s", err.Error())
+	}
+	gologger.Infof("nmap指纹数量: %v个探针,%v条正则", len(NmapProbe.Probes), NmapProbe.Count())
+	return &NmapProbe
 }
