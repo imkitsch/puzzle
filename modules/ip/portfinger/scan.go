@@ -58,7 +58,7 @@ func (e *Engine) Run(targets map[string]map[int]struct{}) []*Result {
 			for task := range taskChan {
 				resp := e.Scanner.ScanWithProbe(task.IP, task.Port, 5)
 				if resp.ServiceName != "" {
-					gologger.Infof("result: %v", resp)
+					gologger.Infof("result: %v", *resp)
 					results = append(results, resp)
 				}
 				wg.Done()
