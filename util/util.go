@@ -6,7 +6,6 @@ import (
 	"math/rand"
 	"os"
 	"puzzle/gologger"
-	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -149,16 +148,4 @@ func GetSerialIp(ips []string) []string {
 		}
 	}
 	return newIpList
-}
-
-func IsOSX() bool {
-	return runtime.GOOS == "darwin"
-}
-
-func IsLinux() bool {
-	return runtime.GOOS == "linux"
-}
-
-func IsWindows() bool {
-	return runtime.GOOS == "windows"
 }

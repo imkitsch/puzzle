@@ -16,29 +16,29 @@ const (
 )
 
 // ParsePorts 解析options的ports参数
-func ParsePorts(options *Options) ([]int, error) {
+func ParsePorts(ports string) ([]int, error) {
 	portsMap := make(map[int]struct{})
 	var err error
 
-	if strings.EqualFold(options.Ports, "full") {
+	if strings.EqualFold(ports, "full") {
 		portsMap, err = parsePortsList(Full)
 		if err != nil {
 			return nil, fmt.Errorf("端口格式错误: %s", err)
 		}
-	} else if strings.EqualFold(options.Ports, "top100") {
+	} else if strings.EqualFold(ports, "top100") {
 		portsMap, err = parsePortsList(NmapTop100)
 		if err != nil {
 			return nil, fmt.Errorf("端口格式错误: %s", err)
 		}
-	} else if strings.EqualFold(options.Ports, "top1000") {
+	} else if strings.EqualFold(ports, "top1000") {
 		portsMap, err = parsePortsList(NmapTop1000)
 		if err != nil {
 			return nil, fmt.Errorf("端口格式错误: %s", err)
 		}
-	} else if options.Ports == "" {
-		options.Ports = NmapTop1000
+	} else if ports == "" {
+		ports = NmapTop1000
 	} else {
-		portsMap, err = parsePortsList(options.Ports)
+		portsMap, err = parsePortsList(ports)
 		if err != nil {
 			return nil, fmt.Errorf("端口格式错误: %s", err)
 		}

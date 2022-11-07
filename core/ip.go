@@ -2,8 +2,8 @@ package core
 
 import (
 	"puzzle/gologger"
-	"puzzle/modules/ip"
 	"puzzle/modules/ip/portscan"
+	"puzzle/modules/ip/qqwry"
 	"puzzle/util"
 )
 
@@ -29,26 +29,19 @@ func IpStart(options *Options) {
 	}
 
 	//ip扫描
-	ipOptions := &ip.Options{
+	ipOptions := &portscan.Options{
 		Hosts:     ips,
 		PortRange: options.Port,
 		Threads:   options.PortThread,
-		Rate:      3000,
-		MaxPort:   200,
-		ScanType:  getScanType(),
-		QQwry:     getQqwry(),
-		NmapProbe: getNmapProbe(),
 	}
-	ipRunner, err := ip.NewRunner(ipOptions)
-	if err != nil {
-		gologger.Fatalf(err.Error())
-	}
+	ipRunner := portscan.NewRunner(ipOptions)
 
 	//位置信息获取
-	var ipInfoRes []*ip.ResultQQwry
+	QQwry := getQqwry()
+	var ipInfoRes []*qqwry.ResultQQwry
 	gologger.Infof("获取ip位置信息")
 	for _, ip := range ips {
-		info := ipOptions.QQwry.Find(ip)
+		info := QQwry.Find(ip)
 		gologger.Infof("%v", info)
 		ipInfoRes = append(ipInfoRes, &info)
 	}

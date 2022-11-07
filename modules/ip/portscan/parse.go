@@ -3,7 +3,6 @@ package portscan
 import (
 	"fmt"
 	"net"
-	"puzzle/gologger"
 	"strconv"
 	"strings"
 )
@@ -14,7 +13,6 @@ func ParseIP(ip string) ([]string, error) {
 	if strings.Contains(ip, "/") {
 		_, ipNet, err := net.ParseCIDR(ip)
 		if err != nil {
-			gologger.Errorf("utils.ParseIP() err, %v", err)
 			return hosts, err
 		}
 		hosts = parseIP1(IPRange(ipNet))

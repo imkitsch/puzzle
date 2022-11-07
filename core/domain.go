@@ -2,7 +2,7 @@ package core
 
 import (
 	"puzzle/gologger"
-	"puzzle/modules/ip"
+	"puzzle/modules/ip/qqwry"
 	"puzzle/modules/subfind"
 	"puzzle/util"
 	"strings"
@@ -38,10 +38,10 @@ func DomainStart(options *Options) {
 	//ip去重
 	ips = util.RemoveRepeatedStringElement(ips)
 
-	qqwry := getQqwry()
-	var ipInfoRes []*ip.ResultQQwry
+	QQwry := getQqwry()
+	var ipInfoRes []*qqwry.ResultQQwry
 	for _, ip := range ips {
-		info := qqwry.Find(ip)
+		info := QQwry.Find(ip)
 		ipInfoRes = append(ipInfoRes, &info)
 	}
 
