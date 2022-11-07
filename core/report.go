@@ -28,7 +28,7 @@ func XlsxInit(output string) error {
 
 	//初始化端口服务表
 	PortIndex := file.NewSheet("端口服务")
-	PortCategories := map[string]string{"A1": "Address", "B1": "ServiceName", "C1": "ProbeName", "D1": "VendorProduct", "E1": "Version"}
+	PortCategories := map[string]string{"A1": "Address", "B1": "Port", "C1": "ServiceName", "D1": "ProbeName", "E1": "VendorProduct", "F1": "Version"}
 	for k, v := range PortCategories {
 		file.SetCellValue("端口服务", k, v)
 	}

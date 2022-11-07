@@ -1,4 +1,4 @@
-package ip
+package qqwry
 
 import (
 	"encoding/binary"
