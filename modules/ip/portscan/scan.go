@@ -7,8 +7,10 @@ import (
 
 func (r *Runner) Scan(ip string, port int, timeout time.Duration) (*Result, bool) {
 	defer r.wgScan.Done()
-	r.nmapRunner.SetTimeout(timeout)
-	status, response := r.nmapRunner.ScanTimeout(ip, port, 100*timeout)
+	r.limiter.Take()
+	nmap := gonmap.New()
+	nmap.SetTimeout(timeout)
+	status, response := nmap.ScanTimeout(ip, port, 100*timeout)
 	switch status {
 	case gonmap.Closed:
 		return nil, false

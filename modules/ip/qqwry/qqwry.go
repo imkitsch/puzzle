@@ -35,7 +35,7 @@ func (f *fileData) InitIPData() (rs interface{}) {
 		util.Download(QQwryUrl, f.FilePath)
 	} else {
 		// 打开文件句柄
-		gologger.Printf("从本地数据库文件 %s 打开\n", f.FilePath)
+		gologger.Printf("从本地数据库文件 %s 打开", f.FilePath)
 		f.Path, err = os.OpenFile(f.FilePath, os.O_RDONLY, 0400)
 		if err != nil {
 			rs = err
