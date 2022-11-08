@@ -2,7 +2,6 @@ package portscan
 
 import (
 	"github.com/cheggaaa/pb/v3"
-	"github.com/lcvvvv/gonmap"
 	"github.com/projectdiscovery/blackrock"
 	"github.com/remeh/sizedwaitgroup"
 	"go.uber.org/ratelimit"
@@ -17,13 +16,12 @@ type Options struct {
 }
 
 type Runner struct {
-	ips        []string
-	ports      []int
-	Rate       int
-	nmapRunner *gonmap.Nmap
-	LiveIPs    *LiveIPs
-	limiter    ratelimit.Limiter
-	wgScan     sizedwaitgroup.SizedWaitGroup
+	ips     []string
+	ports   []int
+	Rate    int
+	LiveIPs *LiveIPs
+	limiter ratelimit.Limiter
+	wgScan  sizedwaitgroup.SizedWaitGroup
 }
 
 func NewRunner(options *Options) *Runner {
@@ -33,11 +31,10 @@ func NewRunner(options *Options) *Runner {
 		panic(err)
 	}
 	return &Runner{
-		ips:        options.Hosts,
-		ports:      ports,
-		Rate:       options.Threads,
-		nmapRunner: gonmap.New(),
-		LiveIPs:    &LiveIPs{IPS: live},
+		ips:     options.Hosts,
+		ports:   ports,
+		Rate:    options.Threads,
+		LiveIPs: &LiveIPs{IPS: live},
 	}
 }
 

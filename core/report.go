@@ -36,7 +36,7 @@ func XlsxInit(output string) error {
 
 	//初始化域名指纹表
 	DomainFingerIndex := file.NewSheet("域名指纹")
-	DomainFingerCategories := map[string]string{"A1": "Url", "B1": "IsCDN", "C1": "StatusCode", "D1": "Header", "E1": "Length", "F1": "Title", "G1": "Finger", "H1": "IsHoneypot", "I1": "priority"}
+	DomainFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger", "F1": "IsCDN"}
 	for k, v := range DomainFingerCategories {
 		file.SetCellValue("域名指纹", k, v)
 	}
@@ -44,7 +44,7 @@ func XlsxInit(output string) error {
 
 	//初始化IP指纹表
 	IpFingerIndex := file.NewSheet("IP指纹")
-	IpFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Header", "D1": "Length", "E1": "Title", "F1": "Finger", "G1": "IsHoneypot", "H1": "priority               0"}
+	IpFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger"}
 	for k, v := range IpFingerCategories {
 		file.SetCellValue("IP指纹", k, v)
 	}
