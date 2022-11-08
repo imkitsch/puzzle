@@ -1,6 +1,6 @@
 module puzzle
 
-go 1.17
+go 1.19
 
 require (
 	github.com/antchfx/htmlquery v1.2.5
@@ -37,7 +37,7 @@ require (
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.12 // indirect
-	github.com/microcosm-cc/bluemonday v1.0.21 // indirect
+	github.com/microcosm-cc/bluemonday v1.0.18 // indirect
 	github.com/miekg/dns v1.1.50 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -45,18 +45,17 @@ require (
 	github.com/oschwald/maxminddb-golang v1.8.0 // indirect
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/projectdiscovery/cdncheck v0.0.3 // indirect
 	github.com/projectdiscovery/chaos-client v0.2.0 // indirect
-	github.com/projectdiscovery/dnsx v1.1.1-0.20220726121728-699bed01313a // indirect
+	github.com/projectdiscovery/dnsx v1.1.0 // indirect
 	github.com/projectdiscovery/fileutil v0.0.0-20220625080234-94e882ca56cb // indirect
 	github.com/projectdiscovery/goflags v0.0.9 // indirect
 	github.com/projectdiscovery/gologger v1.1.4 // indirect
 	github.com/projectdiscovery/httputil v0.0.0-20210906072657-f3a099cb20bc // indirect
-	github.com/projectdiscovery/iputil v0.0.0-20220625072148-037479960416 // indirect
-	github.com/projectdiscovery/mapcidr v1.0.1 // indirect
-	github.com/projectdiscovery/retryabledns v1.0.14 // indirect
+	github.com/projectdiscovery/iputil v0.0.0-20210804143329-3a30fcde43f3 // indirect
+	github.com/projectdiscovery/mapcidr v0.0.8 // indirect
+	github.com/projectdiscovery/retryabledns v1.0.13 // indirect
 	github.com/projectdiscovery/retryablehttp-go v1.0.2 // indirect
-	github.com/projectdiscovery/sliceutil v0.0.0-20220617151003-15892688e1d6 // indirect
+	github.com/projectdiscovery/sliceutil v0.0.0-20220426000009-1d2b7c02f65c // indirect
 	github.com/projectdiscovery/stringsutil v0.0.0-20220612082425-0037ce9f89f3 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
@@ -66,14 +65,11 @@ require (
 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	github.com/xuri/efp v0.0.0-20220407160117-ad0f7a785be8 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
-	github.com/yl2chen/cidranger v1.0.2 // indirect
-	go.uber.org/atomic v1.9.0 // indirect
-	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.0.0-20220408190544-5352b0902921 // indirect
 	golang.org/x/mod v0.5.1 // indirect
-	golang.org/x/net v0.0.0-20221002022538-bcab6841153b // indirect
+	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
+	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	golang.org/x/tools v0.1.9 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
