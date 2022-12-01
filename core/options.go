@@ -17,8 +17,9 @@ type Options struct {
 	WebScan    bool     //web服务指纹扫描
 	PortThread int      //端口爆破线程数
 	WebThread  int      //指纹爆破线程数
-	Ping       bool     //存活探测
-	Output     string   // 输出名
+	Proxy      string
+	Ping       bool   //存活探测
+	Output     string // 输出名
 }
 
 func ParseOptions() *Options {
@@ -32,7 +33,8 @@ func ParseOptions() *Options {
 	ipList := flag.String("ipl", "", "从文件中获取ip")
 	port := flag.String("p", "", "端口号,如1-65535,22,3306,默认为top1000")
 
-	flag.IntVar(&options.PortThread, "pt", 800, "端口爆破线程,默认800")
+	flag.StringVar(&options.Proxy, "proxy", "", "web扫描代理,如socks5://127.0.0.1:8080")
+	flag.IntVar(&options.PortThread, "pt", 500, "端口爆破线程,默认500")
 	flag.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
 	flag.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
 	flag.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
