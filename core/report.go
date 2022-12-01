@@ -34,21 +34,13 @@ func XlsxInit(output string) error {
 	}
 	file.SetActiveSheet(PortIndex)
 
-	//初始化域名指纹表
-	DomainFingerIndex := file.NewSheet("域名指纹")
-	DomainFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger", "F1": "IsCDN"}
-	for k, v := range DomainFingerCategories {
-		file.SetCellValue("域名指纹", k, v)
+	//初始化web指纹表
+	WebFingerIndex := file.NewSheet("WEB指纹")
+	WebFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger"}
+	for k, v := range WebFingerCategories {
+		file.SetCellValue("WEB指纹", k, v)
 	}
-	file.SetActiveSheet(DomainFingerIndex)
-
-	//初始化IP指纹表
-	IpFingerIndex := file.NewSheet("IP指纹")
-	IpFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger"}
-	for k, v := range IpFingerCategories {
-		file.SetCellValue("IP指纹", k, v)
-	}
-	file.SetActiveSheet(IpFingerIndex)
+	file.SetActiveSheet(WebFingerIndex)
 
 	file.SetActiveSheet(DomainIndex)
 

@@ -6,9 +6,9 @@ import (
 	"puzzle/gologger"
 )
 
-func getHTTPTitle(Body io.ReadCloser) string {
+func getHTTPTitle(Body *io.ReadCloser) string {
 
-	doc, err := htmlquery.Parse(Body)
+	doc, err := htmlquery.Parse(*Body)
 	if err != nil {
 		gologger.Warningf(err.Error())
 	}
