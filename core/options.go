@@ -24,27 +24,28 @@ type Options struct {
 
 func ParseOptions() *Options {
 	options := &Options{}
-	model := flag.String("m", "all", "选择模式,现有all,domain,ip,默认为all模式")
-	domain := flag.String("d", "", "从单独域名中读取扫描")
-	domainList := flag.String("dl", "", "从文件中读取扫描域名")
-	output := flag.String("o", "", "输出文件名,如result")
+	arg := flag.NewFlagSet(os.Args[0], 1)
+	model := arg.String("m", "all", "选择模式,现有all,domain,ip,默认为all模式")
+	domain := arg.String("d", "", "从单独域名中读取扫描")
+	domainList := arg.String("dl", "", "从文件中读取扫描域名")
+	output := arg.String("o", "", "输出文件名,如result")
 
-	ip := flag.String("i", "", "ip输入,仅支持单次输入如192.168.1.1 or 192.168.1.1/24")
-	ipList := flag.String("ipl", "", "从文件中获取ip")
-	port := flag.String("p", "", "端口号,如1-65535,22,3306,默认为top1000")
+	ip := arg.String("i", "", "ip输入,仅支持单次输入如192.168.1.1 or 192.168.1.1/24")
+	ipList := arg.String("ipl", "", "从文件中获取ip")
+	port := arg.String("p", "", "端口号,如1-65535,22,3306,默认为top1000")
 
-	flag.StringVar(&options.Proxy, "proxy", "", "web扫描代理,如socks5://127.0.0.1:8080")
-	flag.IntVar(&options.PortThread, "pt", 500, "端口爆破线程,默认500")
-	flag.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
-	flag.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
-	flag.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
-	flag.BoolVar(&options.WebScan, "ws", false, "是否开启web指纹扫描,all模式默认开启")
-	flag.Parse()
+	arg.StringVar(&options.Proxy, "proxy", "", "web扫描代理,如socks5://127.0.0.1:8080")
+	arg.IntVar(&options.PortThread, "pt", 500, "端口爆破线程,默认500")
+	arg.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
+	arg.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
+	arg.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
+	arg.BoolVar(&options.WebScan, "ws", false, "是否开启web指纹扫描,all模式默认开启")
+	arg.Parse(os.Args[1:])
 	ShowBanner()
 
 	//显示参数信息
 	if *model == "" || *output == "" {
-		flag.Usage()
+		arg.Usage()
 		os.Exit(0)
 	}
 
