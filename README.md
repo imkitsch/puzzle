@@ -57,4 +57,6 @@ puzzle是纯go开发的信息收集工具，涵盖了子域名扫描、ip扫描�
 
 domain模式和ip模式为all模式的拆解版
 
-##
+## TodoList
+wen扫描与指纹扫描
+页面js中的api和ak收集
