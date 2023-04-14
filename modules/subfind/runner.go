@@ -2,6 +2,7 @@ package subfind
 
 import (
 	"github.com/boy-hack/ksubdomain/core/device"
+	"github.com/google/gopacket/pcap"
 	"puzzle/gologger"
 	"puzzle/util"
 )
@@ -46,8 +47,11 @@ func (r *Runner) Run() (dr []*domainResult) {
 		subDomains = util.RemoveRepeatedStringElement(subDomains)
 
 		//dns爆破验证
+		version := pcap.Version()
+		gologger.Infof(version)
 		gologger.Infof("域名 %s 开始验证DNS", domain)
 		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
+		gologger.Infof("域名 %s 扫描完成", domain)
 
 		//三级子域名爆破
 		if r.options.Level3 {
@@ -60,6 +64,7 @@ func (r *Runner) Run() (dr []*domainResult) {
 				}
 				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
+			gologger.Infof("域名 %s 三级子域名扫描完成", domain)
 		}
 	}
 

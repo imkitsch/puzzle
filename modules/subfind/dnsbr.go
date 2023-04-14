@@ -42,7 +42,6 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	ctx := context.Background()
 	r.RunEnumeration(ctx)
 	r.Close()
-	gologger.Printf("")
 	return buffPrinter.OutPut()
 }
 
