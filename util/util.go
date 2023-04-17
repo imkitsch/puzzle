@@ -97,6 +97,15 @@ func CreateDir(filePath string) error {
 	return nil
 }
 
+// DeleteDir 删除文件夹
+func DeleteDir(filePath string) error {
+	err := os.RemoveAll(filePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetRunDir() string {
 	dir, err := os.Getwd()
 	if err != nil {

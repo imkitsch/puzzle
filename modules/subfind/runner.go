@@ -49,6 +49,7 @@ func (r *Runner) Run() (dr []*domainResult) {
 		//dns爆破验证
 		version := pcap.Version()
 		gologger.Infof(version)
+
 		gologger.Infof("域名 %s 开始验证DNS", domain)
 		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 		gologger.Infof("域名 %s 扫描完成", domain)
@@ -68,5 +69,9 @@ func (r *Runner) Run() (dr []*domainResult) {
 		}
 	}
 
+	err := util.DeleteDir(".DbCache")
+	if err != nil {
+		gologger.Fatalf("清空缓存文件夹失败: %s", err.Error())
+	}
 	return
 }

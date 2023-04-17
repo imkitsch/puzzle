@@ -12,7 +12,6 @@ import (
 
 func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainResult {
 	buffPrinter, _ := NewDomainResult()
-
 	domainChanel := make(chan string)
 	go func() {
 		for _, d := range domains {
@@ -21,7 +20,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		close(domainChanel)
 	}()
 	opt := &options.Options{
-		Rate:        options.Band2Rate("2m"),
+		Rate:        options.Band2Rate("1m"),
 		Domain:      domainChanel,
 		DomainTotal: len(domains),
 		Resolvers:   options.GetResolvers(""),
