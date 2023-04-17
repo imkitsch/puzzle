@@ -23,7 +23,7 @@ require (
 	golang.org/x/text v0.8.0
 )
 
-replace github.com/boy-hack/ksubdomain v1.9.5 => github.com/imkitsch/ksubdomain v1.0.0
+replace github.com/boy-hack/ksubdomain v1.9.5 => github.com/imkitsch/ksubdomain v0.0.0-20230414171209-0ba4a4484949
 
 require (
 	github.com/AndreasBriese/bbloom v0.0.0-20190825152654-46b345b51c96 // indirect
