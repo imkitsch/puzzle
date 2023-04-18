@@ -26,9 +26,8 @@ func NewRunner(options *Options) (*Runner, error) {
 }
 
 func (r *Runner) Run() (dr []*domainResult) {
-	var subDomains = []string{}
-
 	for _, domain := range r.options.Domains {
+		subDomains := []string{}
 		subDomains = append(subDomains, domain)
 		//api获取
 		subDomains = append(subDomains, DoSubFinder(domain)...)
@@ -42,36 +41,32 @@ func (r *Runner) Run() (dr []*domainResult) {
 		} else {
 			gologger.Infof("域名 %s 存在泛解析,自动跳过爆破", domain)
 		}
-	}
 
-	//去重
-	subDomains = util.RemoveRepeatedStringElement(subDomains)
+		//去重
+		subDomains = util.RemoveRepeatedStringElement(subDomains)
 
-	//dns爆破验证
-	version := pcap.Version()
-	gologger.Infof(version)
+		//dns爆破验证
+		version := pcap.Version()
+		gologger.Infof(version)
 
-	gologger.Infof("全部域名开始验证DNS")
-	dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
-	gologger.Infof("全部域名扫描完成")
+		gologger.Infof("域名 %s 开始验证DNS", domain)
+		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
+		gologger.Infof("域名 %s 扫描完成", domain)
 
-	//三级子域名爆破
-	if r.options.Level3 {
-		gologger.Infof("域名三级子域名爆破")
-		for _, sub := range dr {
-			//清空
-			subDomains = nil
-			for _, subNext := range r.options.SubNextDict {
-				subDomains = append(subDomains, subNext+"."+sub.Domain)
+		//三级子域名爆破
+		if r.options.Level3 {
+			gologger.Infof("域名 %s 三级子域名爆破\n", domain)
+			for _, sub := range dr {
+				//清空
+				subDomains = []string{}
+				for _, subNext := range r.options.SubNextDict {
+					subDomains = append(subDomains, subNext+"."+sub.Domain)
+				}
+				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
-			dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
+			gologger.Infof("域名 %s 三级子域名扫描完成\n")
 		}
-		gologger.Infof("域名 %s 三级子域名扫描完成")
-	}
 
-	err := util.DeleteDir(".DbCache")
-	if err != nil {
-		gologger.Fatalf("清空缓存文件夹失败: %s", err.Error())
 	}
 	return
 }
