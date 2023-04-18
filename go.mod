@@ -21,7 +21,6 @@ require (
 	go.uber.org/ratelimit v0.2.0
 	golang.org/x/net v0.8.0
 	golang.org/x/text v0.8.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 replace github.com/boy-hack/ksubdomain v1.9.5 => github.com/imkitsch/ksubdomain v0.0.0-20230414171209-0ba4a4484949
@@ -94,24 +93,17 @@ require (
 	github.com/projectdiscovery/cdncheck v0.0.3 // indirect
 	github.com/projectdiscovery/chaos-client v0.5.0 // indirect
 	github.com/projectdiscovery/dnsx v1.1.3 // indirect
-	github.com/projectdiscovery/fileutil v0.0.0-20220625080234-94e882ca56cb // indirect
 	github.com/projectdiscovery/goflags v0.1.8 // indirect
 	github.com/projectdiscovery/gologger v1.1.8 // indirect
-	github.com/projectdiscovery/httputil v0.0.0-20210906072657-f3a099cb20bc // indirect
-	github.com/projectdiscovery/iputil v0.0.2 // indirect
-	github.com/projectdiscovery/mapcidr v1.1.0 // indirect
 	github.com/projectdiscovery/ratelimit v0.0.6 // indirect
 	github.com/projectdiscovery/retryabledns v1.0.21 // indirect
 	github.com/projectdiscovery/retryablehttp-go v1.0.12 // indirect
-	github.com/projectdiscovery/sliceutil v0.0.0-20220426000009-1d2b7c02f65c // indirect
-	github.com/projectdiscovery/stringsutil v0.0.2 // indirect
 	github.com/projectdiscovery/utils v0.0.16 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rs/xid v1.4.0 // indirect
 	github.com/saintfish/chardet v0.0.0-20230101081208-5e3ef4b5456d // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
@@ -133,4 +125,5 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/djherbis/times.v1 v1.3.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
