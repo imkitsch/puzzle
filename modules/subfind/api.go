@@ -2,9 +2,7 @@ package subfind
 
 import (
 	"bytes"
-	"context"
 	"errors"
-	"github.com/projectdiscovery/subfinder/v2/pkg/passive"
 	"github.com/projectdiscovery/subfinder/v2/pkg/resolve"
 	"github.com/projectdiscovery/subfinder/v2/pkg/runner"
 	"io"
@@ -21,25 +19,14 @@ var (
 )
 
 func loadProvidersFrom(location string, options *runner.Options) {
-	if len(options.AllSources) == 0 {
-		options.AllSources = passive.DefaultAllSources
-	}
-	if len(options.Recursive) == 0 {
-		options.Recursive = passive.DefaultRecursiveSources
-	}
-	// todo: move elsewhere
 	if len(options.Resolvers) == 0 {
-		options.Recursive = resolve.DefaultResolvers
-	}
-	if len(options.Sources) == 0 {
-		options.Sources = passive.DefaultSources
+		options.Resolvers = resolve.DefaultResolvers
 	}
 
-	options.Providers = &runner.Providers{}
 	// We skip bailing out if file doesn't exist because we'll create it
-	// at the end of options parsing from default via flags.
-	if err := options.Providers.UnmarshalFrom(location); isFatalErr(err) && !errors.Is(err, os.ErrNotExist) {
-		gologger.Fatalf("Could not read providers from %s: %s\n", location, err)
+	// at the end of options parsing from default via goflags.
+	if err := runner.UnmarshalFrom(location); isFatalErr(err) && !errors.Is(err, os.ErrNotExist) {
+		gologger.Fatalf("Could not read providers from %s: %s", location, err)
 	}
 }
 
@@ -49,8 +36,9 @@ func DoSubFinder(domain string) []string {
 		Verbose:            false,
 		NoColor:            false,
 		Silent:             true,
-		RemoveWildcard:     true,
+		RemoveWildcard:     false,
 		OnlyRecursive:      false,
+		All:                true,
 		Threads:            50,
 		Timeout:            30,
 		MaxEnumerationTime: 10,
@@ -61,15 +49,14 @@ func DoSubFinder(domain string) []string {
 		ExcludeIps:         false,
 		CaptureSources:     false,
 		HostIP:             false,
+		Sources:            []string{},
 		Config:             defaultConfigLocation,
 		ProviderConfig:     defaultProviderConfigLocation,
 		JSON:               false,
 		RateLimit:          0,
 		Resolvers:          resolve.DefaultResolvers,
-		AllSources:         passive.DefaultAllSources,
-		Recursive:          passive.DefaultRecursiveSources,
-		Sources:            passive.DefaultSources,
-		DomainsFile:        ""}
+		DomainsFile:        "",
+	}
 	if util.FileExists(options.ProviderConfig) {
 		gologger.Infof("Loading provider config file %s", options.ProviderConfig)
 		loadProvidersFrom(options.ProviderConfig, options)
@@ -82,7 +69,7 @@ func DoSubFinder(domain string) []string {
 		gologger.Fatalf("newRunner, err := runner.NewRunner Could not create runner: %s\n", err)
 	}
 	buf := bytes.Buffer{}
-	err = newRunner.EnumerateSingleDomain(context.Background(), domain, []io.Writer{&buf})
+	err = newRunner.EnumerateSingleDomain(domain, []io.Writer{&buf})
 	if err != nil {
 		gologger.Fatalf("Could not run enumeration: %s\n", err)
 	}
