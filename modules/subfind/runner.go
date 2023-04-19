@@ -51,11 +51,11 @@ func (r *Runner) Run() (dr []*domainResult) {
 
 		gologger.Infof("域名 %s 开始验证DNS", domain)
 		dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
-		gologger.Infof("域名 %s 扫描完成", domain)
+		gologger.Printf("\n")
 
 		//三级子域名爆破
 		if r.options.Level3 {
-			gologger.Infof("域名 %s 三级子域名爆破\n", domain)
+			gologger.Infof("域名 %s 三级子域名爆破", domain)
 			for _, sub := range dr {
 				//清空
 				subDomains = []string{}
@@ -64,7 +64,7 @@ func (r *Runner) Run() (dr []*domainResult) {
 				}
 				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
-			gologger.Infof("域名 %s 三级子域名扫描完成\n")
+			gologger.Printf("\n")
 		}
 
 	}

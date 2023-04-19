@@ -417,6 +417,11 @@ func asnCheck(ip string) bool {
 
 func IsCdn(CName string, ips []string) bool {
 
+	//从解析A记录数量判断
+	if len(ips) > 2 {
+		return true
+	}
+
 	//从cname判断
 	if len(CName) != 0 {
 		for _, item := range domainItems {

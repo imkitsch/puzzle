@@ -6,13 +6,11 @@ import (
 	"github.com/boy-hack/ksubdomain/core/options"
 	"github.com/boy-hack/ksubdomain/runner"
 	"github.com/boy-hack/ksubdomain/runner/outputter"
-	"github.com/boy-hack/ksubdomain/runner/processbar"
 	"puzzle/gologger"
 	"puzzle/util"
 )
 
 func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainResult {
-	process := processbar.ScreenProcess{}
 	buffPrinter, _ := NewDomainResult()
 	domainChanel := make(chan string)
 	go func() {
@@ -34,8 +32,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		Writer: []outputter.Output{
 			buffPrinter,
 		},
-		ProcessBar: &process,
-		EtherInfo:  DeviceConfig,
+		EtherInfo: DeviceConfig,
 	}
 	r, err := runner.New(opt)
 	if err != nil {

@@ -1,6 +1,7 @@
 package core
 
 import (
+	"net"
 	"path/filepath"
 	"puzzle/gologger"
 	"puzzle/modules/ip/portscan"
@@ -56,9 +57,14 @@ func AllStart(options *Options) {
 
 	//提取ip
 	for _, domainRes := range domainResult {
-		if domainRes.Cdn == false {
+		if domainRes.Cdn == false && domainRes.Address != "" {
 			addr := strings.Split(domainRes.Address, ",")
-			ips = append(ips, addr...)
+			for _, v := range addr {
+				tmpIp := net.ParseIP(v)
+				if tmpIp != nil && util.HasLocalIP(tmpIp) == false {
+					ips = append(ips, v)
+				}
+			}
 		}
 	}
 
