@@ -1,6 +1,7 @@
 package core
 
 import (
+	"net"
 	"puzzle/gologger"
 	"puzzle/modules/ip/qqwry"
 	"puzzle/modules/subfind"
@@ -29,9 +30,14 @@ func DomainStart(options *Options) {
 	//提取ip
 	var ips []string
 	for _, domainRes := range domainResult {
-		if domainRes.Cdn == false {
+		if domainRes.Cdn == false && domainRes.Address != "" {
 			addr := strings.Split(domainRes.Address, ",")
-			ips = append(ips, addr...)
+			for _, v := range addr {
+				tmpIp := net.ParseIP(v)
+				if tmpIp != nil && util.HasLocalIP(tmpIp) == false {
+					ips = append(ips, v)
+				}
+			}
 		}
 	}
 
