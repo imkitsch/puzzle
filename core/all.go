@@ -7,8 +7,10 @@ import (
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/ip/qqwry"
 	"puzzle/modules/subfind"
+	"puzzle/modules/webscan"
 	"puzzle/util"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -104,6 +106,23 @@ func AllStart(options *Options) {
 	} else {
 		ReportWrite(options.Output, "端口服务", portscanResults)
 	}
+
+	//web扫描(test版)
+	webscanResult := []*webscan.Result{}
+	for _, result := range portscanResults {
+		var url string
+		if result.ServiceName == "http" || result.ServiceName == "https" || result.ServiceName == "ssl" {
+			url = result.Addr + strconv.Itoa(result.Port)
+			webscanResult = append(webscanResult, &webscan.Result{url, "", 0, "", "", ""})
+		}
+	}
+
+	for _, result := range domainResult {
+		webscanResult = append(webscanResult, &webscan.Result{result.Domain, "", 0, "", "", ""})
+	}
+
+	ReportWrite(options.Output, "WEB指纹", webscanResult)
+
 }
 
 func getQqwry() *qqwry.QQwry {
