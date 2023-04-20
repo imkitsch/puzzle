@@ -3,6 +3,7 @@ package core
 import (
 	"flag"
 	"os"
+	"puzzle/config"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
@@ -96,7 +97,7 @@ func ParseOptions() *Options {
 
 	// 输出文件
 	if *output != "" {
-		options.Output = OutDir + "/" + *output + ".xlsx"
+		options.Output = config.OutDir + "/" + *output + ".xlsx"
 		if util.FileExists(options.Output) {
 			gologger.Fatalf("该文件已存在")
 		}

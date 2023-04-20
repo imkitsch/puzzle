@@ -2,7 +2,6 @@ package core
 
 import (
 	"net"
-	"path/filepath"
 	"puzzle/gologger"
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/ip/qqwry"
@@ -90,7 +89,7 @@ func AllStart(options *Options) {
 	ipRunner := portscan.NewRunner(ipOptions)
 
 	//位置信息获取
-	QQwry := getQqwry()
+	QQwry := qqwry.GetQqwry()
 	var ipInfoRes []*qqwry.ResultQQwry
 	for _, ip := range ips {
 		info := QQwry.Find(ip)
@@ -123,14 +122,4 @@ func AllStart(options *Options) {
 
 	ReportWrite(options.Output, "WEB指纹", webscanResult)
 
-}
-
-func getQqwry() *qqwry.QQwry {
-	qqwry.IPData.FilePath = filepath.Join(util.GetRunDir() + QqwryPath)
-	res := qqwry.IPData.InitIPData()
-	if v, ok := res.(error); ok {
-		gologger.Fatalf(v.Error())
-	}
-	qqWry := qqwry.NewQQwry()
-	return &qqWry
 }
