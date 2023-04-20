@@ -3,11 +3,12 @@ package webscan
 import (
 	"encoding/json"
 	"github.com/imroc/req/v3"
-	"puzzle/core"
 	"puzzle/gologger"
 	"puzzle/util"
 	"time"
 )
+
+var FingerPrintPath = "/config/web/web_fingerprint_v3.json"
 
 type Options struct {
 	Url     []string
@@ -24,7 +25,7 @@ type Runner struct {
 
 func NewRunner(options *Options) *Runner {
 	var fpSlice []FingerPrint
-	content, err := util.ReadFile(util.GetRunDir() + core.FingerPrintPath)
+	content, err := util.ReadFile(util.GetRunDir() + FingerPrintPath)
 	if err != nil {
 		gologger.Fatalf("读取指纹文件失败:%s", err.Error())
 	}

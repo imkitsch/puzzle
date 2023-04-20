@@ -3,13 +3,13 @@ package webscan
 import "github.com/imroc/req/v3"
 
 func (r *Runner) GetFinger(resp *req.Response) string {
-	var fingerResult []string
-	bodyString := resp.String()
-	header := getHeaderString(resp)
-	content := resp.Bytes()
-	iconhash := Mmh3Hash32(StandBase64(content))
+	//var fingerResult []string
+	//bodyString := resp.String()
+	//header := getHeaderString(resp)
+	//content := resp.Bytes()
+	//iconhash := Mmh3Hash32(StandBase64(content))
 
-	return nil
+	return ""
 }
 
 func getHeaderString(resp *req.Response) map[string]string {
