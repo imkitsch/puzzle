@@ -176,3 +176,9 @@ func HasLocalIP(ip net.IP) bool {
 		(ip4[0] == 169 && ip4[1] == 254) || // 169.254.0.0/16
 		(ip4[0] == 192 && ip4[1] == 168) // 192.168.0.0/16
 }
+
+func StringSearch(s string, sub string) bool {
+	s = strings.ToLower(s)
+	sub = strings.ToLower(sub)
+	return strings.Contains(s, sub)
+}

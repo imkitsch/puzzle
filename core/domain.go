@@ -44,7 +44,7 @@ func DomainStart(options *Options) {
 	//ip去重
 	ips = util.RemoveRepeatedStringElement(ips)
 
-	QQwry := getQqwry()
+	QQwry := qqwry.GetQqwry()
 	var ipInfoRes []*qqwry.ResultQQwry
 	for _, ip := range ips {
 		info := QQwry.Find(ip)

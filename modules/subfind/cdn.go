@@ -4,6 +4,8 @@ import (
 	"github.com/oschwald/geoip2-golang"
 	"net"
 	"puzzle/gologger"
+	"puzzle/modules/ip/qqwry"
+	"puzzle/util"
 	"strconv"
 	"strings"
 )
@@ -435,6 +437,15 @@ func IsCdn(CName string, ips []string) bool {
 	//asn判断
 	for _, ip := range ips {
 		if asnCheck(ip) {
+			return true
+		}
+	}
+
+	//地域判断
+	QQwry := qqwry.GetQqwry()
+	for _, ip := range ips {
+		info := QQwry.Find(ip)
+		if util.StringSearch("cdn", info.Area) {
 			return true
 		}
 	}

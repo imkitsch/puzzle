@@ -37,7 +37,7 @@ func IpStart(options *Options) {
 	ipRunner := portscan.NewRunner(ipOptions)
 
 	//位置信息获取
-	QQwry := getQqwry()
+	QQwry := qqwry.GetQqwry()
 	var ipInfoRes []*qqwry.ResultQQwry
 	gologger.Infof("获取ip位置信息")
 	for _, ip := range ips {

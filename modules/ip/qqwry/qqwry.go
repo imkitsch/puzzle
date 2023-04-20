@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
+	"path/filepath"
+	"puzzle/config"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
@@ -23,6 +25,16 @@ const (
 
 // IPData IP库的数据
 var IPData fileData
+
+func GetQqwry() *QQwry {
+	IPData.FilePath = filepath.Join(util.GetRunDir() + config.QqwryPath)
+	res := IPData.InitIPData()
+	if v, ok := res.(error); ok {
+		gologger.Fatalf(v.Error())
+	}
+	qqWry := NewQQwry()
+	return &qqWry
+}
 
 // InitIPData 初始化ip库数据到内存中
 func (f *fileData) InitIPData() (rs interface{}) {
