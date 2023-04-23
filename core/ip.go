@@ -4,7 +4,9 @@ import (
 	"puzzle/gologger"
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/ip/qqwry"
+	"puzzle/modules/webscan"
 	"puzzle/util"
+	"strconv"
 )
 
 func IpStart(options *Options) {
@@ -55,4 +57,25 @@ func IpStart(options *Options) {
 	} else {
 		ReportWrite(options.Output, "端口服务", portscanResults)
 	}
+
+	//web扫描
+	var urls []string
+
+	for _, result := range portscanResults {
+		if result.ServiceName == "http" || result.ServiceName == "https" || result.ServiceName == "ssl" {
+			url := result.Addr + strconv.Itoa(result.Port)
+			urls = append(urls, url)
+		}
+	}
+
+	webOptions := &webscan.Options{
+		Url:     urls,
+		Threads: options.WebThread,
+		Timeout: options.WebTimeout,
+		Proxy:   options.Proxy,
+	}
+	webRunner := webscan.NewRunner(webOptions)
+	webResult := webRunner.Run()
+
+	ReportWrite(options.Output, "WEB指纹", webResult)
 }

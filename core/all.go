@@ -106,20 +106,28 @@ func AllStart(options *Options) {
 		ReportWrite(options.Output, "端口服务", portscanResults)
 	}
 
-	//web扫描(test版)
-	webscanResult := []*webscan.Result{}
+	//web扫描
+	var urls []string
+
 	for _, result := range portscanResults {
-		var url string
 		if result.ServiceName == "http" || result.ServiceName == "https" || result.ServiceName == "ssl" {
-			url = result.Addr + strconv.Itoa(result.Port)
-			webscanResult = append(webscanResult, &webscan.Result{url, "", 0, "", "", ""})
+			url := result.Addr + strconv.Itoa(result.Port)
+			urls = append(urls, url)
 		}
 	}
-
 	for _, result := range domainResult {
-		webscanResult = append(webscanResult, &webscan.Result{result.Domain, "", 0, "", "", ""})
+		urls = append(urls, result.Domain)
 	}
 
-	ReportWrite(options.Output, "WEB指纹", webscanResult)
+	webOptions := &webscan.Options{
+		Url:     urls,
+		Threads: options.WebThread,
+		Timeout: options.WebTimeout,
+		Proxy:   options.Proxy,
+	}
+	webRunner := webscan.NewRunner(webOptions)
+	webResult := webRunner.Run()
+
+	ReportWrite(options.Output, "WEB指纹", webResult)
 
 }

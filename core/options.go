@@ -18,6 +18,7 @@ type Options struct {
 	WebScan    bool     //web服务指纹扫描
 	PortThread int      //端口爆破线程数
 	WebThread  int      //指纹爆破线程数
+	WebTimeout int      //指纹扫描超时时间
 	Proxy      string
 	Ping       bool   //存活探测
 	Output     string // 输出名
@@ -38,9 +39,11 @@ func ParseOptions() *Options {
 	arg.StringVar(&options.Proxy, "proxy", "", "web扫描代理,如socks5://127.0.0.1:8080")
 	arg.IntVar(&options.PortThread, "pt", 500, "端口爆破线程,默认500")
 	arg.IntVar(&options.WebThread, "wt", 25, "web指纹爆破线程,默认25")
+	arg.IntVar(&options.WebTimeout, "timeout", 10, "web指纹扫描超时数,默认10")
+
 	arg.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
 	arg.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
-	arg.BoolVar(&options.WebScan, "ws", false, "是否开启web指纹扫描,all模式默认开启")
+
 	arg.Parse(os.Args[1:])
 	ShowBanner()
 

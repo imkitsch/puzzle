@@ -7,7 +7,6 @@ require (
 	github.com/boy-hack/ksubdomain v1.9.5
 	github.com/cheggaaa/pb/v3 v3.1.2
 	github.com/go-ping/ping v1.1.0
-	github.com/google/gopacket v1.1.19
 	github.com/imroc/req/v3 v3.25.0
 	github.com/lcvvvv/gonmap v1.3.4
 	github.com/logrusorgru/aurora v2.0.3+incompatible
@@ -15,6 +14,7 @@ require (
 	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/projectdiscovery/blackrock v0.0.0-20221025011524-9e4efe804fb4
 	github.com/projectdiscovery/subfinder/v2 v2.5.7
+	github.com/projectdiscovery/wappalyzergo v0.0.92
 	github.com/remeh/sizedwaitgroup v1.0.0
 	github.com/twmb/murmur3 v1.1.6
 	github.com/xuri/excelize/v2 v2.6.0
@@ -27,7 +27,6 @@ require (
 	aead.dev/minisign v0.2.0 // indirect
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect
 	github.com/Mzack9999/go-http-digest-auth-client v0.6.1-0.20220414142836-eb8883508809 // indirect
-	github.com/Nomango/go-cache v0.9.0 // indirect
 	github.com/VividCortex/ewma v1.2.0 // indirect
 	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
@@ -48,6 +47,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/go-github/v30 v30.1.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/google/gopacket v1.1.19 // indirect
 	github.com/google/pprof v0.0.0-20230323073829-e72429f035bd // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect

@@ -5,6 +5,7 @@ import (
 	"puzzle/gologger"
 	"puzzle/modules/ip/qqwry"
 	"puzzle/modules/subfind"
+	"puzzle/modules/webscan"
 	"puzzle/util"
 	"strings"
 )
@@ -52,4 +53,21 @@ func DomainStart(options *Options) {
 	}
 
 	ReportWrite(options.Output, "IP地址", ipInfoRes)
+
+	//web扫描
+	var urls []string
+
+	for _, result := range domainResult {
+		urls = append(urls, result.Domain)
+	}
+	webOptions := &webscan.Options{
+		Url:     urls,
+		Threads: options.WebThread,
+		Timeout: options.WebTimeout,
+		Proxy:   options.Proxy,
+	}
+	webRunner := webscan.NewRunner(webOptions)
+	webResult := webRunner.Run()
+
+	ReportWrite(options.Output, "WEB指纹", webResult)
 }

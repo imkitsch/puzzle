@@ -2,11 +2,11 @@ package util
 
 import (
 	"bufio"
-	"io/ioutil"
 	"math/rand"
 	"net"
 	"os"
 	"puzzle/gologger"
+	"runtime"
 	"sort"
 	"strconv"
 	"strings"
@@ -24,7 +24,7 @@ func RandomStr(n int) string {
 }
 
 func ReadFile(filename string) (bytes []byte, err error) {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		return
 	}
@@ -181,4 +181,8 @@ func StringSearch(s string, sub string) bool {
 	s = strings.ToLower(s)
 	sub = strings.ToLower(sub)
 	return strings.Contains(s, sub)
+}
+
+func IsWindows() bool {
+	return runtime.GOOS == "windows"
 }
