@@ -3,9 +3,9 @@ package core
 import (
 	"flag"
 	"os"
+	"path/filepath"
 	"puzzle/config"
 	"puzzle/gologger"
-	"puzzle/modules/ip/qqwry"
 	"puzzle/util"
 	"strings"
 )
@@ -56,8 +56,8 @@ func ParseOptions() *Options {
 	}
 
 	if *update == true {
-		util.Download(config.FingerUrl, config.FingerPrintPath)
-		util.Download(qqwry.QQwryUrl, config.QqwryPath)
+		util.Download(config.FingerUrl, filepath.Join(util.GetRunDir()+config.FingerPrintPath))
+		util.Download(config.QQwryUrl, filepath.Join(util.GetRunDir()+config.QqwryPath))
 		gologger.Infof("完成更新")
 		os.Exit(0)
 	}
