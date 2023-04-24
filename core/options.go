@@ -5,6 +5,7 @@ import (
 	"os"
 	"puzzle/config"
 	"puzzle/gologger"
+	"puzzle/modules/ip/qqwry"
 	"puzzle/util"
 	"strings"
 )
@@ -27,6 +28,7 @@ type Options struct {
 func ParseOptions() *Options {
 	options := &Options{}
 	arg := flag.NewFlagSet(os.Args[0], 1)
+	update := arg.Bool("update", false, "更新qqwrt库和指纹库")
 	model := arg.String("m", "all", "选择模式,现有all,domain,ip,默认为all模式")
 	domain := arg.String("d", "", "从单独域名中读取扫描")
 	domainList := arg.String("dl", "", "从文件中读取扫描域名")
@@ -50,6 +52,13 @@ func ParseOptions() *Options {
 	//显示参数信息
 	if *model == "" || *output == "" {
 		arg.Usage()
+		os.Exit(0)
+	}
+
+	if *update == true {
+		util.Download(config.FingerUrl, config.FingerPrintPath)
+		util.Download(qqwry.QQwryUrl, config.QqwryPath)
+		gologger.Infof("完成更新")
 		os.Exit(0)
 	}
 

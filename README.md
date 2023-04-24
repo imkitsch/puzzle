@@ -44,10 +44,12 @@ puzzle是纯go开发的信息收集工具，涵盖了子域名扫描、ip扫描�
         端口号,如1-65535,22,3306,默认为top1000
   -ping
         是否开启ping探测,默认为false
+  -proxy string
+        web扫描代理,如socks5://127.0.0.1:8080
   -pt int
-        端口爆破线程,默认800 (default 800)
-  -ws
-        是否开启web指纹扫描,all模式默认开启
+        端口爆破线程,默认500 (default 500)
+  -timeout int
+        web指纹扫描超时数,默认10 (default 10)
   -wt int
         web指纹爆破线程,默认25 (default 25)
 ```
@@ -58,5 +60,5 @@ puzzle是纯go开发的信息收集工具，涵盖了子域名扫描、ip扫描�
 domain模式和ip模式为all模式的拆解版
 
 ## TodoList
-wen扫描与指纹扫描
 页面js中的api和ak收集
+与漏扫的联动
