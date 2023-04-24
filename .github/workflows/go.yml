@@ -9,16 +9,57 @@ on:
       - created
 
 jobs:
-
   build:
-    runs-on: ubuntu-latest
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
     steps:
-    - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.19
+      - name: Set up libpcap-dev
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install libpcap-dev gcc -y
 
-    - name: Build
-      run: go build -o ./puzzle ./cmd/puzzle
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Build On Linux
+        run: |
+          go build  -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
+          chmod +x puzzle
+          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
+        if: matrix.os == 'ubuntu-latest'
+        env:
+          GOENABLE: 1
+          CGO_LDFLAGS: "-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
+
+      - name: Build On Darwin
+        run: |
+          go build -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
+          chmod +x puzzle
+          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
+        if: matrix.os == 'macos-latest'
+
+      - name: Build On Windows
+        run : |
+          go build -ldflags "-s -w" -o ./puzzle.exe ./cmd/puzzle/
+          tar -cvf puzzle-windows.tar puzzle.exe config/
+        if: matrix.os == 'ubuntu-latest'
+        env:
+          GOOS: windows
+          GOENABLE: 1
