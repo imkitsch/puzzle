@@ -50,7 +50,7 @@ func ParseOptions() *Options {
 	ShowBanner()
 
 	//显示参数信息
-	if *model == "" || *output == "" {
+	if (*model == "" || *output == "") && *update == false {
 		arg.Usage()
 		os.Exit(0)
 	}
