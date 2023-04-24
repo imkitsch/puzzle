@@ -51,8 +51,10 @@ jobs:
         run: |
           go build -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
           chmod +x puzzle
-          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
+          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-darwin.tar puzzle config/
         if: matrix.os == 'macos-latest'
+        env:
+          GOENABLE: 1
 
       - name: Build On Windows
         run : |
