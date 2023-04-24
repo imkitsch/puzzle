@@ -3,15 +3,17 @@ package webscan
 import (
 	"github.com/antchfx/htmlquery"
 	"io"
-	"puzzle/gologger"
 )
 
 func getHTTPTitle(Body *io.ReadCloser) string {
 
 	doc, err := htmlquery.Parse(*Body)
 	if err != nil {
-		gologger.Warningf(err.Error())
+		return ""
 	}
-	title := htmlquery.FindOne(doc, `/html/head/title/text()`)
+	title, err := htmlquery.Query(doc, `/html/head/title/text()`)
+	if err != nil || title == nil {
+		return ""
+	}
 	return htmlquery.InnerText(title)
 }
