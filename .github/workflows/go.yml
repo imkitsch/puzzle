@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-latest
+          - ubuntu-18.04
           - macos-latest
     steps:
       - name: Set up Go
@@ -25,7 +25,7 @@ jobs:
         id: go
 
       - name: Set up libpcap-dev
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-18.04'
         run: sudo apt-get install libpcap-dev gcc -y
 
       - name: Get version
@@ -43,10 +43,10 @@ jobs:
           go build  -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
           chmod +x puzzle
           tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-18.04'
         env:
           GOENABLE: 1
-          CGO_LDFLAGS: "-g -O2 -L/usr/lib/x86_64-linux-gnu/libpcap.so.a -I/usr/lib/x86_64-linux-gnu/libpcap.so.a"
+#          CGO_LDFLAGS: "-g -O2 -L/usr/lib/x86_64-linux-gnu/libpcap.so.a -I/usr/lib/x86_64-linux-gnu/libpcap.so.a"
 
       - name: Build On Darwin
         run: |
@@ -61,7 +61,7 @@ jobs:
         run : |
           go build -ldflags "-s -w" -o ./puzzle.exe ./cmd/puzzle/
           tar -cvf puzzle-windows.tar puzzle.exe config/
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-18.04'
         env:
           GOOS: windows
           GOENABLE: 1
