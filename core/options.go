@@ -57,7 +57,12 @@ func ParseOptions() *Options {
 
 	if *update == true {
 		util.Download(config.FingerUrl, filepath.Join(util.GetRunDir()+config.FingerPrintPath))
-		util.Download(config.QQwryUrl, filepath.Join(util.GetRunDir()+config.QqwryPath))
+		url := util.GetGithubLatestUrl(config.QQwryGithubRepo)
+		if url != "" {
+			util.Download(url, filepath.Join(util.GetRunDir()+config.QqwryPath))
+		} else {
+			gologger.Warningf("获取纯真数据库失败")
+		}
 		gologger.Infof("完成更新")
 		os.Exit(0)
 	}
