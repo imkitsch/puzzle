@@ -14,7 +14,6 @@ import (
 )
 
 const (
-	QQwryUrl = "https://99wry.cf/qqwry.dat"
 	// IndexLen 索引长度
 	IndexLen = 7
 	// RedirectMode1 国家的类型, 指向另一个指向
@@ -44,7 +43,7 @@ func (f *fileData) InitIPData() (rs interface{}) {
 	_, err := os.Stat(f.FilePath)
 	if err != nil && os.IsNotExist(err) {
 		gologger.Printf("文件不存在，尝试从网络获取最新纯真 IP 库")
-		util.Download(QQwryUrl, f.FilePath)
+		util.Download(config.QQwryUrl, f.FilePath)
 	} else {
 		// 打开文件句柄
 		f.Path, err = os.OpenFile(f.FilePath, os.O_RDONLY, 0400)
