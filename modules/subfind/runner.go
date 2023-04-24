@@ -2,6 +2,8 @@ package subfind
 
 import (
 	"github.com/boy-hack/ksubdomain/core/device"
+	"os"
+	"puzzle/config"
 	"puzzle/gologger"
 	"puzzle/util"
 )
@@ -63,6 +65,11 @@ func (r *Runner) Run() (dr []*domainResult) {
 			gologger.Printf("\n")
 		}
 
+	}
+
+	err := os.Remove(config.DeviceConfig)
+	if err != nil {
+		gologger.Warningf("删除Device文件失败: %s", err.Error())
 	}
 	return
 }
