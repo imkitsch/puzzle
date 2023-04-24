@@ -17,6 +17,13 @@ puzzle是纯go开发的信息收集工具，涵盖了子域名扫描、ip扫描�
 
 ## 安装
 从Releases中下载，或者自行编译，编译后的文件要同config文件夹在同级目录下
+目前只支持Go1.19版本编译，高于或低于都会报错
+编译命令:
+```shell
+cd cmd/puzzle
+go build -ldflags "-s -w"
+mv puzzle ../..
+```
 
 ## 使用
 ```text
@@ -58,8 +65,18 @@ puzzle是纯go开发的信息收集工具，涵盖了子域名扫描、ip扫描�
 启动必须参数为`-m`和`-o`，指定扫描模式和输出文件
 
 本工具本着一次性解决的原则，建议使用all模式，all模式只需从`-d`或`-dl`输入，工具会识别ip和域名，并分别进行子域名爆破和ip扫描，并从子域名中过滤cdn获取真实ip再次扫描
-
 domain模式和ip模式为all模式的拆解版
+
+example:
+```shell
+./puzzle -m all -d example.com -o example
+
+./puzzle -m all -dl file.txt -o example
+```
+
+使用注意事项:
++ 输出文件不允许覆盖
++ windows需要安装npcap,linux需要安装libpcap
 
 ## TodoList
 页面js中的api和ak收集
