@@ -15,8 +15,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-latest
-          - macos-latest
+          - ubuntu-19.04
+          - macos-19.04
     steps:
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -25,7 +25,7 @@ jobs:
         id: go
 
       - name: Set up libpcap-dev
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-19.04'
         run: sudo apt-get install libpcap-dev gcc -y
 
       - name: Get version
@@ -43,23 +43,22 @@ jobs:
           go build  -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
           chmod +x puzzle
           tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-19.04'
         env:
           GOENABLE: 1
-          CGO_LDFLAGS: "-Wl,-static -L/usr/lib/x86_64-linux-gnu/libpcap.a -lpcap -Wl,-Bdynamic"
 
       - name: Build On Darwin
         run: |
           go build -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
           chmod +x puzzle
-          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
-        if: matrix.os == 'macos-latest'
+          tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-darwin.tar puzzle config/
+        if: matrix.os == 'macos-19.04'
 
       - name: Build On Windows
         run : |
           go build -ldflags "-s -w" -o ./puzzle.exe ./cmd/puzzle/
           tar -cvf puzzle-windows.tar puzzle.exe config/
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-19.04'
         env:
           GOOS: windows
           GOENABLE: 1
