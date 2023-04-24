@@ -16,7 +16,7 @@ jobs:
       matrix:
         os:
           - ubuntu-19.04
-          - macos-19.04
+          - macos-latest
     steps:
       - name: Set up Go
         uses: actions/setup-go@v3
@@ -52,7 +52,7 @@ jobs:
           go build -ldflags "-s -w" -o ./puzzle ./cmd/puzzle/
           chmod +x puzzle
           tar -cvf puzzle-${{ steps.get_version.outputs.VERSION }}-linux.tar puzzle config/
-        if: matrix.os == 'macos-19.04'
+        if: matrix.os == 'macos-latest'
 
       - name: Build On Windows
         run : |
