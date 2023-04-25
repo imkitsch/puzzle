@@ -24,7 +24,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		DomainTotal: len(domains),
 		Resolvers:   options.GetResolvers(""),
 		Silent:      false,
-		TimeOut:     10,
+		TimeOut:     6,
 		Retry:       3,
 		Method:      runner.VerifyType,
 		DnsType:     "a",
