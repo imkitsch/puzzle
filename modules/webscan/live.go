@@ -44,7 +44,7 @@ func (r *Runner) CheckAlive() (results []string) {
 						if err == nil {
 							results = append(results, resp.Response.Request.URL.String())
 						} else {
-							gologger.Warningf("%v", err)
+							gologger.Debugf("%v", err)
 						}
 					} else {
 						results = append(results, resp.Response.Request.URL.String())
@@ -57,7 +57,7 @@ func (r *Runner) CheckAlive() (results []string) {
 						results = append(results, resp.Response.Request.URL.String())
 						mutex.Unlock()
 					} else {
-						gologger.Warningf("%v", err)
+						gologger.Debugf("%v", err)
 					}
 				}
 				wg.Done()
