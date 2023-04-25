@@ -2,6 +2,7 @@ package util
 
 import (
 	"bufio"
+	"fmt"
 	"math/rand"
 	"net"
 	"os"
@@ -176,4 +177,13 @@ func StringSearch(s string, sub string) bool {
 
 func IsWindows() bool {
 	return runtime.GOOS == "windows"
+}
+
+func IsDuplicate[T any](slice []T, val T) bool {
+	for _, item := range slice {
+		if fmt.Sprint(item) == fmt.Sprint(val) {
+			return true
+		}
+	}
+	return false
 }

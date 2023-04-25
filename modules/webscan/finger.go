@@ -13,7 +13,9 @@ import (
 func (r *Runner) GetFinger(url string) *Result {
 	respBody, headers, rawHeaders, statusCode, length, title, iconHash, err := getResponseData(r.reqClient, url)
 	if err != nil {
-		return &Result{}
+		return &Result{
+			Url: url,
+		}
 	}
 
 	fingerprints := r.wappalyzerClient.Fingerprint(rawHeaders, respBody)
@@ -30,8 +32,6 @@ func (r *Runner) GetFinger(url string) *Result {
 
 	var fpName []string
 	for _, v := range r.Fingerprint {
-		flag := false
-
 		hflag := true
 		if len(v.Headers) > 0 {
 			hflag = false
@@ -49,9 +49,6 @@ func (r *Runner) GetFinger(url string) *Result {
 				}
 			}
 		}
-		if len(v.Headers) > 0 && hflag {
-			flag = true
-		}
 
 		kflag := true
 		if len(v.Keyword) > 0 {
@@ -63,9 +60,6 @@ func (r *Runner) GetFinger(url string) *Result {
 				}
 				kflag = true
 			}
-		}
-		if len(v.Keyword) > 0 && kflag {
-			flag = true
 		}
 
 		iflag := true
@@ -79,11 +73,8 @@ func (r *Runner) GetFinger(url string) *Result {
 				iflag = false
 			}
 		}
-		if len(v.FaviconHash) > 0 && iflag {
-			flag = true
-		}
 
-		if flag {
+		if iflag && kflag && hflag {
 			fpName = append(fpName, v.Name)
 		}
 	}
