@@ -111,7 +111,7 @@ func AllStart(options *Options) {
 
 	for _, result := range portscanResults {
 		if result.ServiceName == "http" || result.ServiceName == "https" || result.ServiceName == "ssl" {
-			url := result.Addr + strconv.Itoa(result.Port)
+			url := result.Addr + ":" + strconv.Itoa(result.Port)
 			urls = append(urls, url)
 		}
 	}

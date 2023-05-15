@@ -70,3 +70,5 @@ jobs:
           fail_on_unmatched_files: true
           token: ${{ secrets.TOKEN }}
           append_body: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
