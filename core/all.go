@@ -73,7 +73,9 @@ func AllStart(options *Options) {
 	ips = util.RemoveRepeatedStringElement(ips)
 
 	//获取可能ip段
-	ips = util.GetSerialIp(ips)
+	if options.SerialIp == true {
+		ips = util.GetSerialIp(ips)
+	}
 
 	//ping检测
 	if options.Ping == true {

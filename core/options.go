@@ -22,6 +22,7 @@ type Options struct {
 	WebTimeout int      //指纹扫描超时时间
 	Proxy      string
 	Ping       bool   //存活探测
+	SerialIp   bool   //ip连续段
 	Output     string // 输出名
 }
 
@@ -45,6 +46,7 @@ func ParseOptions() *Options {
 
 	arg.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
 	arg.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
+	arg.BoolVar(&options.SerialIp, "serial", false, "是否开启连续ip段检测")
 
 	arg.Parse(os.Args[1:])
 	ShowBanner()
