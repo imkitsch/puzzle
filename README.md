@@ -58,6 +58,8 @@ mv puzzle ../..
         web扫描代理,如socks5://127.0.0.1:8080
   -pt int
         端口爆破线程,默认500 (default 500)
+  -serial
+    	是否开启连续ip段检测
   -timeout int
         web指纹扫描超时数,默认10 (default 10)
   -update
