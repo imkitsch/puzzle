@@ -7,7 +7,7 @@ require (
 	github.com/boy-hack/ksubdomain v1.9.5
 	github.com/cheggaaa/pb/v3 v3.1.2
 	github.com/go-ping/ping v1.1.0
-	github.com/imroc/req/v3 v3.25.0
+	github.com/imroc/req/v3 v3.35.2
 	github.com/lcvvvv/gonmap v1.3.4
 	github.com/logrusorgru/aurora v2.0.3+incompatible
 	github.com/mattn/go-colorable v0.1.13
@@ -19,8 +19,8 @@ require (
 	github.com/twmb/murmur3 v1.1.6
 	github.com/xuri/excelize/v2 v2.6.0
 	go.uber.org/ratelimit v0.2.0
-	golang.org/x/net v0.8.0
-	golang.org/x/text v0.8.0
+	golang.org/x/net v0.10.0
+	golang.org/x/text v0.9.0
 )
 
 require (
@@ -48,7 +48,7 @@ require (
 	github.com/google/go-github/v30 v30.1.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/gopacket v1.1.19 // indirect
-	github.com/google/pprof v0.0.0-20230323073829-e72429f035bd // indirect
+	github.com/google/pprof v0.0.0-20230510103437-eeec1cb781c3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/hako/durafmt v0.0.0-20210316092057-3a2c319c1acd // indirect
@@ -56,13 +56,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/lib/pq v1.10.7 // indirect
-	github.com/lucas-clemente/quic-go v0.31.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
-	github.com/marten-seemann/qpack v0.3.0 // indirect
-	github.com/marten-seemann/qtls-go1-16 v0.1.5 // indirect
-	github.com/marten-seemann/qtls-go1-17 v0.1.2 // indirect
-	github.com/marten-seemann/qtls-go1-18 v0.1.4 // indirect
-	github.com/marten-seemann/qtls-go1-19 v0.1.2 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/mholt/archiver v3.1.1+incompatible // indirect
@@ -76,7 +70,7 @@ require (
 	github.com/muesli/termenv v0.15.1 // indirect
 	github.com/nwaples/rardecode v1.1.3 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/onsi/ginkgo/v2 v2.9.2 // indirect
+	github.com/onsi/ginkgo/v2 v2.9.5 // indirect
 	github.com/oschwald/maxminddb-golang v1.8.0 // indirect
 	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5 // indirect
 	github.com/pierrec/lz4 v2.6.1+incompatible // indirect
@@ -90,6 +84,10 @@ require (
 	github.com/projectdiscovery/retryabledns v1.0.21 // indirect
 	github.com/projectdiscovery/retryablehttp-go v1.0.12 // indirect
 	github.com/projectdiscovery/utils v0.0.16 // indirect
+	github.com/quic-go/qpack v0.4.0 // indirect
+	github.com/quic-go/qtls-go1-19 v0.3.2 // indirect
+	github.com/quic-go/qtls-go1-20 v0.2.2 // indirect
+	github.com/quic-go/quic-go v0.35.0 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
@@ -105,14 +103,14 @@ require (
 	github.com/yuin/goldmark-emoji v1.0.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
-	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
-	golang.org/x/mod v0.9.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
+	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
-	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/term v0.6.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/sync v0.2.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/term v0.8.0 // indirect
+	golang.org/x/tools v0.9.1 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/djherbis/times.v1 v1.3.0 // indirect
