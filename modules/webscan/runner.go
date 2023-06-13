@@ -108,7 +108,7 @@ func checkRedirect(headers ...string) req.RedirectPolicy {
 		//fmt.Println(via[0].Host)
 		//自用，将url根据需求进行组合
 		if len(via) >= 1 {
-			if util.StringSearch(req.URL.String(), via[0].Host) == false {
+			if req.URL.Host != via[0].Host {
 				return errors.New("stopped after 1 redirects")
 			}
 		}
