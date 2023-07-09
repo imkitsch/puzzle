@@ -23,8 +23,6 @@ require (
 	golang.org/x/text v0.9.0
 )
 
-replace github.com/boy-hack/ksubdomain v1.9.5 => github.com/imkitsch/ksubdomain v1.0.0
-
 require (
 	aead.dev/minisign v0.2.0 // indirect
 	github.com/AndreasBriese/bbloom v0.0.0-20190825152654-46b345b51c96 // indirect
