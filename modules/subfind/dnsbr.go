@@ -7,6 +7,7 @@ import (
 	"github.com/boy-hack/ksubdomain/runner"
 	"github.com/boy-hack/ksubdomain/runner/outputter"
 	"puzzle/gologger"
+	"time"
 )
 
 func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainResult {
@@ -39,7 +40,12 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	}
 	ctx := context.Background()
 	r.RunEnumeration(ctx)
-	r.Close()
+	select {
+	case <-ctx.Done():
+		r.Close()
+	default:
+		time.Sleep(2 * time.Second)
+	}
 	return buffPrinter.OutPut()
 }
 
