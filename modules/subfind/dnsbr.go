@@ -40,11 +40,14 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	}
 	ctx := context.Background()
 	r.RunEnumeration(ctx)
-	select {
-	case <-ctx.Done():
-		r.Close()
-	default:
-		time.Sleep(2 * time.Second)
+	for {
+		select {
+		case <-ctx.Done():
+			r.Close()
+			break
+		default:
+			time.Sleep(2 * time.Second)
+		}
 	}
 	return buffPrinter.OutPut()
 }
