@@ -3,6 +3,7 @@ package subfind
 import (
 	"github.com/oschwald/geoip2-golang"
 	"net"
+	"puzzle/config"
 	"puzzle/gologger"
 	"puzzle/modules/ip/qqwry"
 	"puzzle/util"
@@ -398,7 +399,11 @@ func asnCheck(ip string) bool {
 		}
 	}
 
-	reader, err := geoip2.FromBytes(GetAsnData())
+	asnData, err := util.ReadFile(util.GetRunDir() + config.GeoLitePath)
+	if err != nil {
+		gologger.Fatalf("读取ASN数据文件失败:%s", err.Error())
+	}
+	reader, err := geoip2.FromBytes(asnData)
 	if err != nil {
 		gologger.Fatalf("读取资源文件失败:%s", err.Error())
 	}
