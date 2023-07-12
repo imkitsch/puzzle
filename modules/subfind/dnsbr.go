@@ -6,7 +6,10 @@ import (
 	"github.com/boy-hack/ksubdomain/core/options"
 	"github.com/boy-hack/ksubdomain/runner"
 	"github.com/boy-hack/ksubdomain/runner/outputter"
+	"path/filepath"
+	"puzzle/config"
 	"puzzle/gologger"
+	"puzzle/util"
 	"time"
 )
 
@@ -46,7 +49,18 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 }
 
 func GetDeviceConfig() *device.EtherTable {
-	ether := device.AutoGetDevices()
-	gologger.Infof("获取配置成功!")
+	var ether *device.EtherTable
+	deviceFile := filepath.Join(util.GetRunDir() + config.DeviceConfig)
+	if util.FileExists(deviceFile) == true {
+		var err error
+		ether, err = device.ReadConfig(deviceFile)
+		if err != nil {
+			gologger.Fatalf("读取配置失败:%v", err)
+		}
+		gologger.Infof("读取配置%s成功!", deviceFile)
+	} else {
+		ether = device.AutoGetDevices()
+		gologger.Infof("获取配置成功!")
+	}
 	return ether
 }
