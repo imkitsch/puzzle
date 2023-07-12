@@ -23,6 +23,7 @@ type Options struct {
 	Proxy      string
 	Ping       bool   //存活探测
 	SerialIp   bool   //ip连续段
+	Vul        bool   //漏洞扫描
 	Output     string // 输出名
 }
 
@@ -47,6 +48,7 @@ func ParseOptions() *Options {
 	arg.BoolVar(&options.Ping, "ping", false, "是否开启ping探测,默认为false")
 	arg.BoolVar(&options.Level3, "l3", false, "是否爆破三级域名，默认为false")
 	arg.BoolVar(&options.SerialIp, "serial", false, "是否开启连续ip段检测")
+	arg.BoolVar(&options.Vul, "vul", false, "是否开启漏洞扫描")
 
 	arg.Parse(os.Args[1:])
 	ShowBanner()
