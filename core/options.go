@@ -58,6 +58,7 @@ func ParseOptions() *Options {
 	}
 
 	if *update == true {
+		util.Download(config.GepLiteUrl, filepath.Join(util.GetRunDir()+config.GeoLitePath))
 		util.Download(config.FingerUrl, filepath.Join(util.GetRunDir()+config.FingerPrintPath))
 		url := util.GetGithubLatestUrl(config.QQwryGithubRepo)
 		if url != "" {
