@@ -11,7 +11,7 @@ func IsWildCard(domain string) bool {
 		if err != nil {
 			continue
 		}
-		return true
+		return false
 	}
-	return false
+	return true
 }
