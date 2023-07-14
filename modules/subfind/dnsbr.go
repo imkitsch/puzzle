@@ -23,7 +23,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		close(domainChanel)
 	}()
 	opt := &options.Options{
-		Rate:        options.Band2Rate("2m"),
+		Rate:        options.Band2Rate("1m"),
 		Domain:      domainChanel,
 		DomainTotal: len(domains),
 		Resolvers:   options.GetResolvers(""),
