@@ -25,6 +25,7 @@ func NewRunner(options *Options) *Runner {
 func (r *Runner) Run() {
 	if len(r.options.UrlList) == 0 {
 		gologger.Infof("无存活web,跳过漏洞扫描")
+		return
 	}
 	gologger.Infof("开始漏洞扫描,模块为xpoc")
 
