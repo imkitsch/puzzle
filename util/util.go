@@ -140,10 +140,7 @@ func GetSerialIp(ips []string) []string {
 			for _, ip := range valueList {
 				ipLastPartList = append(ipLastPartList, strings.Split(ip, ".")[3])
 			}
-			ipLastPartList = sortStringNumber(ipLastPartList)
-			fmt.Println(ipLastPartList)
-			start, _ := strconv.Atoi(ipLastPartList[0])
-			end, _ := strconv.Atoi(ipLastPartList[len(ipLastPartList)-1])
+			start, end := sortStringNumber(ipLastPartList)
 			for i := start; i <= end; i++ {
 				newIp := cRange + "." + strconv.Itoa(i)
 				newIpList = append(newIpList, newIp)
@@ -153,18 +150,14 @@ func GetSerialIp(ips []string) []string {
 	return newIpList
 }
 
-func sortStringNumber(s []string) []string {
+func sortStringNumber(s []string) (start int, end int) {
 	var numbers []int
-	var stringNum []string
 	for _, v := range s {
 		n, _ := strconv.Atoi(v)
 		numbers = append(numbers, n)
 	}
 	sort.Ints(numbers)
-	for _, v := range numbers {
-		stringNum = append(stringNum, strconv.Itoa(v))
-	}
-	return stringNum
+	return numbers[0], numbers[len(numbers)-1]
 }
 
 // HasLocalIP 检测 IP 地址是否是内网地址
