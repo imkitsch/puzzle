@@ -2,7 +2,9 @@ package vulscan
 
 import (
 	"bytes"
+	"fmt"
 	"puzzle/gologger"
+	"strings"
 )
 
 type Options struct {
@@ -21,13 +23,12 @@ func NewRunner(options *Options) *Runner {
 }
 
 func (r *Runner) Run() {
+	if len(r.options.UrlList) == 0 {
+		gologger.Infof("无存活web,跳过漏洞扫描")
+	}
 	gologger.Infof("开始漏洞扫描,模块为xpoc")
 
-	urls := ""
-	for _, url := range r.options.UrlList {
-		urls = urls + url + "\n"
-	}
-	urls = urls[:len(urls)-1]
+	urls := fmt.Sprintf(strings.Join(r.options.UrlList, "\n"))
 
 	err := xpocScan(bytes.NewBufferString(urls), r.options.Output+".html")
 	if err != nil {
