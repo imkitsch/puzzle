@@ -1,17 +1,18 @@
 package subfind
 
-import "net"
+import (
+	"net"
+)
 import "puzzle/util"
 
 func IsWildCard(domain string) bool {
-	ranges := [2]int{}
-	for _, _ = range ranges {
+	for i := 0; i < 2; i++ {
 		subdomain := util.RandomStr(6) + "." + domain
 		_, err := net.LookupIP(subdomain)
 		if err != nil {
 			continue
 		}
-		return false
+		return true
 	}
-	return true
+	return false
 }
