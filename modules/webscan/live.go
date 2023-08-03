@@ -1,7 +1,6 @@
 package webscan
 
 import (
-	"fmt"
 	"puzzle/gologger"
 	"strings"
 	"sync"
@@ -72,7 +71,6 @@ func (r *Runner) CheckAlive() (results []string) {
 	close(taskChan)
 	wg.Wait()
 
-	gologger.Infof("HTTP探活结束")
-	fmt.Println(results)
+	gologger.Infof("HTTP探活结束,存活IP数量: %d", len(results))
 	return
 }
