@@ -1,7 +1,7 @@
 package config
 
 const OutDir = "./out"
-const Version = "2.0"
+const Version = "2.1"
 const QqwryPath = "/config/qqwry.dat"
 const QQwryGithubRepo = "metowolf/qqwry.dat"
 const FingerPrintPath = "/config/web/web_fingerprint_v3.json"
