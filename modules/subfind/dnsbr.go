@@ -26,7 +26,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		Rate:        options.Band2Rate("2m"),
 		Domain:      domainChanel,
 		DomainTotal: len(domains),
-		Resolvers:   options.GetResolvers(""),
+		Resolvers:   []string{"223.5.5.5", "223.6.6.6", "119.29.29.29", "182.254.116.116", "114.114.115.115", "114.114.114.114", "8.8.8.8"},
 		Silent:      false,
 		TimeOut:     6,
 		Retry:       3,
