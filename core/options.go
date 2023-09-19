@@ -38,7 +38,7 @@ func ParseOptions() *Options {
 
 	ip := arg.String("i", "", "ip输入,仅支持单次输入如192.168.1.1 or 192.168.1.1/24")
 	ipList := arg.String("ipl", "", "从文件中获取ip")
-	port := arg.String("p", "", "端口号,如1-65535,22,3306,默认为top1000")
+	port := arg.String("p", "top1000", "端口号,如1-65535,22,3306,默认为top1000")
 
 	arg.StringVar(&options.Proxy, "proxy", "", "web扫描代理,如socks5://127.0.0.1:8080")
 	arg.IntVar(&options.PortThread, "pt", 500, "端口爆破线程,默认500")

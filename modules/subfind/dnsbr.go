@@ -23,7 +23,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 		close(domainChanel)
 	}()
 	opt := &options.Options{
-		Rate:        options.Band2Rate("2m"),
+		Rate:        options.Band2Rate("1m"),
 		Domain:      domainChanel,
 		DomainTotal: len(domains),
 		Resolvers:   []string{"223.5.5.5", "223.6.6.6", "119.29.29.29", "182.254.116.116", "114.114.115.115", "114.114.114.114", "8.8.8.8"},
@@ -45,6 +45,7 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	r.RunEnumeration(ctx)
 	time.Sleep(10 * time.Second)
 	r.Close()
+	gologger.Infof("\n获取域名数量: %d", len(buffPrinter.OutPut()))
 	return buffPrinter.OutPut()
 }
 
