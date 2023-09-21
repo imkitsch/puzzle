@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"puzzle/gologger"
+	"reflect"
 	"runtime"
 	"sort"
 	"strconv"
@@ -194,4 +195,72 @@ func IsDuplicate[T any](slice []T, val T) bool {
 		}
 	}
 	return false
+}
+
+// ConvertStrSlice2Map 将字符串 slice 转为 map[string]struct{}。
+func ConvertStrSlice2Map(sl []string) map[string]struct{} {
+	set := make(map[string]struct{}, len(sl))
+	for _, v := range sl {
+		set[v] = struct{}{}
+	}
+	return set
+}
+
+// InSlice 判断字符串是否在 slice 中。
+func InSlice(slice []string, s string) bool {
+	m := ConvertStrSlice2Map(slice)
+	_, ok := m[s]
+	return ok
+}
+
+// InMap 判断字符串是否在 map 中。
+func InMap(m map[string]struct{}, s string) bool {
+	_, ok := m[s]
+	return ok
+}
+
+// RemoveDuplicateElement 任意切片类型去重
+func RemoveDuplicateElement(originals interface{}) interface{} {
+	temp := map[string]struct{}{}
+	switch slice := originals.(type) {
+	case []string:
+		result := make([]string, 0, len(originals.([]string)))
+		for _, item := range slice {
+			key := fmt.Sprint(item)
+			if _, ok := temp[key]; !ok {
+				temp[key] = struct{}{}
+				result = append(result, item)
+			}
+		}
+		return result
+	case []int64:
+		result := make([]int64, 0, len(originals.([]int64)))
+		for _, item := range slice {
+			key := fmt.Sprint(item)
+			if _, ok := temp[key]; !ok {
+				temp[key] = struct{}{}
+				result = append(result, item)
+			}
+		}
+		return result
+	default:
+		return nil
+	}
+}
+
+func RemoveRepeatedStringArrayElement(str [][]string) [][]string {
+	newRes := make([][]string, 0)
+	for i := 0; i < len(str); i++ {
+		flag := false
+		for j := i + 1; j < len(str); j++ {
+			if reflect.DeepEqual(str[i], str[j]) {
+				flag = true
+				break
+			}
+		}
+		if !flag {
+			newRes = append(newRes, str[i])
+		}
+	}
+	return newRes
 }

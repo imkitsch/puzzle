@@ -42,6 +42,14 @@ func XlsxInit(output string) error {
 	}
 	file.SetActiveSheet(WebFingerIndex)
 
+	//初始化爬虫信息表
+	SpiderIndex := file.NewSheet("Spider")
+	SpiderCategories := map[string]string{"A1": "同段域名"}
+	for k, v := range SpiderCategories {
+		file.SetCellValue("Spider", k, v)
+	}
+	file.SetActiveSheet(SpiderIndex)
+
 	file.SetActiveSheet(DomainIndex)
 
 	file.DeleteSheet("Sheet1")

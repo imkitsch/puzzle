@@ -5,6 +5,7 @@ import (
 	"puzzle/gologger"
 	"puzzle/modules/ip/portscan"
 	"puzzle/modules/ip/qqwry"
+	"puzzle/modules/spider"
 	"puzzle/modules/subfind"
 	"puzzle/modules/vulscan"
 	"puzzle/modules/webscan"
@@ -111,9 +112,40 @@ func AllStart(options *Options) {
 		ReportWrite(options.Output, "端口服务", portscanResults)
 	}
 
-	//web扫描
 	var urls []string
 
+	//爬虫获取遗漏信息
+	var subdomains []string
+
+	for _, domainRes := range domainResult {
+		subdomains = append(subdomains, domainRes.Domain)
+	}
+	fofaEmail, fofaKey := spider.GetFofaKey()
+	if fofaEmail != "" && fofaKey != "" {
+		spiderOptions := &spider.Options{
+			Domains:    domains,
+			Subdomains: subdomains,
+			Ips:        ips,
+			Email:      fofaEmail,
+			Key:        fofaKey,
+		}
+
+		spiderRunner := spider.NewRunner(spiderOptions)
+		spiderResults := spiderRunner.Run()
+		urls = append(urls, spiderResults.Urls...)
+
+		if spiderResults.AddSubdomains != nil {
+			ReportWrite(options.Output, "子域名", spiderResults.AddSubdomains)
+		}
+
+		if spiderResults.AddSubdomains != nil {
+			ReportWrite(options.Output, "Spider", spiderResults.AddDomains)
+		}
+
+		gologger.Infof("结束爬虫信息收集")
+	}
+
+	//web扫描
 	for _, result := range portscanResults {
 		if result.ServiceName == "http" || result.ServiceName == "https" || result.ServiceName == "ssl" {
 			url := result.Addr + ":" + strconv.Itoa(result.Port)
