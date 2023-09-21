@@ -10,7 +10,7 @@ func XlsxInit(output string) error {
 	file := excelize.NewFile()
 
 	//初始化域名表
-	DomainIndex := file.NewSheet("子域名")
+	DomainIndex, _ := file.NewSheet("子域名")
 	DomainCategories := map[string]string{"A1": "子域名", "B1": "IsCDN", "C1": "A解析", "D1": "CNAME"}
 	for k, v := range DomainCategories {
 		file.SetCellValue("子域名", k, v)
@@ -18,7 +18,7 @@ func XlsxInit(output string) error {
 
 	//初始化ip表
 	//创建表
-	IpIndex := file.NewSheet("IP地址")
+	IpIndex, _ := file.NewSheet("IP地址")
 	//初始数据
 	IpCategories := map[string]string{"A1": "IP", "B1": "Country", "C1": "Area"}
 	for k, v := range IpCategories {
@@ -27,7 +27,7 @@ func XlsxInit(output string) error {
 	file.SetActiveSheet(IpIndex)
 
 	//初始化端口服务表
-	PortIndex := file.NewSheet("端口服务")
+	PortIndex, _ := file.NewSheet("端口服务")
 	PortCategories := map[string]string{"A1": "Address", "B1": "Port", "C1": "ServiceName", "D1": "ProbeName", "E1": "VendorProduct", "F1": "Version"}
 	for k, v := range PortCategories {
 		file.SetCellValue("端口服务", k, v)
@@ -35,7 +35,7 @@ func XlsxInit(output string) error {
 	file.SetActiveSheet(PortIndex)
 
 	//初始化web指纹表
-	WebFingerIndex := file.NewSheet("WEB指纹")
+	WebFingerIndex, _ := file.NewSheet("WEB指纹")
 	WebFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger", "F1": "Wappalyzer"}
 	for k, v := range WebFingerCategories {
 		file.SetCellValue("WEB指纹", k, v)
@@ -43,7 +43,7 @@ func XlsxInit(output string) error {
 	file.SetActiveSheet(WebFingerIndex)
 
 	//初始化爬虫信息表
-	SpiderIndex := file.NewSheet("Spider")
+	SpiderIndex, _ := file.NewSheet("Spider")
 	SpiderCategories := map[string]string{"A1": "同段域名"}
 	for k, v := range SpiderCategories {
 		file.SetCellValue("Spider", k, v)
@@ -80,7 +80,7 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 		for colID_p := 0; colID_p < len(cols); colID_p++ {
 			//fmt.Println(row_pre)
 			//fmt.Println(colID_p)
-			if row_pre == nil {
+			if row_pre == nil || len(row_pre) == colID_p {
 				row_p[colID_p] = nil
 			} else {
 				row_p[colID_p] = row_pre[colID_p]
@@ -99,7 +99,7 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 		for j := 0; j < tmp.NumField(); j++ {
 			row[j] = excelize.Cell{Value: tmp.Field(j).Interface()}
 		}
-		cell, _ := excelize.CoordinatesToCellName(1, i+2)
+		cell, _ := excelize.CoordinatesToCellName(1, len(rows)+i+1)
 		if err := streamWriter.SetRow(cell, row); err != nil {
 			gologger.Fatalf("写入流失败:%s", err.Error())
 		}
