@@ -25,18 +25,18 @@ type fofaResult struct {
 
 type Result struct {
 	Urls          []string
-	AddDomains    []*dResult
-	AddSubdomains []*sdResult
+	AddDomains    []*DResult
+	AddSubdomains []*SdResult
 }
 
-type sdResult struct {
+type SdResult struct {
 	Domain string
 	CDN    bool
 	Ip     string
 	CName  string
 }
 
-type dResult struct {
+type DResult struct {
 	Domain string
 }
 
