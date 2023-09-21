@@ -156,6 +156,8 @@ func AllStart(options *Options) {
 		urls = append(urls, result.Domain)
 	}
 
+	urls = util.RemoveRepeatedStringElement(urls)
+
 	webOptions := &webscan.Options{
 		Url:     urls,
 		Threads: options.WebThread,
