@@ -25,8 +25,19 @@ type fofaResult struct {
 
 type Result struct {
 	Urls          []string
-	AddDomains    []string
-	AddSubdomains [][]string
+	AddDomains    []*dResult
+	AddSubdomains []*sdResult
+}
+
+type sdResult struct {
+	Domain string
+	CDN    bool
+	Ip     string
+	CName  string
+}
+
+type dResult struct {
+	Domain string
 }
 
 type ApiResults struct {
