@@ -70,13 +70,13 @@ func (r *Runner) Run() *Result {
 	addSubdomains = util.RemoveRepeatedStringArrayElement(addSubdomains)
 
 	for _, v := range addDomains {
-		result.AddDomains = append(result.AddDomains, &dResult{
+		result.AddDomains = append(result.AddDomains, &DResult{
 			Domain: v,
 		})
 	}
 
 	for _, v := range addSubdomains {
-		result.AddSubdomains = append(result.AddSubdomains, &sdResult{
+		result.AddSubdomains = append(result.AddSubdomains, &SdResult{
 			Domain: v[0],
 			CDN:    false,
 			Ip:     v[1],

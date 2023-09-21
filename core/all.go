@@ -134,11 +134,11 @@ func AllStart(options *Options) {
 		spiderResults := spiderRunner.Run()
 		urls = append(urls, spiderResults.Urls...)
 
-		if spiderResults.AddSubdomains != nil {
+		if len(spiderResults.AddSubdomains) != 0 {
 			ReportWrite(options.Output, "子域名", spiderResults.AddSubdomains)
 		}
 
-		if spiderResults.AddSubdomains != nil {
+		if len(spiderResults.AddDomains) != 0 {
 			ReportWrite(options.Output, "Spider", spiderResults.AddDomains)
 		}
 
