@@ -38,7 +38,11 @@ func (r *Runner) Run() *Result {
 			fofaRes = append(fofaRes, res...)
 		}
 	}
+
 	gologger.Infof("获取fofa信息")
+
+	var addDomains []string
+	var addSubdomains [][]string
 
 	for _, value := range fofaRes {
 		//添加url
@@ -52,18 +56,34 @@ func (r *Runner) Run() *Result {
 			if util.InSlice(r.options.Domains, rootDomain) == true {
 				if util.InSlice(r.options.Subdomains, value.domain) == false {
 					gologger.Infof("查询到遗漏子域名: %s", value.domain)
-					result.AddSubdomains = append(result.AddSubdomains, []string{value.domain, "FALSE", value.ip, ""})
+					addSubdomains = append(addSubdomains, []string{value.domain, value.ip})
 				}
 			} else {
 				gologger.Infof("查询到同ip段内域名: %s", rootDomain)
-				result.AddDomains = append(result.AddDomains, rootDomain)
+				addDomains = append(addDomains, rootDomain)
 			}
 		}
 
 	}
 
-	result.AddDomains = util.RemoveRepeatedStringElement(result.AddDomains)
+	addDomains = util.RemoveRepeatedStringElement(addDomains)
+	addSubdomains = util.RemoveRepeatedStringArrayElement(addSubdomains)
+
+	for _, v := range addDomains {
+		result.AddDomains = append(result.AddDomains, &dResult{
+			Domain: v,
+		})
+	}
+
+	for _, v := range addSubdomains {
+		result.AddSubdomains = append(result.AddSubdomains, &sdResult{
+			Domain: v[0],
+			CDN:    false,
+			Ip:     v[1],
+			CName:  "",
+		})
+	}
+
 	result.Urls = util.RemoveRepeatedStringElement(result.Urls)
-	result.AddSubdomains = util.RemoveRepeatedStringArrayElement(result.AddSubdomains)
 	return &result
 }
