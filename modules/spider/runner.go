@@ -3,6 +3,7 @@ package spider
 import (
 	"encoding/base64"
 	"github.com/imroc/req/v3"
+	"net"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
@@ -47,7 +48,13 @@ func (r *Runner) Run() *Result {
 	for _, value := range fofaRes {
 		//添加url
 		if value.protocol == "http" || value.protocol == "https" || value.protocol == "tls" || value.protocol == "unknown" {
-			result.Urls = append(result.Urls, value.host)
+			if net.ParseIP(value.host) != nil {
+				result.Urls = append(result.Urls, value.host+":"+value.port)
+			} else {
+				if strings.Contains(value.host, ":") == false && util.InSlice(r.options.Domains, domain_parse(value.domain)) {
+					result.Urls = append(result.Urls, value.host)
+				}
+			}
 		}
 
 		//如果存在domain

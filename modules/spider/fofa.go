@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"io"
-	"net"
 	"path/filepath"
 	"puzzle/util"
 	"strings"
@@ -32,10 +31,6 @@ func (r *Runner) getFofaResult(qbase string) []*fofaResult {
 			result[0] = result[0][8:]
 		} else if result[0][:4] == "http" {
 			result[0] = result[0][7:]
-		}
-
-		if net.ParseIP(result[0]) != nil && strings.Contains(result[0], ":") == false {
-			result[0] = result[0] + ":" + result[2]
 		}
 
 		res = append(res, &fofaResult{
