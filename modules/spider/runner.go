@@ -51,8 +51,10 @@ func (r *Runner) Run() *Result {
 			if net.ParseIP(value.host) != nil {
 				result.Urls = append(result.Urls, value.host+":"+value.port)
 			} else {
-				if strings.Contains(value.host, ":") == false && util.InSlice(r.options.Domains, domain_parse(value.domain)) {
-					result.Urls = append(result.Urls, value.host)
+				if strings.Contains(value.host, ":") == false {
+					if util.InSlice(r.options.Domains, domain_parse(value.host)) {
+						result.Urls = append(result.Urls, value.host)
+					}
 				}
 			}
 		}
