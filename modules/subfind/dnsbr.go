@@ -2,6 +2,7 @@ package subfind
 
 import (
 	"context"
+	"fmt"
 	"github.com/boy-hack/ksubdomain/core/device"
 	"github.com/boy-hack/ksubdomain/core/options"
 	"github.com/boy-hack/ksubdomain/runner"
@@ -45,7 +46,8 @@ func DomainBlast(domains []string, DeviceConfig *device.EtherTable) []*domainRes
 	r.RunEnumeration(ctx)
 	time.Sleep(10 * time.Second)
 	r.Close()
-	gologger.Infof("\n获取域名数量: %d", len(buffPrinter.OutPut()))
+	fmt.Println("")
+	gologger.Infof("获取域名数量: %d", len(buffPrinter.OutPut()))
 	return buffPrinter.OutPut()
 }
 

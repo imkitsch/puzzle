@@ -99,7 +99,7 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 		for j := 0; j < tmp.NumField(); j++ {
 			row[j] = excelize.Cell{Value: tmp.Field(j).Interface()}
 		}
-		cell, _ := excelize.CoordinatesToCellName(1, len(rows)+i+1)
+		cell, _ := excelize.CoordinatesToCellName(1, len(rows)+i+1) // 原长度+1
 		if err := streamWriter.SetRow(cell, row); err != nil {
 			gologger.Fatalf("写入流失败:%s", err.Error())
 		}

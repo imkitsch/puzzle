@@ -60,7 +60,6 @@ func (r *Runner) Run() (dr []*domainResult) {
 				}
 				dr = append(dr, DomainBlast(subDomains, r.options.DeviceConfig)...)
 			}
-			gologger.Printf("\n")
 		}
 
 	}
