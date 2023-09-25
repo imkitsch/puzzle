@@ -3,9 +3,9 @@ package spider
 import (
 	"encoding/base64"
 	"github.com/imroc/req/v3"
-	"net"
 	"puzzle/gologger"
 	"puzzle/util"
+	"regexp"
 	"strings"
 )
 
@@ -21,7 +21,8 @@ func (r *Runner) Run() *Result {
 	gologger.Infof("开始爬虫信息收集")
 
 	var result Result
-	//以10为单位打包ip,减少查询次数
+	//以10为单位打包,减少查询次数
+	//ip查询打包
 	var raw []string
 	var tmp []string
 	for k, ip := range r.options.Ips {
@@ -32,7 +33,19 @@ func (r *Runner) Run() *Result {
 		}
 	}
 
+	//证书查询打包
+	tmp = []string{}
+	for k, domain := range r.options.Domains {
+		tmp = append(tmp, "cert=\""+domain+"\"")
+		if (k+1)%10 == 0 || k == len(r.options.Domains)-1 {
+			raw = append(raw, strings.Join(tmp, "||"))
+			tmp = []string{}
+		}
+	}
+
 	var fofaRes []*fofaResult
+
+	// fofa查询
 	for _, v := range raw {
 		res := r.getFofaResult(base64.StdEncoding.EncodeToString([]byte(v)))
 		if res != nil {
@@ -40,7 +53,7 @@ func (r *Runner) Run() *Result {
 		}
 	}
 
-	gologger.Infof("获取fofa信息")
+	gologger.Infof("从fofa获取信息")
 
 	var addDomains []string
 	var addSubdomains [][]string
@@ -48,13 +61,14 @@ func (r *Runner) Run() *Result {
 	for _, value := range fofaRes {
 		//添加url
 		if value.protocol == "http" || value.protocol == "https" || value.protocol == "tls" || value.protocol == "unknown" {
-			if net.ParseIP(value.host) != nil {
-				result.Urls = append(result.Urls, value.host+":"+value.port)
+			domainPatt := `^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}`
+			host := regexp.MustCompile(domainPatt).FindString(value.host)
+
+			if host == "" {
+				result.Urls = append(result.Urls, value.ip+":"+value.port)
 			} else {
-				if strings.Contains(value.host, ":") == false {
-					if util.InSlice(r.options.Domains, domain_parse(value.host)) {
-						result.Urls = append(result.Urls, value.host)
-					}
+				if util.InSlice(r.options.Domains, domain_parse(host)) {
+					result.Urls = append(result.Urls, value.host)
 				}
 			}
 		}
