@@ -14,7 +14,7 @@ require (
 	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/projectdiscovery/blackrock v0.0.1
 	github.com/projectdiscovery/subfinder/v2 v2.6.1
-	github.com/projectdiscovery/wappalyzergo v0.0.92
+	github.com/projectdiscovery/wappalyzergo v0.0.109
 	github.com/remeh/sizedwaitgroup v1.0.0
 	github.com/spf13/viper v1.16.0
 	github.com/twmb/murmur3 v1.1.6

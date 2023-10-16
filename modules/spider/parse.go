@@ -24,7 +24,7 @@ func domain_parse(domain string) string {
 	list := util.ConvertStrSlice2Map(getSubdomainData())
 	step := strings.Split(domain, ".")
 	tmp := step[len(step)-2] + "." + step[len(step)-1]
-	if util.InMap(list, tmp) == true {
+	if util.InMap(list, tmp) == true && len(step) >= 3 {
 		return step[len(step)-3] + "." + tmp
 	} else {
 		return tmp
