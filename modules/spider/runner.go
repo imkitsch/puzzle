@@ -3,9 +3,9 @@ package spider
 import (
 	"encoding/base64"
 	"github.com/imroc/req/v3"
+	"net/url"
 	"puzzle/gologger"
 	"puzzle/util"
-	"regexp"
 	"strings"
 )
 
@@ -61,32 +61,30 @@ func (r *Runner) Run() *Result {
 	for _, value := range fofaRes {
 		//添加url
 		if value.protocol == "http" || value.protocol == "https" || value.protocol == "tls" || value.protocol == "unknown" {
-			domainPatt := `^([a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}`
-			host := regexp.MustCompile(domainPatt).FindString(value.host)
+			if value.host[0:4] != "http" {
+				value.host = "http://" + value.host
+			}
 
-			if host == "" {
-				result.Urls = append(result.Urls, value.ip+":"+value.port)
-			} else {
-				if util.InSlice(r.options.Domains, domain_parse(host)) {
-					result.Urls = append(result.Urls, value.host)
+			tmpUrl, _ := url.Parse(value.host)
+			host := tmpUrl.Hostname()
+
+			// url为域名
+			if value.domain != "" {
+				if util.InSlice(r.options.Domains, value.domain) == true {
+					if util.InSlice(r.options.Subdomains, host) == false {
+						gologger.Infof("查询到遗漏子域名: %s", host)
+						addSubdomains = append(addSubdomains, []string{host, value.ip})
+						result.Urls = append(result.Urls, host)
+					}
+				} else {
+					gologger.Infof("查询到同ip段内域名: %s", value.domain)
+					addDomains = append(addDomains, value.domain)
 				}
+			} else {
+				//为ip
+				result.Urls = append(result.Urls, host+value.port)
 			}
 		}
-
-		//如果存在domain
-		if value.domain != "" {
-			rootDomain := domain_parse(value.domain)
-			if util.InSlice(r.options.Domains, rootDomain) == true {
-				if util.InSlice(r.options.Subdomains, value.domain) == false {
-					gologger.Infof("查询到遗漏子域名: %s", value.domain)
-					addSubdomains = append(addSubdomains, []string{value.domain, value.ip})
-				}
-			} else {
-				gologger.Infof("查询到同ip段内域名: %s", rootDomain)
-				addDomains = append(addDomains, rootDomain)
-			}
-		}
-
 	}
 
 	addDomains = util.RemoveRepeatedStringElement(addDomains)
