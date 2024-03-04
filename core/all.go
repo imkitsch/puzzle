@@ -74,12 +74,12 @@ func AllStart(options *Options) {
 	//ip去重
 	ips = util.RemoveRepeatedStringElement(ips)
 
-	cloudIp, normalIp := qqwry.ExcludeCloud(ips)
 	//获取可能ip段
 	if options.SerialIp == true {
+		cloudIp, normalIp := qqwry.ExcludeCloud(ips)
 		ips = util.GetSerialIp(normalIp)
+		ips = append(ips, cloudIp...)
 	}
-	ips = append(ips, cloudIp...)
 
 	//ping检测
 	if options.Ping == true {
