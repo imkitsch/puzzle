@@ -2,11 +2,11 @@ package spider
 
 import (
 	"encoding/base64"
-	"github.com/imroc/req/v3"
 	"net/url"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
+	"time"
 )
 
 func NewRunner(options *Options) *Runner {
@@ -51,6 +51,7 @@ func (r *Runner) Run() *Result {
 		if res != nil {
 			fofaRes = append(fofaRes, res...)
 		}
+		time.Sleep(time.Second * 2)
 	}
 
 	gologger.Infof("从fofa获取信息")
