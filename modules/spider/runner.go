@@ -2,6 +2,7 @@ package spider
 
 import (
 	"encoding/base64"
+	"github.com/imroc/req/v3"
 	"net/url"
 	"puzzle/gologger"
 	"puzzle/util"
