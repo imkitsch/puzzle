@@ -27,13 +27,12 @@ func (r *Runner) getFofaResult(qbase string) []*fofaResult {
 		return nil
 	}
 	for _, result := range apiResults.Results {
-		if len(result[0]) < 4 {
-			continue
-		}
-		if result[0][:5] == "https" {
-			result[0] = result[0][8:]
-		} else if result[0][:4] == "http" {
-			result[0] = result[0][7:]
+		if len(result[0]) >= 5 {
+			if result[0][:5] == "https" {
+				result[0] = result[0][8:]
+			} else if result[0][:4] == "http" {
+				result[0] = result[0][7:]
+			}
 		}
 
 		res = append(res, &fofaResult{
