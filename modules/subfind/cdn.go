@@ -424,8 +424,13 @@ func asnCheck(ip string) bool {
 
 func IsCdn(CName string, ips []string) bool {
 
+	//无cname有a解析，无cdn
+	if len(CName) == 0 && len(ips) != 0 {
+		return false
+	}
+
 	//从解析A记录数量判断
-	if len(ips) > 4 {
+	if len(ips) > 3 {
 		return true
 	}
 
