@@ -425,7 +425,7 @@ func asnCheck(ip string) bool {
 func IsCdn(CName string, ips []string) bool {
 
 	//从解析A记录数量判断
-	if len(ips) > 2 {
+	if len(ips) > 4 {
 		return true
 	}
 
