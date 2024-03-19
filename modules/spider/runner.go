@@ -84,7 +84,7 @@ func (r *Runner) Run() *Result {
 				}
 			} else {
 				//为ip
-				result.Urls = append(result.Urls, host+value.port)
+				result.Urls = append(result.Urls, host+":"+value.port)
 			}
 		}
 	}
