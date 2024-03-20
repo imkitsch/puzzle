@@ -90,6 +90,7 @@ func (r *Runner) Run() (results []*Result) {
 
 func NewReqClient(proxy string, timeout int) *req.Client {
 	reqClient := req.C()
+	reqClient.SetCommonRetryCount(3)
 	reqClient.SetRedirectPolicy(checkRedirect("Cookie"))
 	reqClient.GetTLSClientConfig().InsecureSkipVerify = true
 	reqClient.SetCommonHeaders(map[string]string{
