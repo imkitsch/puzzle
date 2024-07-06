@@ -428,7 +428,7 @@ func IsCdn(CName string, ips []string) bool {
 	QQwry := qqwry.GetQqwry()
 	for _, ip := range ips {
 		info := QQwry.Find(ip)
-		if util.StringSearch("cdn", info.Area) || util.StringSearch("cloudflare", info.Area) {
+		if util.StringSearch(info.Area, "cdn") || util.StringSearch(info.Area, "cloudflare") {
 			return true
 		}
 	}

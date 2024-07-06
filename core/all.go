@@ -7,7 +7,6 @@ import (
 	"puzzle/modules/ip/qqwry"
 	"puzzle/modules/spider"
 	"puzzle/modules/subfind"
-	"puzzle/modules/vulscan"
 	"puzzle/modules/webscan"
 	"puzzle/util"
 	"regexp"
@@ -168,18 +167,5 @@ func AllStart(options *Options) {
 	webResult := webRunner.Run()
 
 	ReportWrite(options.Output, "WEB指纹", webResult)
-
-	if options.Vul == true {
-		var urlList []string
-		for _, result := range webResult {
-			urlList = append(urlList, result.Url)
-		}
-		vulOptions := &vulscan.Options{
-			UrlList: urlList,
-			Output:  options.Output[:len(options.Output)-5],
-		}
-		vulRunner := vulscan.NewRunner(vulOptions)
-		vulRunner.Run()
-	}
 
 }
