@@ -101,7 +101,7 @@ func (r *Runner) GetFinger(url string) *Result {
 		}
 
 		certList, err := GrabCert(ip+":"+port, r.dialer, false)
-		if len(certList) > 0 && err != nil {
+		if len(certList) > 0 && err == nil {
 			cert = certList[0]
 		} else {
 			cert = ""

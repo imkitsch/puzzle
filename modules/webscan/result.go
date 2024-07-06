@@ -11,9 +11,9 @@ func FmtResult(result *Result) (res string) {
 	finger := strings.Replace(result.Finger, "\n", ",", -1)
 	wappalyzer := strings.Replace(result.Wappalyzer, "\n", ",", -1)
 	if util.IsWindows() {
-		res = fmt.Sprintf("%v [%v] [%v] [%v] [%v] [%v]\n", result.Url, result.StatusCode, result.Length, result.Title, finger, wappalyzer)
+		res = fmt.Sprintf("%v [%v] [%v] [%v] [%v] [%v] [%v]\n", result.Url, result.StatusCode, result.Length, result.Title, finger, wappalyzer, result.Cert)
 	} else {
-		res = fmt.Sprintf("%v [%v] [%v] [%v] [%v] [%v]\n", result.Url, aurora.Red(result.StatusCode), aurora.Yellow(result.Length), aurora.Green(result.Title), aurora.Blue(finger), aurora.Cyan(wappalyzer))
+		res = fmt.Sprintf("%v [%v] [%v] [%v] [%v] [%v] [%v]\n", result.Url, aurora.Red(result.StatusCode), aurora.Yellow(result.Length), aurora.Green(result.Title), aurora.Blue(finger), aurora.Cyan(wappalyzer), aurora.Green(result.Cert))
 	}
 	return
 }
