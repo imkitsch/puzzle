@@ -12,7 +12,7 @@ import (
 )
 
 var domainItems = []Item{
-	{"kunlunca.com", "阿里云 CDN", "w.kunlunca.com"},
+	{"w.kunlun", "阿里云 CDN", "w.kunlunca.com"},
 	{"15cdn.com", "腾正安全加速（原 15CDN）", "https://www.15cdn.com"},
 	{"tzcdn.cn", "腾正安全加速（原 15CDN）", "https://www.15cdn.com"},
 	{"cedexis.net", "Cedexis GSLB", "https://www.cedexis.com/"},
