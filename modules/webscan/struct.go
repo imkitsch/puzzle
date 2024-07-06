@@ -20,4 +20,5 @@ type Result struct {
 	Title      string
 	Finger     string
 	Wappalyzer string
+	Cert       string
 }

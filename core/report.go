@@ -36,7 +36,7 @@ func XlsxInit(output string) error {
 
 	//初始化web指纹表
 	WebFingerIndex, _ := file.NewSheet("WEB指纹")
-	WebFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger", "F1": "Wappalyzer"}
+	WebFingerCategories := map[string]string{"A1": "Url", "B1": "StatusCode", "C1": "Length", "D1": "Title", "E1": "Finger", "F1": "Wappalyzer", "G1": "Cert"}
 	for k, v := range WebFingerCategories {
 		file.SetCellValue("WEB指纹", k, v)
 	}

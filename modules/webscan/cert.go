@@ -1,4 +1,4 @@
-package spider
+package webscan
 
 import (
 	"crypto/tls"
@@ -6,7 +6,7 @@ import (
 )
 
 // source:https://github.com/glebarez/cero
-func grabCert(addr string, dialer *net.Dialer, onlyValidDomainNames bool) ([]string, error) {
+func GrabCert(addr string, dialer *net.Dialer, onlyValidDomainNames bool) ([]string, error) {
 	// dial
 	conn, err := tls.DialWithDialer(dialer, "tcp", addr, &tls.Config{InsecureSkipVerify: true})
 	if err != nil {

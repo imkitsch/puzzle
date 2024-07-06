@@ -1,7 +1,7 @@
 package portscan
 
 import (
-	"github.com/cheggaaa/pb/v3"
+	pb "github.com/cheggaaa/pb/v3"
 	"github.com/projectdiscovery/blackrock"
 	"github.com/remeh/sizedwaitgroup"
 	"go.uber.org/ratelimit"

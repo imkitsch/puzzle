@@ -424,6 +424,15 @@ func asnCheck(ip string) bool {
 
 func IsCdn(CName string, ips []string) bool {
 
+	//地域判断
+	QQwry := qqwry.GetQqwry()
+	for _, ip := range ips {
+		info := QQwry.Find(ip)
+		if util.StringSearch("cdn", info.Area) || util.StringSearch("cloudflare", info.Area) {
+			return true
+		}
+	}
+
 	//无cname有a解析，无cdn
 	if len(CName) == 0 && len(ips) != 0 {
 		return false
@@ -447,15 +456,6 @@ func IsCdn(CName string, ips []string) bool {
 	//asn判断
 	for _, ip := range ips {
 		if asnCheck(ip) {
-			return true
-		}
-	}
-
-	//地域判断
-	QQwry := qqwry.GetQqwry()
-	for _, ip := range ips {
-		info := QQwry.Find(ip)
-		if util.StringSearch("cdn", info.Area) {
 			return true
 		}
 	}

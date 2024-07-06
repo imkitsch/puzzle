@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/imroc/req/v3"
 	wappalyzer "github.com/projectdiscovery/wappalyzergo"
+	"net"
 	"net/http"
 	"puzzle/config"
 	"puzzle/gologger"
@@ -26,6 +27,7 @@ type Runner struct {
 	Options          *Options
 	reqClient        *req.Client
 	wappalyzerClient *wappalyzer.Wappalyze
+	dialer           *net.Dialer
 }
 
 func NewRunner(options *Options) *Runner {
@@ -48,6 +50,9 @@ func NewRunner(options *Options) *Runner {
 		Options:          options,
 		reqClient:        NewReqClient(options.Proxy, options.Timeout),
 		wappalyzerClient: wappalyzer,
+		dialer: &net.Dialer{
+			Timeout: time.Duration(4) * time.Second,
+		},
 	}
 }
 

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/imroc/req/v3"
 	"io"
+	urltool "net/url"
 	"puzzle/util"
 	"strconv"
 	"strings"
@@ -81,6 +82,35 @@ func (r *Runner) GetFinger(url string) *Result {
 	fpName = util.RemoveRepeatedStringElement(fpName)
 	fingerRes := strings.Join(fpName, "\n")
 
+	// 获取证书
+	var cert string
+	if url[0:5] == "https" {
+		host, err := urltool.Parse(url)
+		if err != nil {
+
+		}
+		tmp := strings.Split(host.Host, ":")
+		var ip string
+		var port string
+
+		ip = tmp[0]
+		if len(tmp) == 1 {
+			port = "443"
+		} else {
+			port = tmp[1]
+		}
+
+		certList, err := GrabCert(ip+":"+port, r.dialer, false)
+		if len(certList) > 1 && err != nil {
+			cert = certList[0]
+		} else {
+			cert = ""
+		}
+
+	} else {
+		cert = ""
+	}
+
 	return &Result{
 		Url:        url,
 		StatusCode: strconv.Itoa(statusCode),
@@ -88,6 +118,7 @@ func (r *Runner) GetFinger(url string) *Result {
 		Title:      title,
 		Finger:     fingerRes,
 		Wappalyzer: wappzerRes,
+		Cert:       cert,
 	}
 }
 
