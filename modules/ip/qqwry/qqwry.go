@@ -43,12 +43,7 @@ func (f *fileData) InitIPData() (rs interface{}) {
 	_, err := os.Stat(f.FilePath)
 	if err != nil && os.IsNotExist(err) {
 		gologger.Printf("文件不存在，尝试从网络获取最新纯真 IP 库")
-		url := util.GetGithubLatestUrl(config.QQwryGithubRepo)
-		if url != "" {
-			util.Download(url, f.FilePath)
-		} else {
-			gologger.Fatalf("获取纯真数据库失败")
-		}
+		util.Download(config.QQwryUrl, f.FilePath)
 
 	} else {
 		// 打开文件句柄
