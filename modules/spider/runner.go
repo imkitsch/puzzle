@@ -79,8 +79,14 @@ func (r *Runner) Run() *Result {
 						result.Urls = append(result.Urls, host)
 					}
 				} else {
-					gologger.Infof("查询到同ip段内域名: %s", value.domain)
-					addDomains = append(addDomains, value.domain)
+					if util.InSlice(addDomains, value.domain) == false {
+						gologger.Infof("查询到同ip段内域名: %s", value.domain)
+						addDomains = append(addDomains, value.domain)
+						result.AddDomains = append(result.AddDomains, &DResult{
+							Domain: value.domain,
+							Ip:     value.ip,
+						})
+					}
 				}
 			} else {
 				//为ip
@@ -89,14 +95,7 @@ func (r *Runner) Run() *Result {
 		}
 	}
 
-	addDomains = util.RemoveRepeatedStringElement(addDomains)
 	addSubdomains = util.RemoveRepeatedStringArrayElement(addSubdomains)
-
-	for _, v := range addDomains {
-		result.AddDomains = append(result.AddDomains, &DResult{
-			Domain: v,
-		})
-	}
 
 	for _, v := range addSubdomains {
 		result.AddSubdomains = append(result.AddSubdomains, &SdResult{

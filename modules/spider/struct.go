@@ -38,6 +38,7 @@ type SdResult struct {
 
 type DResult struct {
 	Domain string
+	Ip     string
 }
 
 type ApiResults struct {

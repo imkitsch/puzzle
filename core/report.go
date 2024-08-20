@@ -44,7 +44,7 @@ func XlsxInit(output string) error {
 
 	//初始化爬虫信息表
 	SpiderIndex, _ := file.NewSheet("Spider")
-	SpiderCategories := map[string]string{"A1": "同段域名"}
+	SpiderCategories := map[string]string{"A1": "同段域名", "B1": "IP"}
 	for k, v := range SpiderCategories {
 		file.SetCellValue("Spider", k, v)
 	}
