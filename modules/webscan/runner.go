@@ -3,8 +3,6 @@ package webscan
 import (
 	"encoding/json"
 	"errors"
-	"github.com/imroc/req/v3"
-	wappalyzer "github.com/projectdiscovery/wappalyzergo"
 	"net"
 	"net/http"
 	"puzzle/config"
@@ -13,6 +11,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/imroc/req/v3"
+	wappalyzer "github.com/projectdiscovery/wappalyzergo"
 )
 
 type Options struct {
@@ -57,35 +58,39 @@ func NewRunner(options *Options) *Runner {
 }
 
 func (r *Runner) Run() (results []*Result) {
-	//确定请求类型
-	r.Options.Url = r.CheckAlive()
-
+	urls := r.CheckAlive()
 	gologger.Infof("开始WEB扫描")
+
 	wg := &sync.WaitGroup{}
 	mutex := sync.Mutex{}
 	taskChan := make(chan string, r.Options.Threads)
+
 	for i := 0; i < r.Options.Threads; i++ {
 		go func() {
 			for task := range taskChan {
-				res := r.GetFinger(task)
-				// 判断蜜罐匹配大量指纹的情况
-				if len(strings.Split(res.Finger, "\n")) > 5 {
-					gologger.Infof("%v 可能为蜜罐", res.Url)
-				} else {
-					gologger.Silentf(FmtResult(res))
-					mutex.Lock()
-					results = append(results, res)
-					mutex.Unlock()
-				}
-				wg.Done()
+				func() {
+					defer wg.Done()
+
+					res := r.GetFinger(task)
+
+					if len(strings.Split(res.Finger, "\n")) > 5 {
+						gologger.Infof("%v 可能为蜜罐", res.Url)
+					} else {
+						gologger.Silentf("%s", FmtResult(res))
+						mutex.Lock()
+						results = append(results, res)
+						mutex.Unlock()
+					}
+				}()
 			}
 		}()
 	}
 
-	for _, task := range r.Options.Url {
+	for _, task := range urls {
 		wg.Add(1)
 		taskChan <- task
 	}
+
 	close(taskChan)
 	wg.Wait()
 
@@ -100,7 +105,6 @@ func NewReqClient(proxy string, timeout int) *req.Client {
 	reqClient.GetTLSClientConfig().InsecureSkipVerify = true
 	reqClient.SetCommonHeaders(map[string]string{
 		"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36",
-		"Cookie":     "rememberMe=admin;rememberMe-K=admin", // check shiro
 	})
 	if proxy != "" {
 		reqClient.SetProxyURL(proxy)

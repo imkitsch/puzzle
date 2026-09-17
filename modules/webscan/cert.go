@@ -2,6 +2,7 @@ package webscan
 
 import (
 	"crypto/tls"
+	"errors"
 	"net"
 )
 
@@ -15,7 +16,11 @@ func GrabCert(addr string, dialer *net.Dialer, onlyValidDomainNames bool) ([]str
 	defer conn.Close()
 
 	// get first certificate in chain
-	cert := conn.ConnectionState().PeerCertificates[0]
+	certs := conn.ConnectionState().PeerCertificates
+	if len(certs) == 0 {
+		return nil, errors.New("对端未返回证书")
+	}
+	cert := certs[0]
 
 	// get CommonName and all SANs into a slice
 	names := make([]string, 0, len(cert.DNSNames)+1)

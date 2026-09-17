@@ -3,16 +3,18 @@ package webscan
 import (
 	"bytes"
 	"errors"
-	"github.com/imroc/req/v3"
 	"io"
 	urltool "net/url"
+	"puzzle/gologger"
 	"puzzle/util"
 	"strconv"
 	"strings"
+
+	"github.com/imroc/req/v3"
 )
 
 func (r *Runner) GetFinger(url string) *Result {
-	respBody, headers, rawHeaders, statusCode, length, title, iconHash, err := getResponseData(r.reqClient, url)
+	respBody, headers, rawHeaders, statusCode, length, title, iconHash, err := r.getResponseData(url)
 	if err != nil {
 		return &Result{
 			Url: url,
@@ -87,26 +89,26 @@ func (r *Runner) GetFinger(url string) *Result {
 	if url[0:5] == "https" {
 		host, err := urltool.Parse(url)
 		if err != nil {
-
-		}
-		tmp := strings.Split(host.Host, ":")
-		var ip string
-		var port string
-
-		ip = tmp[0]
-		if len(tmp) == 1 {
-			port = "443"
+			gologger.Debugf("解析url失败: %s,错误: %s", url, err.Error())
 		} else {
-			port = tmp[1]
-		}
+			tmp := strings.Split(host.Host, ":")
+			var ip string
+			var port string
 
-		certList, err := GrabCert(ip+":"+port, r.dialer, false)
-		if len(certList) > 0 && err == nil {
-			cert = certList[0]
-		} else {
-			cert = ""
-		}
+			ip = tmp[0]
+			if len(tmp) == 1 {
+				port = "443"
+			} else {
+				port = tmp[1]
+			}
 
+			certList, err := GrabCert(ip+":"+port, r.dialer, false)
+			if len(certList) > 0 && err == nil {
+				cert = certList[0]
+			} else {
+				cert = ""
+			}
+		}
 	} else {
 		cert = ""
 	}
@@ -135,11 +137,13 @@ func getHeaderString(resp *req.Response) map[string]string {
 	return headerMap
 }
 
-func getResponseData(client *req.Client, url string) ([]byte, map[string]string, map[string][]string, int, int, string, string, error) {
+func (r *Runner) getResponseData(url string) ([]byte, map[string]string, map[string][]string, int, int, string, string, error) {
 	if url == "" {
 		return []byte(""), nil, nil, 0, 0, "", "", errors.New("no target specified")
 	}
-	request := client.R()
+	request := r.reqClient.R()
+	// shiro记住我特征探测,仅在指纹请求中携带,探活等其他请求不打此标记
+	request.SetHeader("Cookie", "rememberMe=admin;rememberMe-K=admin")
 	resp, err := request.Get(url)
 
 	// 处理js跳转, 上限3次
@@ -166,8 +170,8 @@ func getResponseData(client *req.Client, url string) ([]byte, map[string]string,
 
 	header := getHeaderString(resp)
 
-	content := resp.Bytes()
-	iconHash := Mmh3Hash32(StandBase64(content))
+	// favicon指纹:抓取favicon.ico计算md5,与指纹库favicon_hash同源
+	_, iconHash := r.getFavicon(resp)
 
-	return respBody, header, resp.Header, resp.StatusCode, len(resp.String()), title, iconHash, nil
+	return respBody, header, resp.Header, resp.StatusCode, len(respBody), title, iconHash, nil
 }

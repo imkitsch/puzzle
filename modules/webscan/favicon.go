@@ -24,7 +24,8 @@ func (r *Runner) getFavicon(resp *req.Response) (favicon string, iconHash string
 		}
 	}
 	if favicon == "" {
-		return favicon, iconHash
+		// 页面未声明icon链接时,尝试站点默认favicon路径
+		favicon = resp.Request.URL.Scheme + "://" + resp.Request.URL.Host + "/favicon.ico"
 	}
 	if !strings.Contains(favicon, "http") {
 		favicon = strings.TrimSpace(favicon)

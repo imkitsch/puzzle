@@ -87,24 +87,27 @@ func Jsjump(resp *req.Response) (jumpurl string) {
 }
 
 func regexJsjump(resp *req.Response) (match string) {
-	matches := reg1.FindAllStringSubmatch(resp.String(), -1)
+	body := resp.String()
+
+	// meta refresh信号最可靠,优先匹配,排除注释掉的情况
+	matches := reg1.FindAllStringSubmatch(body, -1)
 	if len(matches) > 0 {
-		// 去除注释的情况
-		if !strings.Contains(resp.String(), "<!--\r\n"+matches[0][0]) && !strings.Contains(matches[0][1], "nojavascript.html") && !strings.Contains(resp.String(), "<!--[if lt IE 7]>\n"+matches[0][0]) {
-			match = matches[0][1]
+		if !strings.Contains(body, "<!--\r\n"+matches[0][0]) && !strings.Contains(matches[0][1], "nojavascript.html") && !strings.Contains(body, "<!--[if lt IE 7]>\n"+matches[0][0]) {
+			return matches[0][1]
 		}
 	}
-	body := resp.String()
+
+	// location.replace与location.href一般写在页面头部,只查前700字符
 	if len(body) > 700 {
 		body = body[:700]
 	}
-	matches = reg2.FindAllStringSubmatch(body, -1)
-	if len(matches) > 0 {
-		match = matches[0][1]
-	}
 	matches = reg3.FindAllStringSubmatch(body, -1)
 	if len(matches) > 0 {
-		match = matches[0][1]
+		return matches[0][1]
+	}
+	matches = reg2.FindAllStringSubmatch(body, -1)
+	if len(matches) > 0 {
+		return matches[0][1]
 	}
 	return ""
 }
