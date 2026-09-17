@@ -2,8 +2,7 @@ package qqwry
 
 import (
 	"encoding/binary"
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"io/ioutil"
+	"fmt"
 	"net"
 	"os"
 	"path/filepath"
@@ -11,6 +10,9 @@ import (
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
+	"sync"
+
+	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
 const (
@@ -25,41 +27,38 @@ const (
 // IPData IP库的数据
 var IPData fileData
 
+var (
+	loadOnce sync.Once
+	loadErr  error
+)
+
 func GetQqwry() *QQwry {
-	IPData.FilePath = filepath.Join(util.GetRunDir() + config.QqwryPath)
-	res := IPData.InitIPData()
-	if v, ok := res.(error); ok {
-		gologger.Fatalf(v.Error())
+	// 只加载一次,避免每次查询都重新读取整个库文件
+	loadOnce.Do(func() {
+		IPData.FilePath = filepath.Join(util.GetRunDir() + config.QqwryPath)
+		loadErr = IPData.InitIPData()
+	})
+	if loadErr != nil {
+		gologger.Fatalf("加载纯真IP库失败: %s", loadErr.Error())
 	}
 	qqWry := NewQQwry()
 	return &qqWry
 }
 
 // InitIPData 初始化ip库数据到内存中
-func (f *fileData) InitIPData() (rs interface{}) {
-	var tmpData []byte
-
-	// 判断文件是否存在
+func (f *fileData) InitIPData() error {
+	// 数据文件只通过 -update 获取,扫描过程不做网络下载
 	_, err := os.Stat(f.FilePath)
 	if err != nil && os.IsNotExist(err) {
-		gologger.Printf("文件不存在，尝试从网络获取最新纯真 IP 库")
-		util.Download(config.QQwryUrl, f.FilePath)
+		return fmt.Errorf("纯真IP库不存在: %s,请先运行 -update 获取", f.FilePath)
+	}
 
-	} else {
-		// 打开文件句柄
-		f.Path, err = os.OpenFile(f.FilePath, os.O_RDONLY, 0400)
-		if err != nil {
-			rs = err
-			return
-		}
-		defer f.Path.Close()
-
-		tmpData, err = ioutil.ReadAll(f.Path)
-		if err != nil {
-			gologger.Printf(err.Error())
-			rs = err
-			return
-		}
+	tmpData, err := os.ReadFile(f.FilePath)
+	if err != nil {
+		return err
+	}
+	if len(tmpData) < 8 {
+		return &os.PathError{Op: "read", Path: f.FilePath, Err: os.ErrInvalid}
 	}
 
 	f.Data = tmpData
@@ -70,7 +69,7 @@ func (f *fileData) InitIPData() (rs interface{}) {
 
 	f.IPNum = int64((end-start)/IndexLen + 1)
 
-	return true
+	return nil
 }
 
 // NewQQwry 新建 qqwry  类型
@@ -114,7 +113,16 @@ func (q *QQwry) Find(ip string) (res ResultQQwry) {
 	if strings.Count(ip, ".") != 3 {
 		return res
 	}
-	offset := q.searchIndex(binary.BigEndian.Uint32(net.ParseIP(ip).To4()))
+	// 防御畸形输入(如"1.2.3.")与无法转成IPv4的地址,避免越界panic
+	ipParsed := net.ParseIP(ip)
+	if ipParsed == nil {
+		return res
+	}
+	ip4 := ipParsed.To4()
+	if ip4 == nil {
+		return res
+	}
+	offset := q.searchIndex(binary.BigEndian.Uint32(ip4))
 	if offset <= 0 {
 		return
 	}

@@ -1,7 +1,5 @@
 package qqwry
 
-import "os"
-
 type ResultQQwry struct {
 	IP      string `json:"ip"`
 	Country string `json:"country"`
@@ -11,7 +9,6 @@ type ResultQQwry struct {
 type fileData struct {
 	Data     []byte
 	FilePath string
-	Path     *os.File
 	IPNum    int64
 }
 
