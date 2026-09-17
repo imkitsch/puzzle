@@ -17,3 +17,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
+
+# 本地备份与敏感配置(含真实quake key,勿提交)
+*.ksubdomain.bak
+# config/cert/
+.zcode/

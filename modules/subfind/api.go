@@ -2,13 +2,14 @@ package subfind
 
 import (
 	"bytes"
-	"github.com/projectdiscovery/subfinder/v2/pkg/resolve"
-	"github.com/projectdiscovery/subfinder/v2/pkg/runner"
 	"io"
 	"path/filepath"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
+
+	"github.com/projectdiscovery/subfinder/v2/pkg/resolve"
+	"github.com/projectdiscovery/subfinder/v2/pkg/runner"
 )
 
 var (
@@ -43,7 +44,7 @@ func DoSubFinder(domain string) []string {
 		gologger.Fatalf("newRunner, err := runner.NewRunner Could not create runner: %s\n", err)
 	}
 	buf := bytes.Buffer{}
-	err = newRunner.EnumerateSingleDomain(domain, []io.Writer{&buf})
+	_, err = newRunner.EnumerateSingleDomain(domain, []io.Writer{&buf})
 	if err != nil {
 		gologger.Fatalf("Could not run enumeration: %s\n", err)
 	}
