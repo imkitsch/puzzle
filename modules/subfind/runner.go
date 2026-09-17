@@ -1,7 +1,6 @@
 package subfind
 
 import (
-	"github.com/boy-hack/ksubdomain/core/device"
 	"puzzle/gologger"
 	"puzzle/util"
 )
@@ -11,7 +10,7 @@ type Options struct {
 	Level3        bool
 	SubdomainDict []string
 	SubNextDict   []string
-	DeviceConfig  *device.EtherTable
+	DeviceConfig  *EtherTable
 }
 
 type Runner struct {
