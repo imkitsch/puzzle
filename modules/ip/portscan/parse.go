@@ -3,6 +3,7 @@ package portscan
 import (
 	"fmt"
 	"net"
+	"puzzle/gologger"
 	"strconv"
 	"strings"
 )
@@ -21,6 +22,8 @@ func ParseIP(ip string) ([]string, error) {
 	} else {
 		if testIP := net.ParseIP(ip); testIP != nil {
 			hosts = []string{ip}
+		} else {
+			gologger.Warningf("无法解析的IP输入: %s", ip)
 		}
 	}
 	return hosts, nil
@@ -40,47 +43,64 @@ func IPRange(c *net.IPNet) string {
 	return fmt.Sprintf("%s-%s", start, end) //返回用-表示的ip段,192.168.1.0-192.168.255.255
 }
 
-// parseIP1 解析ip段: 192.168.111.1-255 | 192.168.111.1-192.168.112.255
+// parseIP1 解析ip段: 192.168.111.1-255 | 192.168.111.1-192.168.112.255(支持跨八位组)
 func parseIP1(ip string) []string {
 	IPRange := strings.Split(ip, "-")
-	testIP := net.ParseIP(IPRange[0])
+	if len(IPRange) != 2 {
+		gologger.Warningf("无法解析的IP段: %s", ip)
+		return nil
+	}
 	var AllIP []string
 	if len(IPRange[1]) < 4 {
-		Range, err := strconv.Atoi(IPRange[1])
-		if testIP == nil || Range > 255 || err != nil {
-			return nil
-		}
+		// 短格式,只允许写最后一段: 192.168.111.1-255
 		SplitIP := strings.Split(IPRange[0], ".")
-		ip1, err1 := strconv.Atoi(SplitIP[3])
-		ip2, err2 := strconv.Atoi(IPRange[1])
-		PrefixIP := strings.Join(SplitIP[0:3], ".")
-		if ip1 > ip2 || err1 != nil || err2 != nil {
+		if len(SplitIP) != 4 {
+			gologger.Warningf("无法解析的IP段: %s", ip)
 			return nil
 		}
-		for i := ip1; i <= ip2; i++ {
+		endNum, err := strconv.Atoi(IPRange[1])
+		if err != nil || endNum > 255 {
+			gologger.Warningf("无法解析的IP段: %s", ip)
+			return nil
+		}
+		startNum, err := strconv.Atoi(SplitIP[3])
+		if err != nil || startNum > endNum {
+			gologger.Warningf("无法解析的IP段: %s", ip)
+			return nil
+		}
+		PrefixIP := strings.Join(SplitIP[0:3], ".")
+		for i := startNum; i <= endNum; i++ {
 			AllIP = append(AllIP, PrefixIP+"."+strconv.Itoa(i))
 		}
 	} else {
-		SplitIP1 := strings.Split(IPRange[0], ".")
-		SplitIP2 := strings.Split(IPRange[1], ".")
-		if len(SplitIP1) != 4 || len(SplitIP2) != 4 {
+		// 完整格式,按数值比较,支持跨八位组区间
+		startIP := net.ParseIP(IPRange[0])
+		endIP := net.ParseIP(IPRange[1])
+		if startIP == nil || endIP == nil {
+			gologger.Warningf("无法解析的IP段: %s", ip)
 			return nil
 		}
-		start, end := [4]int{}, [4]int{}
-		for i := 0; i < 4; i++ {
-			ip1, err1 := strconv.Atoi(SplitIP1[i])
-			ip2, err2 := strconv.Atoi(SplitIP2[i])
-			if ip1 > ip2 || err1 != nil || err2 != nil {
-				return nil
-			}
-			start[i], end[i] = ip1, ip2
+		startNum := ipToUint32(startIP.To4())
+		endNum := ipToUint32(endIP.To4())
+		if startNum > endNum {
+			gologger.Warningf("无法解析的IP段: %s", ip)
+			return nil
 		}
-		startNum := start[0]<<24 | start[1]<<16 | start[2]<<8 | start[3]
-		endNum := end[0]<<24 | end[1]<<16 | end[2]<<8 | end[3]
-		for num := startNum; num <= endNum; num++ {
-			ip := strconv.Itoa((num>>24)&0xff) + "." + strconv.Itoa((num>>16)&0xff) + "." + strconv.Itoa((num>>8)&0xff) + "." + strconv.Itoa((num)&0xff)
-			AllIP = append(AllIP, ip)
+		for num := startNum; ; num++ {
+			AllIP = append(AllIP, uint32ToIP(num))
+			if num == endNum {
+				break
+			}
 		}
 	}
 	return AllIP
+}
+
+func ipToUint32(ip net.IP) uint32 {
+	ip = ip.To4()
+	return uint32(ip[0])<<24 | uint32(ip[1])<<16 | uint32(ip[2])<<8 | uint32(ip[3])
+}
+
+func uint32ToIP(num uint32) string {
+	return strconv.Itoa(int(num>>24)) + "." + strconv.Itoa(int(num>>16&0xff)) + "." + strconv.Itoa(int(num>>8&0xff)) + "." + strconv.Itoa(int(num&0xff))
 }

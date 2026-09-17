@@ -1,12 +1,14 @@
 package portscan
 
 import (
+	"puzzle/gologger"
+	"sync"
+	"time"
+
 	pb "github.com/cheggaaa/pb/v3"
 	"github.com/projectdiscovery/blackrock"
 	"github.com/remeh/sizedwaitgroup"
 	"go.uber.org/ratelimit"
-	"puzzle/gologger"
-	"time"
 )
 
 type Options struct {
@@ -54,6 +56,7 @@ func (r *Runner) Run() (result []*Result) {
 	bar := pb.StartNew(int(Range))
 	currentSeed := time.Now().UnixNano()
 
+	var mu sync.Mutex
 	b := blackrock.New(int64(Range), currentSeed)
 	for index := int64(0); index < int64(Range); index++ {
 		xxx := b.Shuffle(index)
@@ -62,20 +65,21 @@ func (r *Runner) Run() (result []*Result) {
 		ip := r.PickIP(ipIndex)
 		port := r.PickPort(portIndex)
 		r.limiter.Take()
+		r.wgScan.Add()
 		go func() {
-			r.wgScan.Add()
-			bar.Increment()
+			defer bar.Increment()
 			res, flag := r.Scan(ip, port, timeout)
 			if flag == true {
 				r.LiveIPs.AddIP(ip)
 				gologger.Infof("%s:%d,finger:%v", ip, port, *res)
+				mu.Lock()
 				result = append(result, res)
+				mu.Unlock()
 			}
 		}()
 	}
-	bar.Finish()
 	r.wgScan.Wait()
-	time.Sleep(time.Duration(2) * time.Second)
+	bar.Finish()
 	gologger.Infof("当前共 %v IP 存活", len(r.LiveIPs.IPS))
 	gologger.Infof("端口扫描完毕")
 	return

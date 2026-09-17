@@ -36,7 +36,10 @@ func ParsePorts(ports string) ([]int, error) {
 			return nil, fmt.Errorf("端口格式错误: %s", err)
 		}
 	} else if ports == "" {
-		ports = NmapTop1000
+		portsMap, err = parsePortsList(NmapTop1000)
+		if err != nil {
+			return nil, fmt.Errorf("端口格式错误: %s", err)
+		}
 	} else {
 		portsMap, err = parsePortsList(ports)
 		if err != nil {
