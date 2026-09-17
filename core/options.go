@@ -2,12 +2,14 @@ package core
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"puzzle/config"
 	"puzzle/gologger"
 	"puzzle/util"
 	"strings"
+	"time"
 )
 
 type Options struct {
@@ -58,7 +60,7 @@ func ParseOptions() *Options {
 	}
 
 	if *update == true {
-		util.Download(config.GepLiteUrl, filepath.Join(util.GetRunDir()+config.GeoLitePath))
+		util.CdnRangeGenerate(filepath.Join(util.GetRunDir() + config.CDNSourcePath))
 		util.Download(config.FingerUrl, filepath.Join(util.GetRunDir()+config.FingerPrintPath))
 		util.Download(config.QQwryUrl, filepath.Join(util.GetRunDir()+config.QqwryPath))
 
@@ -115,7 +117,13 @@ func ParseOptions() *Options {
 	if *output != "" {
 		options.Output = config.OutDir + "/" + *output + ".xlsx"
 		if util.FileExists(options.Output) {
-			gologger.Fatalf("该文件已存在")
+			// 已存在则自动追加时间戳,避免覆盖历史结果;同秒重名时继续追加序号
+			base := config.OutDir + "/" + *output + "-" + time.Now().Format("20060102-150405")
+			options.Output = base + ".xlsx"
+			for i := 1; util.FileExists(options.Output); i++ {
+				options.Output = fmt.Sprintf("%s-%d.xlsx", base, i)
+			}
+			gologger.Warningf("输出文件已存在,改用: %s", options.Output)
 		}
 		err := XlsxInit(options.Output)
 		if err != nil {

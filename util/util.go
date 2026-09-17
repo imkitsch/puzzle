@@ -3,7 +3,7 @@ package util
 import (
 	"bufio"
 	"fmt"
-	"math/rand"
+	"math/rand/v2"
 	"net"
 	"os"
 	"puzzle/gologger"
@@ -12,15 +12,13 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func RandomStr(n int) string {
 	var letterRunes = []rune("abcdefghijklmnopqrstuvwxyz1234567890")
-	rand.Seed(time.Now().UnixNano())
 	b := make([]rune, n)
 	for i := range b {
-		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+		b[i] = letterRunes[rand.N(len(letterRunes))]
 	}
 	return string(b)
 }
@@ -46,6 +44,9 @@ func LinesInFile(fileName string) ([]string, error) {
 		if line != "" {
 			result = append(result, line)
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		return result, err
 	}
 	return result, nil
 }
@@ -263,4 +264,9 @@ func RemoveRepeatedStringArrayElement(str [][]string) [][]string {
 		}
 	}
 	return newRes
+}
+
+func RandomPick(slice []string) string {
+	index := rand.N(len(slice))
+	return slice[index]
 }

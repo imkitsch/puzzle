@@ -22,3 +22,4 @@
 *.ksubdomain.bak
 # config/cert/
 .zcode/
+AUDIT.md
