@@ -11,11 +11,13 @@ type Options struct {
 }
 
 type Runner struct {
-	options   *Options
-	reqClient *req.Client
+	options     *Options
+	reqClient   *req.Client
+	certEngines []Engine
+	ipEngines   []IPEngine
 }
 
-type fofaResult struct {
+type searchResult struct {
 	host     string
 	ip       string
 	port     string
@@ -25,6 +27,7 @@ type fofaResult struct {
 
 type Result struct {
 	Urls          []string
+	Ips           []string
 	AddDomains    []*DResult
 	AddSubdomains []*SdResult
 }
@@ -39,6 +42,24 @@ type SdResult struct {
 type DResult struct {
 	Domain string
 	Ip     string
+}
+type QuakeResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    []struct {
+		Service struct {
+			HTTP struct {
+				Host string `json:"host"`
+			} `json:"http"`
+		}
+		Port int    `json:"port"`
+		Ip   string `json:"ip"`
+	} `json:"data"`
+	Meta struct {
+		Pagination struct {
+			Total int `json:"total"`
+		} `json:"pagination"`
+	} `json:"meta"`
 }
 
 type ApiResults struct {

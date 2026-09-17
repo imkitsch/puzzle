@@ -1,111 +1,29 @@
 package spider
 
 import (
-	"encoding/base64"
-	"github.com/imroc/req/v3"
-	"net/url"
-	"puzzle/gologger"
-	"puzzle/util"
-	"strings"
 	"time"
+
+	"github.com/imroc/req/v3"
 )
 
 func NewRunner(options *Options) *Runner {
-	return &Runner{
+	reqClient := req.C()
+	reqClient.SetTimeout(20 * time.Second)
+
+	r := &Runner{
 		options:   options,
-		reqClient: req.C(),
-	}
-}
-
-func (r *Runner) Run() *Result {
-
-	gologger.Infof("开始爬虫信息收集")
-
-	var result Result
-	//以10为单位打包,减少查询次数
-	//ip查询打包
-	var raw []string
-	var tmp []string
-	for k, ip := range r.options.Ips {
-		tmp = append(tmp, "ip=\""+ip+"\"")
-		if (k+1)%10 == 0 || k == len(r.options.Ips)-1 {
-			raw = append(raw, strings.Join(tmp, "||"))
-			tmp = []string{}
-		}
+		reqClient: reqClient,
 	}
 
-	//证书查询打包
-	tmp = []string{}
-	for k, domain := range r.options.Domains {
-		tmp = append(tmp, "cert=\""+domain+"\"")
-		if (k+1)%10 == 0 || k == len(r.options.Domains)-1 {
-			raw = append(raw, strings.Join(tmp, "||"))
-			tmp = []string{}
-		}
+	// fofa:证书与IP检索
+	if accounts := GetFofaKeys(); len(accounts) != 0 {
+		fofa := &FofaEngine{client: reqClient, accounts: accounts}
+		r.certEngines = append(r.certEngines, fofa)
+		r.ipEngines = append(r.ipEngines, fofa)
 	}
-
-	var fofaRes []*fofaResult
-
-	// fofa查询
-	for _, v := range raw {
-		res := r.getFofaResult(base64.StdEncoding.EncodeToString([]byte(v)))
-		if res != nil {
-			fofaRes = append(fofaRes, res...)
-		}
-		time.Sleep(time.Second * 2)
+	// quake:api可用量较少且证书检索比fofa全面,仅用于证书检索
+	if keys := GetQuakeKey(); len(keys) != 0 {
+		r.certEngines = append(r.certEngines, &QuakeEngine{client: reqClient, keys: keys})
 	}
-
-	gologger.Infof("从fofa获取信息")
-
-	var addDomains []string
-	var addSubdomains [][]string
-
-	for _, value := range fofaRes {
-		//添加url
-		if value.protocol == "http" || value.protocol == "https" || value.protocol == "tls" || value.protocol == "unknown" {
-			if value.host[0:4] != "http" {
-				value.host = "http://" + value.host
-			}
-
-			tmpUrl, _ := url.Parse(value.host)
-			host := tmpUrl.Hostname()
-
-			// url为域名
-			if value.domain != "" {
-				if util.InSlice(r.options.Domains, value.domain) == true {
-					if util.InSlice(r.options.Subdomains, host) == false {
-						gologger.Infof("查询到遗漏子域名: %s", host)
-						addSubdomains = append(addSubdomains, []string{host, value.ip})
-						result.Urls = append(result.Urls, host)
-					}
-				} else {
-					if util.InSlice(addDomains, value.domain) == false {
-						gologger.Infof("查询到同ip段内域名: %s", value.domain)
-						addDomains = append(addDomains, value.domain)
-						result.AddDomains = append(result.AddDomains, &DResult{
-							Domain: value.domain,
-							Ip:     value.ip,
-						})
-					}
-				}
-			} else {
-				//为ip
-				result.Urls = append(result.Urls, host+":"+value.port)
-			}
-		}
-	}
-
-	addSubdomains = util.RemoveRepeatedStringArrayElement(addSubdomains)
-
-	for _, v := range addSubdomains {
-		result.AddSubdomains = append(result.AddSubdomains, &SdResult{
-			Domain: v[0],
-			CDN:    false,
-			Ip:     v[1],
-			CName:  "",
-		})
-	}
-
-	result.Urls = util.RemoveRepeatedStringElement(result.Urls)
-	return &result
+	return r
 }

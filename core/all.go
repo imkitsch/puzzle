@@ -18,6 +18,7 @@ func AllStart(options *Options) {
 	var domains []string
 	var ipsTmp []string
 	var ips []string
+	var urls []string
 
 	//拆分ip和域名
 	ipReg := `^((0|[1-9]\d?|1\d\d|2[0-4]\d|25[0-5])\.){3}(0|[1-9]\d?|1\d\d|2[0-4]\d|25[0-5])`
@@ -56,6 +57,41 @@ func AllStart(options *Options) {
 
 	//写入域名爆破结果
 	ReportWrite(options.Output, "子域名", domainResult)
+
+	// 网络测绘收集证书
+	var subdomains []string
+	var CertResults *spider.Result
+
+	for _, domainRes := range domainResult {
+		subdomains = append(subdomains, domainRes.Domain)
+	}
+	fofaEmail, fofaKey := spider.GetFofaKey()
+	quakeKeys := spider.GetQuakeKey()
+	hasFofa := fofaEmail != "" && fofaKey != ""
+	// 配置了fofa或quake任一测绘引擎即可进行证书收集
+	if hasFofa || len(quakeKeys) != 0 {
+		spiderOptions := &spider.Options{
+			Domains:    domains,
+			Subdomains: subdomains,
+			Email:      fofaEmail,
+			Key:        fofaKey,
+		}
+
+		spiderRunner := spider.NewRunner(spiderOptions)
+		CertResults = spiderRunner.CertRun()
+		urls = append(urls, CertResults.Urls...)
+		ips = append(ips, CertResults.Ips...)
+
+		if len(CertResults.AddSubdomains) != 0 {
+			ReportWrite(options.Output, "子域名", CertResults.AddSubdomains)
+		}
+
+		if len(CertResults.AddDomains) != 0 {
+			ReportWrite(options.Output, "Spider", CertResults.AddDomains)
+		}
+
+		gologger.Infof("结束证书信息收集")
+	}
 
 	//提取ip
 	for _, domainRes := range domainResult {
@@ -111,16 +147,16 @@ func AllStart(options *Options) {
 		ReportWrite(options.Output, "端口服务", portscanResults)
 	}
 
-	var urls []string
-
-	//爬虫获取遗漏信息
-	var subdomains []string
-
-	for _, domainRes := range domainResult {
-		subdomains = append(subdomains, domainRes.Domain)
+	// 网络测绘IP收集
+	var IpResults *spider.Result
+	// 证书收集发现的子域名并入已知列表,避免IpRun重复发现重复上报
+	if CertResults != nil {
+		for _, sd := range CertResults.AddSubdomains {
+			subdomains = append(subdomains, sd.Domain)
+		}
+		subdomains = util.RemoveRepeatedStringElement(subdomains)
 	}
-	fofaEmail, fofaKey := spider.GetFofaKey()
-	if fofaEmail != "" && fofaKey != "" {
+	if hasFofa {
 		spiderOptions := &spider.Options{
 			Domains:    domains,
 			Subdomains: subdomains,
@@ -130,18 +166,18 @@ func AllStart(options *Options) {
 		}
 
 		spiderRunner := spider.NewRunner(spiderOptions)
-		spiderResults := spiderRunner.Run()
-		urls = append(urls, spiderResults.Urls...)
+		IpResults = spiderRunner.IpRun()
+		urls = append(urls, IpResults.Urls...)
 
-		if len(spiderResults.AddSubdomains) != 0 {
-			ReportWrite(options.Output, "子域名", spiderResults.AddSubdomains)
+		if len(IpResults.AddSubdomains) != 0 {
+			ReportWrite(options.Output, "子域名", IpResults.AddSubdomains)
 		}
 
-		if len(spiderResults.AddDomains) != 0 {
-			ReportWrite(options.Output, "Spider", spiderResults.AddDomains)
+		if len(IpResults.AddDomains) != 0 {
+			ReportWrite(options.Output, "Spider", IpResults.AddDomains)
 		}
 
-		gologger.Infof("结束爬虫信息收集")
+		gologger.Infof("结束IP信息收集")
 	}
 
 	//web扫描
