@@ -30,13 +30,15 @@ func AllStart(options *Options) {
 			domains = append(domains, value)
 		}
 	}
+	//-i/-ipl输入的ip在all模式下同样作为扫描目标
+	ipsTmp = append(ipsTmp, options.Ip...)
 
 	//解析ip格式
 	for _, ipTmp := range ipsTmp {
 		tmp, err := portscan.ParseIP(ipTmp)
 		if err != nil {
 			gologger.Errorf("ParseIP失败:%s", err.Error())
-			return
+			continue
 		}
 		ips = append(ips, tmp...)
 	}

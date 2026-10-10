@@ -4,7 +4,7 @@ import (
 	"github.com/imroc/req/v3"
 	"net"
 	"net/url"
-	"path/filepath"
+	"path"
 	"puzzle/gologger"
 	"puzzle/util"
 	"regexp"
@@ -72,8 +72,12 @@ func Jsjump(resp *req.Response) (jumpurl string) {
 			baseUrl := resp.Request.URL.Scheme + "://" + resp.Request.URL.Host
 			jumpurl = baseUrl + res
 		} else {
-			// 前缀不存在 / 时拼接相对目录
-			baseUrl := resp.Request.URL.Scheme + "://" + resp.Request.URL.Host + "/" + filepath.Dir(resp.Request.URL.Path) + "/"
+			// 前缀不存在 / 时拼接相对目录(URL路径使用/分隔,与OS无关)
+			dir := path.Dir(resp.Request.URL.Path)
+			if dir == "/" || dir == "." {
+				dir = ""
+			}
+			baseUrl := resp.Request.URL.Scheme + "://" + resp.Request.URL.Host + dir + "/"
 			jumpurl = baseUrl + res
 		}
 

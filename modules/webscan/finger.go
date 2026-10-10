@@ -86,7 +86,7 @@ func (r *Runner) GetFinger(url string) *Result {
 
 	// 获取证书
 	var cert string
-	if url[0:5] == "https" {
+	if strings.HasPrefix(url, "https") {
 		host, err := urltool.Parse(url)
 		if err != nil {
 			gologger.Debugf("解析url失败: %s,错误: %s", url, err.Error())
@@ -145,6 +145,9 @@ func (r *Runner) getResponseData(url string) ([]byte, map[string]string, map[str
 	// shiro记住我特征探测,仅在指纹请求中携带,探活等其他请求不打此标记
 	request.SetHeader("Cookie", "rememberMe=admin;rememberMe-K=admin")
 	resp, err := request.Get(url)
+	if err != nil {
+		return []byte(""), nil, nil, 0, 0, "", "", err
+	}
 
 	// 处理js跳转, 上限3次
 	for i := 0; i < 3; i++ {
@@ -153,10 +156,9 @@ func (r *Runner) getResponseData(url string) ([]byte, map[string]string, map[str
 			break
 		}
 		resp, err = request.Get(jumpUrl)
-	}
-
-	if err != nil {
-		return []byte(""), nil, nil, 0, 0, "", "", err
+		if err != nil {
+			return []byte(""), nil, nil, 0, 0, "", "", err
+		}
 	}
 
 	respBody, err := io.ReadAll(resp.Body)

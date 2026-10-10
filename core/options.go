@@ -3,6 +3,7 @@ package core
 import (
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"puzzle/config"
@@ -106,6 +107,20 @@ func ParseOptions() *Options {
 	//域名去重
 	if len(options.Domain) != 0 {
 		options.Domain = util.RemoveRepeatedStringElement(options.Domain)
+		//仅扫描IPv4:IP字面量为IPv6的输入直接抛弃,避免被当作域名处理
+		filtered := make([]string, 0, len(options.Domain))
+		for _, d := range options.Domain {
+			if ip := net.ParseIP(d); ip != nil && ip.To4() == nil {
+				gologger.Warningf("忽略IPv6地址输入: %s", d)
+				continue
+			}
+			if _, ipNet, err := net.ParseCIDR(d); err == nil && ipNet.IP.To4() == nil {
+				gologger.Warningf("忽略IPv6地址输入: %s", d)
+				continue
+			}
+			filtered = append(filtered, d)
+		}
+		options.Domain = filtered
 	}
 
 	//port

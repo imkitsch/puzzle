@@ -28,7 +28,7 @@ func XlsxInit(output string) error {
 
 	//初始化端口服务表
 	PortIndex, _ := file.NewSheet("端口服务")
-	PortCategories := map[string]string{"A1": "Address", "B1": "Port", "C1": "ServiceName", "D1": "ProbeName", "E1": "VendorProduct", "F1": "Version"}
+	PortCategories := map[string]string{"A1": "Address", "B1": "Port", "C1": "ServiceName", "D1": "ProbeName", "E1": "VendorProduct", "F1": "Version", "G1": "Raw"}
 	for k, v := range PortCategories {
 		file.SetCellValue("端口服务", k, v)
 	}
@@ -78,9 +78,8 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 	for rowid, row_pre := range rows {
 		row_p := make([]interface{}, len(cols))
 		for colID_p := 0; colID_p < len(cols); colID_p++ {
-			//fmt.Println(row_pre)
-			//fmt.Println(colID_p)
-			if row_pre == nil || len(row_pre) == colID_p {
+			//尾随空单元格不会出现在GetRows结果中,越界位置补nil
+			if colID_p >= len(row_pre) {
 				row_p[colID_p] = nil
 			} else {
 				row_p[colID_p] = row_pre[colID_p]
@@ -109,5 +108,7 @@ func ReportWrite(output string, sheet string, dataInterface interface{}) {
 		gologger.Fatalf("写入流失败:%s", err.Error())
 	}
 
-	file.Save()
+	if err := file.Save(); err != nil {
+		gologger.Fatalf("保存文件失败:%s", err.Error())
+	}
 }

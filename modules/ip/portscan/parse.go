@@ -9,6 +9,7 @@ import (
 )
 
 // ParseIP 参考 fscan
+// 仅接受IPv4输入(单IP/IP段/CIDR),IPv6地址直接抛弃
 func ParseIP(ip string) ([]string, error) {
 	var hosts []string
 	if strings.Contains(ip, "/") {
@@ -16,14 +17,21 @@ func ParseIP(ip string) ([]string, error) {
 		if err != nil {
 			return hosts, err
 		}
+		if ipNet.IP.To4() == nil {
+			gologger.Warningf("忽略IPv6地址输入: %s", ip)
+			return hosts, nil
+		}
 		hosts = parseIP1(IPRange(ipNet))
 	} else if strings.Contains(ip, "-") {
 		hosts = parseIP1(ip)
 	} else {
-		if testIP := net.ParseIP(ip); testIP != nil {
-			hosts = []string{ip}
-		} else {
+		testIP := net.ParseIP(ip)
+		if testIP == nil {
 			gologger.Warningf("无法解析的IP输入: %s", ip)
+		} else if testIP.To4() == nil {
+			gologger.Warningf("忽略IPv6地址输入: %s", ip)
+		} else {
+			hosts = []string{testIP.To4().String()}
 		}
 	}
 	return hosts, nil
@@ -80,8 +88,15 @@ func parseIP1(ip string) []string {
 			gologger.Warningf("无法解析的IP段: %s", ip)
 			return nil
 		}
-		startNum := ipToUint32(startIP.To4())
-		endNum := ipToUint32(endIP.To4())
+		start4 := startIP.To4()
+		end4 := endIP.To4()
+		if start4 == nil || end4 == nil {
+			// IPv6地址直接抛弃,仅扫描IPv4
+			gologger.Warningf("忽略IPv6地址段: %s", ip)
+			return nil
+		}
+		startNum := ipToUint32(start4)
+		endNum := ipToUint32(end4)
 		if startNum > endNum {
 			gologger.Warningf("无法解析的IP段: %s", ip)
 			return nil

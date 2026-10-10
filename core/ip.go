@@ -17,7 +17,7 @@ func IpStart(options *Options) {
 		tmp, err := portscan.ParseIP(ipTmp)
 		if err != nil {
 			gologger.Errorf("ParseIP失败:%s", err.Error())
-			return
+			continue
 		}
 		ips = append(ips, tmp...)
 	}
