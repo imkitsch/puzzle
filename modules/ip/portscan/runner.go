@@ -95,6 +95,5 @@ func (r *Runner) PickIP(index int) string {
 }
 
 func getTimeout() time.Duration {
-	switch {
 	return time.Millisecond * 500
 }
