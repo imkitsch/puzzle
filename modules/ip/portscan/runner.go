@@ -47,7 +47,7 @@ func (r *Runner) Run() (result []*Result) {
 	// rate-limit.New 限制单位时间访问的频率
 	r.wgScan = sizedwaitgroup.New(r.Rate)
 	r.limiter = ratelimit.New(r.Rate)
-	timeout := getTimeout(len(r.ports))
+	timeout := getTimeout()
 
 	portsCount := uint64(len(r.ports))
 	ipsCount := uint64(len(r.ips))
@@ -94,15 +94,7 @@ func (r *Runner) PickIP(index int) string {
 	return r.ips[index]
 }
 
-func getTimeout(i int) time.Duration {
+func getTimeout() time.Duration {
 	switch {
-	case i > 10000:
-		return time.Millisecond * 200
-	case i > 5000:
-		return time.Millisecond * 300
-	case i > 1000:
-		return time.Millisecond * 400
-	default:
-		return time.Millisecond * 500
-	}
+	return time.Millisecond * 500
 }
